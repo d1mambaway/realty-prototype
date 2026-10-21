@@ -6,6 +6,9 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { Heart, Menu, Plus, X } from "lucide-react";
 import { useI18n } from "@/lib/i18n";
+import { useCatalogOptions } from "@/lib/store";
+import type { Dict } from "@/lib/dict";
+import type { Deal } from "@/lib/types";
 import { LangSwitcher } from "./LangSwitcher";
 import { Logo } from "./Logo";
 
@@ -15,12 +18,10 @@ export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
+  const options = useCatalogOptions();
   const nav = [
-    { href: "/listings/?deal=sale", label: d.nav.buy },
-    { href: "/listings/?deal=rent", label: d.nav.rent },
-    { href: "/listings/?deal=daily", label: d.nav.daily },
-    { href: "/listings/?deal=exchange", label: d.nav.exchange },
-    { href: "/listings/?type=commercial", label: d.nav.commercial },
+    ...options.deals.map((deal) => ({ href: `/listings/?deal=${deal}`, label: navLabel(d, deal) })),
+    ...(options.types.includes("commercial") ? [{ href: "/listings/?type=commercial", label: d.nav.commercial }] : []),
   ];
 
   useEffect(() => {
@@ -108,4 +109,8 @@ export function Header() {
       </AnimatePresence>
     </header>
   );
+}
+
+function navLabel(d: Dict, deal: Deal): string {
+  return { sale: d.nav.buy, rent: d.nav.rent, daily: d.nav.daily, exchange: d.nav.exchange }[deal];
 }

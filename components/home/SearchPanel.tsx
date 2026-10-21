@@ -5,17 +5,15 @@ import { useRouter } from "next/navigation";
 import { motion } from "motion/react";
 import { Search } from "lucide-react";
 import { useI18n } from "@/lib/i18n";
-import { CITIES, TYPES, type Deal, type PropertyType } from "@/lib/types";
+import { useCatalogOptions } from "@/lib/store";
+import type { Deal, PropertyType } from "@/lib/types";
 
 export function SearchPanel() {
   const { d, city: cityName } = useI18n();
   const router = useRouter();
-  const tabs: { deal: Deal; label: string }[] = [
-    { deal: "sale", label: d.nav.buy },
-    { deal: "rent", label: d.nav.rent },
-    { deal: "daily", label: d.nav.daily },
-    { deal: "exchange", label: d.nav.exchange },
-  ];
+  const { deals, types, cities } = useCatalogOptions();
+  const labels: Record<Deal, string> = { sale: d.nav.buy, rent: d.nav.rent, daily: d.nav.daily, exchange: d.nav.exchange };
+  const tabs = deals.map((deal) => ({ deal, label: labels[deal] }));
   const [deal, setDeal] = useState<Deal>("sale");
   const [city, setCity] = useState("");
   const [type, setType] = useState<PropertyType | "">("");
@@ -58,7 +56,7 @@ export function SearchPanel() {
         <Field label={d.search.city}>
           <select value={city} onChange={(e) => setCity(e.target.value)} className="w-full bg-transparent outline-none">
             <option value="">{d.search.any}</option>
-            {CITIES.map((c) => (
+            {cities.map((c) => (
               <option key={c} value={c}>
                 {cityName(c)}
               </option>
@@ -72,7 +70,7 @@ export function SearchPanel() {
             className="w-full bg-transparent outline-none"
           >
             <option value="">{d.search.any}</option>
-            {TYPES.map((t) => (
+            {types.map((t) => (
               <option key={t} value={t}>
                 {d.type[t]}
               </option>

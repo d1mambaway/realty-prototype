@@ -7,8 +7,8 @@ import { AnimatePresence, motion } from "motion/react";
 import { SlidersHorizontal, X } from "lucide-react";
 import { ListingCard } from "@/components/ListingCard";
 import { useI18n } from "@/lib/i18n";
-import { useListings } from "@/lib/store";
-import { CITIES, DEALS, TYPES, type Deal, type PropertyType } from "@/lib/types";
+import { useCatalogOptions, useListings } from "@/lib/store";
+import { matchesDeal, type Deal, type PropertyType } from "@/lib/types";
 
 const SORTS = ["new", "cheap", "expensive", "area"] as const;
 type Sort = (typeof SORTS)[number];
@@ -16,6 +16,7 @@ type Sort = (typeof SORTS)[number];
 export function Catalog() {
   const { d, city: cityName } = useI18n();
   const listings = useListings();
+  const { deals: DEALS, types: TYPES, cities: CITIES } = useCatalogOptions();
   const router = useRouter();
   const pathname = usePathname();
   const params = useSearchParams();
@@ -37,7 +38,7 @@ export function Catalog() {
 
   const results = useMemo(() => {
     const filtered = listings.filter((l) => {
-      if (deal && l.deal !== deal && !(deal === "exchange" && l.exchangeFor)) return false;
+      if (deal && !matchesDeal(l, deal)) return false;
       if (type && l.type !== type) return false;
       if (city && l.city !== city) return false;
       if (min && l.price < Number(min)) return false;

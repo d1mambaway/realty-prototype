@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { SEED_LISTINGS } from "./seed";
-import type { Listing } from "./types";
+import { CITIES, DEALS, TYPES, matchesDeal, type Listing } from "./types";
 
 // Пока нет базы, объявления пользователя и избранное живут в localStorage браузера.
 const LISTINGS_KEY = "realty:listings";
@@ -51,6 +51,16 @@ export function useListingsState(): { listings: Listing[]; ready: boolean } {
 
 export function useListings(): Listing[] {
   return useListingsState().listings;
+}
+
+/** Сделки, типы и города, по которым есть хоть одно объявление — пустые разделы не показываем */
+export function useCatalogOptions() {
+  const listings = useListings();
+  return {
+    deals: DEALS.filter((d) => listings.some((l) => matchesDeal(l, d))),
+    types: TYPES.filter((t) => listings.some((l) => l.type === t)),
+    cities: CITIES.filter((c) => listings.some((l) => l.city === c)),
+  };
 }
 
 export function addListing(listing: Listing) {

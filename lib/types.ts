@@ -36,7 +36,12 @@ export interface Listing {
 
 export const DEALS: Deal[] = ["sale", "rent", "daily", "exchange"];
 export const TYPES: PropertyType[] = ["apartment", "house", "room", "commercial", "land"];
-export const CITIES = ["chisinau", "balti", "orhei", "hincesti", "aneniiNoi", "cahul", "ungheni", "vadulLuiVoda"];
+export const CITIES = ["chisinau", "balti", "orhei", "hincesti", "aneniiNoi", "ialoveni", "cahul", "ungheni", "vadulLuiVoda"];
+
+/** Подходит ли объявление под тип сделки (продажа с возможным обменом попадает и в «Обмен») */
+export function matchesDeal(l: Pick<Listing, "deal" | "exchangeFor">, deal: Deal): boolean {
+  return l.deal === deal || (deal === "exchange" && Boolean(l.exchangeFor));
+}
 
 /** Показывать ли число комнат (для домов и участков без данных — нет) */
 export function hasRooms(l: Pick<Listing, "type" | "rooms">): boolean {

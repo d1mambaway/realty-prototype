@@ -8,12 +8,12 @@ import { ListingCard } from "@/components/ListingCard";
 import { Reveal } from "@/components/Reveal";
 import { img } from "@/lib/format";
 import { useI18n } from "@/lib/i18n";
-import { useListings } from "@/lib/store";
-import { CITIES, type PropertyType } from "@/lib/types";
+import { useCatalogOptions, useListings } from "@/lib/store";
 
 export function CityMarquee() {
   const { city } = useI18n();
-  const items = [...CITIES, ...CITIES];
+  const { cities } = useCatalogOptions();
+  const items = [...cities, ...cities, ...cities];
   return (
     <div className="overflow-hidden border-y border-line bg-ivory py-6">
       <div className="marquee flex w-max gap-12">
@@ -57,24 +57,22 @@ export function Featured() {
   );
 }
 
-const CATEGORIES: { type: PropertyType; image: string }[] = [
-  { type: "apartment", image: img("1502672260266-1c1ef2d93688", 1200) },
-  { type: "house", image: img("1580587771525-78b9dba3b914", 1200) },
-  { type: "commercial", image: img("1486406146926-c627a92ad1ab", 1200) },
-  { type: "land", image: img("1500382017468-9049fed747ef", 1200) },
-];
-
 export function Categories() {
   const { d } = useI18n();
   const listings = useListings();
+  const { types } = useCatalogOptions();
+  // Обложка категории — фото избранного объявления этого типа (или первого попавшегося)
+  const cover = (type: string) =>
+    (listings.find((l) => l.type === type && l.featured) ?? listings.find((l) => l.type === type))?.images[0] ?? "";
+  const categories = types.map((type) => ({ type, image: cover(type) }));
   return (
     <section className="bg-sand/60 py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <Reveal>
           <h2 className="font-serif text-4xl font-medium sm:text-6xl">{d.home.categoriesTitle}</h2>
         </Reveal>
-        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {CATEGORIES.map((cat, i) => (
+        <div className={`mt-12 grid gap-4 sm:grid-cols-2 ${categories.length === 3 ? "lg:grid-cols-3" : "lg:grid-cols-4"}`}>
+          {categories.map((cat, i) => (
             <Reveal key={cat.type} delay={i * 0.08}>
               <Link href={`/listings/?type=${cat.type}`} className="group relative block aspect-[3/4] overflow-hidden rounded-3xl">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -123,11 +121,14 @@ function Counter({ to, suffix = "" }: { to: number; suffix?: string }) {
 
 export function Stats() {
   const { d } = useI18n();
+  const listings = useListings();
+  // Цифры считаются по реальным объявлениям
+  const landHectares = listings.filter((l) => l.type === "land").reduce((sum, l) => sum + l.area, 0) / 10_000;
   const stats = [
-    { to: 3200, suffix: "+" },
-    { to: 98, suffix: "%" },
-    { to: 40, suffix: "" },
-    { to: 15, suffix: ` ${d.home.minutes}` },
+    { to: listings.length, suffix: "" },
+    { to: new Set(listings.map((l) => l.city)).size, suffix: "" },
+    { to: listings.filter((l) => l.exchangeFor).length, suffix: "" },
+    { to: Math.round(landHectares), suffix: "" },
   ];
   return (
     <section className="mx-auto grid max-w-7xl gap-10 px-4 py-24 sm:grid-cols-2 sm:px-6 lg:grid-cols-4 lg:px-8">
