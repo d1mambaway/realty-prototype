@@ -19,6 +19,7 @@ export function Header() {
     { href: "/listings/?deal=sale", label: d.nav.buy },
     { href: "/listings/?deal=rent", label: d.nav.rent },
     { href: "/listings/?deal=daily", label: d.nav.daily },
+    { href: "/listings/?deal=exchange", label: d.nav.exchange },
     { href: "/listings/?type=commercial", label: d.nav.commercial },
   ];
 
@@ -45,7 +46,7 @@ export function Header() {
           <Logo compact />
         </Link>
 
-        <nav className="hidden items-center gap-8 text-sm font-medium lg:flex">
+        <nav className="hidden items-center gap-7 text-sm font-medium lg:flex">
           {nav.map((item) => (
             <Link key={item.href} href={item.href} className="group relative py-1">
               {item.label}

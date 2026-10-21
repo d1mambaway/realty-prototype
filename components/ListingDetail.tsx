@@ -185,8 +185,14 @@ export function ListingDetail() {
         {/* Карточка с ценой и контактом */}
         <aside>
           <div className="sticky top-24 rounded-[2rem] bg-white p-7 shadow-[0_30px_80px_-40px_rgba(0,0,0,0.35)]">
-            <p className="text-sm text-muted">{d.deal[listing.deal]}</p>
+            <p className="text-sm text-muted">{listing.deal === "exchange" ? d.detail.estimatedValue : d.deal[listing.deal]}</p>
             <p className="mt-1 font-serif text-4xl font-semibold">{price(listing.price, listing.deal)}</p>
+            {listing.deal === "exchange" && listing.exchangeFor && (
+              <div className="mt-5 rounded-2xl bg-sand/70 p-4">
+                <p className="text-xs font-semibold uppercase tracking-[0.15em] text-muted">{d.detail.exchangeFor}</p>
+                <p className="mt-1.5 font-medium leading-snug">{tx(listing.exchangeFor)}</p>
+              </div>
+            )}
             {listing.deal === "sale" && listing.area > 0 && (
               <p className="mt-1 text-sm text-muted">
                 {Math.round(listing.price / listing.area).toLocaleString("ru-RU")} {d.price.perSqm}

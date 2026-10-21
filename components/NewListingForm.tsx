@@ -30,6 +30,7 @@ interface FormState {
   city: string;
   address: string;
   price: string;
+  exchangeFor: string;
   area: string;
   rooms: string;
   floor: string;
@@ -48,6 +49,7 @@ const INITIAL: FormState = {
   city: CITIES[0],
   address: "",
   price: "",
+  exchangeFor: "",
   area: "",
   rooms: "1",
   floor: "",
@@ -78,6 +80,7 @@ export function NewListingForm() {
       if (!form.title.trim()) return e.title;
       if (!form.address.trim()) return e.address;
       if (!Number(form.price)) return e.price;
+      if (form.deal === "exchange" && !form.exchangeFor.trim()) return e.exchangeFor;
       if (!Number(form.area)) return e.area;
     }
     if (s === 2) {
@@ -129,6 +132,7 @@ export function NewListingForm() {
       deal: form.deal,
       type: form.type,
       price: Number(form.price),
+      exchangeFor: form.deal === "exchange" ? form.exchangeFor.trim() : undefined,
       city: form.city,
       address: form.address.trim(),
       area: Number(form.area),
@@ -236,7 +240,7 @@ export function NewListingForm() {
               {step === 0 && (
                 <>
                   <Group label={d.form.whatToDo}>
-                    <div className="grid grid-cols-3 gap-3">
+                    <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
                       {DEALS.map((x) => (
                         <Option key={x} active={form.deal === x} onClick={() => update("deal", x)}>
                           {d.dealAction[x]}
@@ -273,13 +277,29 @@ export function NewListingForm() {
                   </div>
                   <div className="grid gap-6 sm:grid-cols-2">
                     <Input
-                      label={form.deal === "sale" ? d.form.priceSale : form.deal === "rent" ? d.form.priceRent : d.form.priceDaily}
+                      label={
+                        form.deal === "sale"
+                          ? d.form.priceSale
+                          : form.deal === "rent"
+                            ? d.form.priceRent
+                            : form.deal === "daily"
+                              ? d.form.priceDaily
+                              : d.form.priceExchange
+                      }
                       value={form.price}
                       onChange={(v) => update("price", v.replace(/\D/g, ""))}
                       inputMode="numeric"
                     />
                     <Input label={d.form.area} value={form.area} onChange={(v) => update("area", v.replace(/\D/g, ""))} inputMode="numeric" />
                   </div>
+                  {form.deal === "exchange" && (
+                    <Input
+                      label={d.form.exchangeFor}
+                      value={form.exchangeFor}
+                      onChange={(v) => update("exchangeFor", v)}
+                      placeholder={d.form.exchangeForPh}
+                    />
+                  )}
                   {form.type !== "land" && (
                     <div className="grid gap-6 sm:grid-cols-3">
                       <Group label={d.form.rooms}>

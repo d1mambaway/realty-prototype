@@ -19,6 +19,7 @@ export function Footer() {
           <Link href="/listings/?deal=sale" className="block hover:text-white">{d.nav.buy}</Link>
           <Link href="/listings/?deal=rent" className="block hover:text-white">{d.nav.rent}</Link>
           <Link href="/listings/?deal=daily" className="block hover:text-white">{d.nav.daily}</Link>
+          <Link href="/listings/?deal=exchange" className="block hover:text-white">{d.nav.exchange}</Link>
           <Link href="/new/" className="block hover:text-white">{d.cta.post}</Link>
         </div>
         <div className="space-y-3 text-sm">

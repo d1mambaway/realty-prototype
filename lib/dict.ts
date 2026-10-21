@@ -8,10 +8,10 @@ export const LANGS: { code: Lang; label: string; locale: string }[] = [
 ];
 
 const ro = {
-  nav: { buy: "Cumpără", rent: "Închiriază", daily: "Pe zi", commercial: "Comercial", favorites: "Favorite", menu: "Meniu", home: "REZULTAT — pagina principală" },
+  nav: { buy: "Cumpără", rent: "Închiriază", daily: "Pe zi", exchange: "Schimb", commercial: "Comercial", favorites: "Favorite", menu: "Meniu", home: "REZULTAT — pagina principală" },
   cta: { post: "Adaugă anunț" },
-  deal: { sale: "Vânzare", rent: "Chirie", daily: "Chirie pe zi" },
-  dealAction: { sale: "Vând", rent: "Dau în chirie", daily: "Dau în chirie pe zi" },
+  deal: { sale: "Vânzare", rent: "Chirie", daily: "Chirie pe zi", exchange: "Schimb" },
+  dealAction: { sale: "Vând", rent: "Dau în chirie", daily: "Dau în chirie pe zi", exchange: "Fac schimb" },
   type: { apartment: "Apartament", house: "Casă", room: "Cameră", commercial: "Spațiu comercial", land: "Teren" },
   typePlural: { apartment: "Apartamente", house: "Case", room: "Camere", commercial: "Comercial", land: "Terenuri" },
   feature: {
@@ -41,7 +41,7 @@ const ro = {
   rooms: (n: number) => (n === 0 ? "Garsonieră" : n === 1 ? "1 cameră" : `${n} camere`),
   listingsCount: (n: number) => (n === 1 ? "1 anunț" : n % 100 >= 20 || n === 0 ? `${n} de anunțuri` : `${n} anunțuri`),
   hero: {
-    kicker: "Vânzare · Cumpărare · Chirie",
+    kicker: "Vânzare · Cumpărare · Chirie · Schimb",
     words: ["Casa", "în", "care", "vrei", "să", "trăiești"],
     sub: "Apartamente, case și oficii în toată Moldova — de la proprietari și agenți verificați. Găsește-ți locul sau publică un anunț în câteva minute.",
     scroll: "Derulează în jos",
@@ -100,6 +100,8 @@ const ro = {
     remove: "Retrage anunțul",
     removeConfirm: "Retrageți anunțul de la publicare?",
     similar: "Anunțuri similare",
+    exchangeFor: "Schimb pe",
+    estimatedValue: "Valoare estimată",
     close: "Închide",
     prev: "Fotografia anterioară",
     next: "Fotografia următoare",
@@ -119,6 +121,9 @@ const ro = {
     priceSale: "Preț, €",
     priceRent: "Preț pe lună, €",
     priceDaily: "Preț pe zi, €",
+    priceExchange: "Valoare estimată, €",
+    exchangeFor: "Ce doriți în schimb?",
+    exchangeForPh: "De exemplu: casă în Durlești sau Stăuceni, cu achitarea diferenței",
     area: "Suprafață, m²",
     rooms: "Camere",
     floor: "Etaj",
@@ -138,6 +143,7 @@ const ro = {
       title: "Adăugați un titlu",
       address: "Indicați adresa",
       price: "Indicați prețul",
+      exchangeFor: "Scrieți ce doriți în schimb",
       area: "Indicați suprafața",
       photos: "Adăugați cel puțin o fotografie",
       description: "Descrieți obiectul în câteva propoziții",
@@ -174,10 +180,10 @@ const ro = {
 export type Dict = typeof ro;
 
 const ru: Dict = {
-  nav: { buy: "Купить", rent: "Снять", daily: "Посуточно", commercial: "Коммерция", favorites: "Избранное", menu: "Меню", home: "REZULTAT — на главную" },
+  nav: { buy: "Купить", rent: "Снять", daily: "Посуточно", exchange: "Обмен", commercial: "Коммерция", favorites: "Избранное", menu: "Меню", home: "REZULTAT — на главную" },
   cta: { post: "Подать объявление" },
-  deal: { sale: "Продажа", rent: "Аренда", daily: "Посуточно" },
-  dealAction: { sale: "Продать", rent: "Сдать", daily: "Сдать посуточно" },
+  deal: { sale: "Продажа", rent: "Аренда", daily: "Посуточно", exchange: "Обмен" },
+  dealAction: { sale: "Продать", rent: "Сдать", daily: "Сдать посуточно", exchange: "Обменять" },
   type: { apartment: "Квартира", house: "Дом", room: "Комната", commercial: "Коммерция", land: "Участок" },
   typePlural: { apartment: "Квартиры", house: "Дома", room: "Комнаты", commercial: "Коммерция", land: "Участки" },
   feature: {
@@ -213,7 +219,7 @@ const ru: Dict = {
     return `${n} объявлений`;
   },
   hero: {
-    kicker: "Покупка · Продажа · Аренда",
+    kicker: "Покупка · Продажа · Аренда · Обмен",
     words: ["Дом,", "в", "котором", "хочется", "жить"],
     sub: "Квартиры, дома и офисы по всей Молдове — от собственников и проверенных агентов. Найдите своё или разместите объявление за пару минут.",
     scroll: "Листать вниз",
@@ -272,6 +278,8 @@ const ru: Dict = {
     remove: "Снять с публикации",
     removeConfirm: "Снять объявление с публикации?",
     similar: "Похожие объявления",
+    exchangeFor: "Обмен на",
+    estimatedValue: "Оценочная стоимость",
     close: "Закрыть",
     prev: "Предыдущее фото",
     next: "Следующее фото",
@@ -291,6 +299,9 @@ const ru: Dict = {
     priceSale: "Цена, €",
     priceRent: "Цена в месяц, €",
     priceDaily: "Цена за сутки, €",
+    priceExchange: "Оценочная стоимость, €",
+    exchangeFor: "Что хотите взамен?",
+    exchangeForPh: "Например: дом в Дурлештах или Стэученах, с доплатой",
     area: "Площадь, м²",
     rooms: "Комнат",
     floor: "Этаж",
@@ -310,6 +321,7 @@ const ru: Dict = {
       title: "Придумайте заголовок",
       address: "Укажите адрес",
       price: "Укажите цену",
+      exchangeFor: "Напишите, что хотите взамен",
       area: "Укажите площадь",
       photos: "Добавьте хотя бы одно фото",
       description: "Опишите объект хотя бы парой предложений",
@@ -344,10 +356,10 @@ const ru: Dict = {
 };
 
 const en: Dict = {
-  nav: { buy: "Buy", rent: "Rent", daily: "Short stay", commercial: "Commercial", favorites: "Favourites", menu: "Menu", home: "REZULTAT — home" },
+  nav: { buy: "Buy", rent: "Rent", daily: "Short stay", exchange: "Exchange", commercial: "Commercial", favorites: "Favourites", menu: "Menu", home: "REZULTAT — home" },
   cta: { post: "Post a listing" },
-  deal: { sale: "For sale", rent: "For rent", daily: "Short stay" },
-  dealAction: { sale: "Sell", rent: "Rent out", daily: "Rent out daily" },
+  deal: { sale: "For sale", rent: "For rent", daily: "Short stay", exchange: "Exchange" },
+  dealAction: { sale: "Sell", rent: "Rent out", daily: "Rent out daily", exchange: "Swap" },
   type: { apartment: "Apartment", house: "House", room: "Room", commercial: "Commercial", land: "Land" },
   typePlural: { apartment: "Apartments", house: "Houses", room: "Rooms", commercial: "Commercial", land: "Land plots" },
   feature: {
@@ -377,7 +389,7 @@ const en: Dict = {
   rooms: (n) => (n === 0 ? "Studio" : n === 1 ? "1 room" : `${n} rooms`),
   listingsCount: (n) => (n === 1 ? "1 listing" : `${n} listings`),
   hero: {
-    kicker: "Buy · Sell · Rent",
+    kicker: "Buy · Sell · Rent · Exchange",
     words: ["A", "home", "made", "for", "living"],
     sub: "Apartments, houses and offices across Moldova — from owners and trusted agents. Find your place or post a listing in a couple of minutes.",
     scroll: "Scroll down",
@@ -436,6 +448,8 @@ const en: Dict = {
     remove: "Take down listing",
     removeConfirm: "Take this listing down?",
     similar: "Similar listings",
+    exchangeFor: "Exchange for",
+    estimatedValue: "Estimated value",
     close: "Close",
     prev: "Previous photo",
     next: "Next photo",
@@ -455,6 +469,9 @@ const en: Dict = {
     priceSale: "Price, €",
     priceRent: "Price per month, €",
     priceDaily: "Price per night, €",
+    priceExchange: "Estimated value, €",
+    exchangeFor: "What would you like in exchange?",
+    exchangeForPh: "For example: a house in Durlești or Stăuceni, with a cash top-up",
     area: "Size, m²",
     rooms: "Rooms",
     floor: "Floor",
@@ -474,6 +491,7 @@ const en: Dict = {
       title: "Add a title",
       address: "Enter the address",
       price: "Enter the price",
+      exchangeFor: "Describe what you want in exchange",
       area: "Enter the size",
       photos: "Add at least one photo",
       description: "Describe the property in a couple of sentences",

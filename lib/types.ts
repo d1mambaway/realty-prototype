@@ -1,6 +1,6 @@
 import type { Lang } from "./dict";
 
-export type Deal = "sale" | "rent" | "daily";
+export type Deal = "sale" | "rent" | "daily" | "exchange";
 export type PropertyType = "apartment" | "house" | "room" | "commercial" | "land";
 
 /** Текст на одном языке (как ввёл пользователь) или переводы по языкам */
@@ -11,8 +11,10 @@ export interface Listing {
   title: Localized;
   deal: Deal;
   type: PropertyType;
-  /** Цена в евро */
+  /** Цена в евро (для обмена — оценочная стоимость) */
   price: number;
+  /** Для обмена: что владелец хочет взамен */
+  exchangeFor?: Localized;
   /** Ключ города из словаря (chisinau, balti…) */
   city: string;
   address: string;
@@ -32,7 +34,7 @@ export interface Listing {
   own?: boolean;
 }
 
-export const DEALS: Deal[] = ["sale", "rent", "daily"];
+export const DEALS: Deal[] = ["sale", "rent", "daily", "exchange"];
 export const TYPES: PropertyType[] = ["apartment", "house", "room", "commercial", "land"];
 export const CITIES = ["chisinau", "balti", "orhei", "cahul", "ungheni", "vadulLuiVoda"];
 export const FEATURES = [

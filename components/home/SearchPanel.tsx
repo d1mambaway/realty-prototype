@@ -14,6 +14,7 @@ export function SearchPanel() {
     { deal: "sale", label: d.nav.buy },
     { deal: "rent", label: d.nav.rent },
     { deal: "daily", label: d.nav.daily },
+    { deal: "exchange", label: d.nav.exchange },
   ];
   const [deal, setDeal] = useState<Deal>("sale");
   const [city, setCity] = useState("");
@@ -37,7 +38,7 @@ export function SearchPanel() {
             key={tab.deal}
             type="button"
             onClick={() => setDeal(tab.deal)}
-            className={`relative rounded-xl px-5 py-2 text-sm font-semibold transition-colors ${
+            className={`relative rounded-xl px-3.5 py-2 text-sm sm:px-5 font-semibold transition-colors ${
               deal === tab.deal ? "text-ink" : "text-white hover:text-accent-soft"
             }`}
           >

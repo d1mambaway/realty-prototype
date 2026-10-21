@@ -63,6 +63,7 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
       const base = `${number.format(price)} €`;
       if (deal === "rent") return `${base} ${d.price.perMonth}`;
       if (deal === "daily") return `${base} ${d.price.perDay}`;
+      if (deal === "exchange") return `≈ ${base}`;
       return base;
     },
     date: (iso) => new Date(iso).toLocaleDateString(locale),
