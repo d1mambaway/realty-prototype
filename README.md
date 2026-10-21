@@ -13,11 +13,11 @@ npm run dev
 
 Сайт откроется на http://localhost:3000.
 
-## Деплой на Cloudflare Pages
+## Деплой на Cloudflare (Workers)
 
-- Framework preset: `Next.js (Static HTML Export)`
+- Проект создан как Worker, настройки в `wrangler.jsonc` (сайт раздаётся из `out/`)
 - Build command: `npm run build`
-- Build output directory: `out`
+- Deploy command: `npx wrangler deploy`
 - Переменная окружения: `NODE_VERSION` = `22`
 
 Каждый пуш в `main` обновляет сайт автоматически.

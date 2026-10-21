@@ -1,0 +1,10 @@
+{
+  // Cloudflare Worker, который раздаёт статическую сборку Next.js из out/
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "realty-prototype",
+  "compatibility_date": "2026-09-01",
+  "assets": {
+    "directory": "./out",
+    "not_found_handling": "404-page"
+  }
+}
