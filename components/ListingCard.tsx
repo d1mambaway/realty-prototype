@@ -5,7 +5,7 @@ import { motion } from "motion/react";
 import { Heart, MapPin, Maximize2, BedDouble } from "lucide-react";
 import { useI18n } from "@/lib/i18n";
 import { useFavorites } from "@/lib/store";
-import type { Listing } from "@/lib/types";
+import { hasRooms, type Listing } from "@/lib/types";
 
 export function ListingCard({ listing, index = 0 }: { listing: Listing; index?: number }) {
   const { d, tx, city, price } = useI18n();
@@ -47,6 +47,9 @@ export function ListingCard({ listing, index = 0 }: { listing: Listing; index?: 
 
           <div className="absolute left-4 top-4 flex gap-2">
             <span className="glass rounded-full px-3 py-1 text-xs font-semibold">{d.deal[listing.deal]}</span>
+            {listing.exchangeFor && listing.deal !== "exchange" && (
+              <span className="rounded-full bg-ink/80 px-3 py-1 text-xs font-semibold text-white backdrop-blur">{d.card.exchangePossible}</span>
+            )}
             {listing.own && <span className="rounded-full bg-accent px-3 py-1 text-xs font-semibold text-white">{d.card.own}</span>}
           </div>
 
@@ -77,9 +80,9 @@ export function ListingCard({ listing, index = 0 }: { listing: Listing; index?: 
           </span>
           <span className="inline-flex items-center gap-1.5">
             <Maximize2 className="h-4 w-4" />
-            {listing.area} m²
+            {listing.area.toLocaleString("ru-RU")} m²
           </span>
-          {listing.type !== "land" && listing.type !== "commercial" && (
+          {listing.type !== "commercial" && hasRooms(listing) && (
             <span className="inline-flex items-center gap-1.5">
               <BedDouble className="h-4 w-4" />
               {d.rooms(listing.rooms)}

@@ -37,7 +37,7 @@ export function Catalog() {
 
   const results = useMemo(() => {
     const filtered = listings.filter((l) => {
-      if (deal && l.deal !== deal) return false;
+      if (deal && l.deal !== deal && !(deal === "exchange" && l.exchangeFor)) return false;
       if (type && l.type !== type) return false;
       if (city && l.city !== city) return false;
       if (min && l.price < Number(min)) return false;

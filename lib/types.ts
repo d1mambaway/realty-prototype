@@ -13,7 +13,7 @@ export interface Listing {
   type: PropertyType;
   /** Цена в евро (для обмена — оценочная стоимость) */
   price: number;
-  /** Для обмена: что владелец хочет взамен */
+  /** Обмен: что владелец хочет взамен (у продажи — возможный частичный обмен) */
   exchangeFor?: Localized;
   /** Ключ города из словаря (chisinau, balti…) */
   city: string;
@@ -36,7 +36,12 @@ export interface Listing {
 
 export const DEALS: Deal[] = ["sale", "rent", "daily", "exchange"];
 export const TYPES: PropertyType[] = ["apartment", "house", "room", "commercial", "land"];
-export const CITIES = ["chisinau", "balti", "orhei", "cahul", "ungheni", "vadulLuiVoda"];
+export const CITIES = ["chisinau", "balti", "orhei", "hincesti", "aneniiNoi", "cahul", "ungheni", "vadulLuiVoda"];
+
+/** Показывать ли число комнат (для домов и участков без данных — нет) */
+export function hasRooms(l: Pick<Listing, "type" | "rooms">): boolean {
+  return l.type === "apartment" || l.rooms > 0;
+}
 export const FEATURES = [
   "parking",
   "balcony",

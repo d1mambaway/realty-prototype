@@ -1,8 +1,9 @@
 import { img } from "./format";
+import { REAL_LISTINGS } from "./real";
 import type { Listing } from "./types";
 
-// Демо-объявления по Молдове. Позже их заменит база (Cloudflare D1).
-export const SEED_LISTINGS: Listing[] = [
+// Демо-объявления по Молдове — уберём, когда перенесём все настоящие
+const DEMO_LISTINGS: Listing[] = [
   {
     id: "villa-vadul-lui-voda",
     title: {
@@ -336,3 +337,6 @@ export const SEED_LISTINGS: Listing[] = [
     createdAt: "2026-10-16",
   },
 ];
+
+// Настоящие объявления агентства идут первыми
+export const SEED_LISTINGS: Listing[] = [...REAL_LISTINGS, ...DEMO_LISTINGS];

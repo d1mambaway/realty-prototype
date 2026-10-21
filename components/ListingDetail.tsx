@@ -24,6 +24,7 @@ import { ListingCard } from "@/components/ListingCard";
 import { Reveal } from "@/components/Reveal";
 import { useI18n } from "@/lib/i18n";
 import { removeListing, useFavorites, useListingsState } from "@/lib/store";
+import { hasRooms } from "@/lib/types";
 
 export function ListingDetail() {
   const id = useSearchParams().get("id");
@@ -72,8 +73,8 @@ export function ListingDetail() {
     .slice(0, 3);
   const liked = has(listing.id);
   const facts = [
-    { icon: Maximize2, label: d.detail.area, value: `${listing.area} m²` },
-    listing.type !== "land" && { icon: BedDouble, label: d.detail.rooms, value: d.rooms(listing.rooms) },
+    { icon: Maximize2, label: d.detail.area, value: `${listing.area.toLocaleString("ru-RU")} m²` },
+    hasRooms(listing) && { icon: BedDouble, label: d.detail.rooms, value: d.rooms(listing.rooms) },
     listing.floor && { icon: Building2, label: d.detail.floor, value: `${listing.floor}${listing.floors ? ` ${d.detail.of} ${listing.floors}` : ""}` },
     !listing.floor && listing.floors && { icon: Building2, label: d.detail.floors, value: String(listing.floors) },
     { icon: CalendarDays, label: d.detail.published, value: date(listing.createdAt) },
@@ -187,9 +188,9 @@ export function ListingDetail() {
           <div className="sticky top-24 rounded-[2rem] bg-white p-7 shadow-[0_30px_80px_-40px_rgba(0,0,0,0.35)]">
             <p className="text-sm text-muted">{listing.deal === "exchange" ? d.detail.estimatedValue : d.deal[listing.deal]}</p>
             <p className="mt-1 font-serif text-4xl font-semibold">{price(listing.price, listing.deal)}</p>
-            {listing.deal === "exchange" && listing.exchangeFor && (
+            {listing.exchangeFor && (
               <div className="mt-5 rounded-2xl bg-sand/70 p-4">
-                <p className="text-xs font-semibold uppercase tracking-[0.15em] text-muted">{d.detail.exchangeFor}</p>
+                <p className="text-xs font-semibold uppercase tracking-[0.15em] text-muted">{listing.deal === "exchange" ? d.detail.exchangeFor : d.detail.exchangePossible}</p>
                 <p className="mt-1.5 font-medium leading-snug">{tx(listing.exchangeFor)}</p>
               </div>
             )}
