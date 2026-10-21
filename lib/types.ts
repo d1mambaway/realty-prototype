@@ -1,20 +1,28 @@
+import type { Lang } from "./dict";
+
 export type Deal = "sale" | "rent" | "daily";
 export type PropertyType = "apartment" | "house" | "room" | "commercial" | "land";
 
+/** Текст на одном языке (как ввёл пользователь) или переводы по языкам */
+export type Localized = string | Partial<Record<Lang, string>>;
+
 export interface Listing {
   id: string;
-  title: string;
+  title: Localized;
   deal: Deal;
   type: PropertyType;
+  /** Цена в евро */
   price: number;
+  /** Ключ города из словаря (chisinau, balti…) */
   city: string;
   address: string;
   area: number;
   rooms: number;
   floor?: number;
   floors?: number;
-  description: string;
+  description: Localized;
   images: string[];
+  /** Ключи удобств из словаря (parking, balcony…) */
   features: string[];
   contactName: string;
   contactPhone: string;
@@ -24,33 +32,21 @@ export interface Listing {
   own?: boolean;
 }
 
-export const DEAL_LABELS: Record<Deal, string> = {
-  sale: "Продажа",
-  rent: "Аренда",
-  daily: "Посуточно",
-};
-
-export const TYPE_LABELS: Record<PropertyType, string> = {
-  apartment: "Квартира",
-  house: "Дом",
-  room: "Комната",
-  commercial: "Коммерция",
-  land: "Участок",
-};
-
+export const DEALS: Deal[] = ["sale", "rent", "daily"];
+export const TYPES: PropertyType[] = ["apartment", "house", "room", "commercial", "land"];
+export const CITIES = ["chisinau", "balti", "orhei", "cahul", "ungheni", "vadulLuiVoda"];
 export const FEATURES = [
-  "Парковка",
-  "Балкон",
-  "Лифт",
-  "Мебель",
-  "Техника",
-  "Кондиционер",
-  "Охрана",
-  "Вид на воду",
-  "Терраса",
-  "Бассейн",
-  "Можно с животными",
-  "Рядом метро",
+  "parking",
+  "balcony",
+  "elevator",
+  "furniture",
+  "appliances",
+  "ac",
+  "heating",
+  "security",
+  "waterView",
+  "terrace",
+  "pool",
+  "pets",
+  "nearCenter",
 ];
-
-export const CITIES = ["Москва", "Санкт-Петербург", "Сочи", "Казань", "Калининград", "Екатеринбург"];

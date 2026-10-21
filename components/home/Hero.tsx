@@ -4,11 +4,12 @@ import { useRef } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import { ArrowDown } from "lucide-react";
 import { img } from "@/lib/format";
+import { useI18n } from "@/lib/i18n";
 import { SearchPanel } from "./SearchPanel";
 
-const WORDS = ["Дом,", "в", "котором", "хочется", "жить"];
-
 export function Hero() {
+  const { d, lang } = useI18n();
+  const words = d.hero.words;
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   // Параллакс: фото уезжает медленнее страницы и чуть приближается, текст тает
@@ -36,14 +37,14 @@ export function Hero() {
           transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1] }}
           className="text-xs uppercase text-accent-soft sm:text-sm"
         >
-          Покупка · Продажа · Аренда
+          {d.hero.kicker}
         </motion.p>
 
         <h1 className="mt-6 max-w-4xl font-serif text-5xl font-medium leading-[1.02] text-white sm:text-7xl lg:text-8xl">
-          {WORDS.map((word, i) => (
-            <span key={i} className="inline-block overflow-hidden pb-2 align-bottom">
+          {words.map((word, i) => (
+            <span key={`${lang}-${i}`} className="inline-block overflow-hidden pb-2 align-bottom">
               <motion.span
-                className={`mr-[0.25em] inline-block ${i === WORDS.length - 1 ? "italic text-accent-soft" : ""}`}
+                className={`mr-[0.25em] inline-block ${i === words.length - 1 ? "italic text-accent-soft" : ""}`}
                 initial={{ y: "110%" }}
                 animate={{ y: 0 }}
                 transition={{ duration: 1.1, delay: 0.2 + i * 0.09, ease: [0.16, 1, 0.3, 1] }}
@@ -60,7 +61,7 @@ export function Hero() {
           transition={{ duration: 1, delay: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="mt-6 max-w-xl text-base leading-relaxed text-white/80 sm:text-lg"
         >
-          Квартиры, дома и офисы от собственников и проверенных агентов. Найдите своё — или разместите объявление за пару минут.
+          {d.hero.sub}
         </motion.p>
 
         <motion.div
@@ -75,7 +76,7 @@ export function Hero() {
 
       <motion.a
         href="#featured"
-        aria-label="Листать вниз"
+        aria-label={d.hero.scroll}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1, y: [0, 8, 0] }}
         transition={{ opacity: { delay: 1.6 }, y: { duration: 2, repeat: Infinity, ease: "easeInOut" } }}

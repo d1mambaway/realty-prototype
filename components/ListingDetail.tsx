@@ -22,13 +22,13 @@ import {
 } from "lucide-react";
 import { ListingCard } from "@/components/ListingCard";
 import { Reveal } from "@/components/Reveal";
-import { formatPrice, roomsLabel } from "@/lib/format";
+import { useI18n } from "@/lib/i18n";
 import { removeListing, useFavorites, useListingsState } from "@/lib/store";
-import { DEAL_LABELS, TYPE_LABELS } from "@/lib/types";
 
 export function ListingDetail() {
   const id = useSearchParams().get("id");
   const router = useRouter();
+  const { d, tx, city, feature, price, date } = useI18n();
   const { listings, ready } = useListingsState();
   const { has, toggle } = useFavorites();
   const [active, setActive] = useState(0);
@@ -58,10 +58,10 @@ export function ListingDetail() {
     if (!ready) return <div className="min-h-screen" />;
     return (
       <div className="mx-auto flex min-h-[70vh] max-w-xl flex-col items-center justify-center px-4 pt-24 text-center">
-        <p className="font-serif text-5xl">Объявление не найдено</p>
-        <p className="mt-3 text-muted">Возможно, его сняли с публикации.</p>
+        <p className="font-serif text-5xl">{d.detail.notFoundTitle}</p>
+        <p className="mt-3 text-muted">{d.detail.notFoundText}</p>
         <Link href="/listings/" className="mt-8 rounded-full bg-ink px-6 py-3 font-semibold text-white hover:bg-accent">
-          В каталог
+          {d.detail.toCatalog}
         </Link>
       </div>
     );
@@ -72,11 +72,11 @@ export function ListingDetail() {
     .slice(0, 3);
   const liked = has(listing.id);
   const facts = [
-    { icon: Maximize2, label: "Площадь", value: `${listing.area} м²` },
-    listing.type !== "land" && { icon: BedDouble, label: "Комнат", value: roomsLabel(listing.rooms) },
-    listing.floor && { icon: Building2, label: "Этаж", value: `${listing.floor}${listing.floors ? ` из ${listing.floors}` : ""}` },
-    !listing.floor && listing.floors && { icon: Building2, label: "Этажей", value: String(listing.floors) },
-    { icon: CalendarDays, label: "Опубликовано", value: new Date(listing.createdAt).toLocaleDateString("ru-RU") },
+    { icon: Maximize2, label: d.detail.area, value: `${listing.area} m²` },
+    listing.type !== "land" && { icon: BedDouble, label: d.detail.rooms, value: d.rooms(listing.rooms) },
+    listing.floor && { icon: Building2, label: d.detail.floor, value: `${listing.floor}${listing.floors ? ` ${d.detail.of} ${listing.floors}` : ""}` },
+    !listing.floor && listing.floors && { icon: Building2, label: d.detail.floors, value: String(listing.floors) },
+    { icon: CalendarDays, label: d.detail.published, value: date(listing.createdAt) },
   ].filter(Boolean) as { icon: typeof Maximize2; label: string; value: string }[];
 
   return (
@@ -86,7 +86,7 @@ export function ListingDetail() {
         onClick={() => router.back()}
         className="group inline-flex items-center gap-2 text-sm font-semibold text-muted hover:text-ink"
       >
-        <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" /> Назад
+        <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" /> {d.detail.back}
       </button>
 
       {/* Галерея */}
@@ -97,7 +97,7 @@ export function ListingDetail() {
             <motion.img
               key={active}
               src={images[active]}
-              alt={listing.title}
+              alt={tx(listing.title)}
               initial={{ opacity: 0, scale: 1.06 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0 }}
@@ -141,12 +141,12 @@ export function ListingDetail() {
         <div>
           <Reveal>
             <div className="flex flex-wrap gap-2">
-              <span className="rounded-full bg-ink px-3 py-1 text-xs font-semibold text-white">{DEAL_LABELS[listing.deal]}</span>
-              <span className="rounded-full border border-line px-3 py-1 text-xs font-semibold">{TYPE_LABELS[listing.type]}</span>
+              <span className="rounded-full bg-ink px-3 py-1 text-xs font-semibold text-white">{d.deal[listing.deal]}</span>
+              <span className="rounded-full border border-line px-3 py-1 text-xs font-semibold">{d.type[listing.type]}</span>
             </div>
-            <h1 className="mt-4 font-serif text-4xl font-medium leading-tight sm:text-6xl">{listing.title}</h1>
+            <h1 className="mt-4 font-serif text-4xl font-medium leading-tight sm:text-6xl">{tx(listing.title)}</h1>
             <p className="mt-3 inline-flex items-center gap-2 text-muted">
-              <MapPin className="h-4 w-4" /> {listing.city}, {listing.address}
+              <MapPin className="h-4 w-4" /> {city(listing.city)}, {listing.address}
             </p>
           </Reveal>
 
@@ -161,20 +161,20 @@ export function ListingDetail() {
           </Reveal>
 
           <Reveal delay={0.15} className="mt-12">
-            <h2 className="font-serif text-3xl">Описание</h2>
-            <p className="mt-4 whitespace-pre-line text-lg leading-relaxed text-ink/80">{listing.description}</p>
+            <h2 className="font-serif text-3xl">{d.detail.description}</h2>
+            <p className="mt-4 whitespace-pre-line text-lg leading-relaxed text-ink/80">{tx(listing.description)}</p>
           </Reveal>
 
           {listing.features.length > 0 && (
             <Reveal delay={0.2} className="mt-12">
-              <h2 className="font-serif text-3xl">Удобства</h2>
+              <h2 className="font-serif text-3xl">{d.detail.amenities}</h2>
               <ul className="mt-5 grid gap-3 sm:grid-cols-2">
                 {listing.features.map((f) => (
                   <li key={f} className="flex items-center gap-3">
                     <span className="flex h-7 w-7 items-center justify-center rounded-full bg-accent/15 text-accent">
                       <Check className="h-4 w-4" />
                     </span>
-                    {f}
+                    {feature(f)}
                   </li>
                 ))}
               </ul>
@@ -185,11 +185,11 @@ export function ListingDetail() {
         {/* Карточка с ценой и контактом */}
         <aside>
           <div className="sticky top-24 rounded-[2rem] bg-white p-7 shadow-[0_30px_80px_-40px_rgba(0,0,0,0.35)]">
-            <p className="text-sm text-muted">{DEAL_LABELS[listing.deal]}</p>
-            <p className="mt-1 font-serif text-4xl font-semibold">{formatPrice(listing.price, listing.deal)}</p>
+            <p className="text-sm text-muted">{d.deal[listing.deal]}</p>
+            <p className="mt-1 font-serif text-4xl font-semibold">{price(listing.price, listing.deal)}</p>
             {listing.deal === "sale" && listing.area > 0 && (
               <p className="mt-1 text-sm text-muted">
-                {Math.round(listing.price / listing.area).toLocaleString("ru-RU")} ₽ за м²
+                {Math.round(listing.price / listing.area).toLocaleString("ru-RU")} {d.price.perSqm}
               </p>
             )}
 
@@ -199,7 +199,7 @@ export function ListingDetail() {
               </span>
               <div>
                 <p className="font-semibold">{listing.contactName}</p>
-                <p className="text-sm text-muted">{listing.own ? "Ваше объявление" : "Собственник"}</p>
+                <p className="text-sm text-muted">{listing.own ? d.detail.yourListing : d.detail.owner}</p>
               </div>
             </div>
 
@@ -216,7 +216,7 @@ export function ListingDetail() {
                 onClick={() => setPhoneShown(true)}
                 className="mt-6 flex w-full items-center justify-center gap-2 rounded-2xl bg-ink py-4 font-semibold text-white transition-colors hover:bg-accent"
               >
-                <Phone className="h-5 w-5" /> Показать телефон
+                <Phone className="h-5 w-5" /> {d.detail.showPhone}
               </button>
             )}
             <button
@@ -225,20 +225,20 @@ export function ListingDetail() {
               className="mt-3 flex w-full items-center justify-center gap-2 rounded-2xl border border-line py-4 font-semibold transition-colors hover:border-ink"
             >
               <Heart className={`h-5 w-5 ${liked ? "fill-red-500 text-red-500" : ""}`} />
-              {liked ? "В избранном" : "В избранное"}
+              {liked ? d.detail.inFav : d.detail.addFav}
             </button>
             {listing.own && (
               <button
                 type="button"
                 onClick={() => {
-                  if (confirm("Снять объявление с публикации?")) {
+                  if (confirm(d.detail.removeConfirm)) {
                     removeListing(listing.id);
                     router.push("/listings/");
                   }
                 }}
                 className="mt-3 flex w-full items-center justify-center gap-2 rounded-2xl py-3 text-sm font-semibold text-red-600 hover:bg-red-50"
               >
-                <Trash2 className="h-4 w-4" /> Снять с публикации
+                <Trash2 className="h-4 w-4" /> {d.detail.remove}
               </button>
             )}
           </div>
@@ -248,7 +248,7 @@ export function ListingDetail() {
       {similar.length > 0 && (
         <section className="mt-24">
           <Reveal>
-            <h2 className="font-serif text-4xl font-medium">Похожие объявления</h2>
+            <h2 className="font-serif text-4xl font-medium">{d.detail.similar}</h2>
           </Reveal>
           <div className="mt-10 grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
             {similar.map((l, i) => (
@@ -278,7 +278,7 @@ export function ListingDetail() {
               className="max-h-full max-w-full rounded-2xl object-contain"
               onClick={(e) => e.stopPropagation()}
             />
-            <button type="button" aria-label="Закрыть" className="absolute right-5 top-5 rounded-full bg-white/10 p-3 text-white hover:bg-white/20">
+            <button type="button" aria-label={d.detail.close} className="absolute right-5 top-5 rounded-full bg-white/10 p-3 text-white hover:bg-white/20">
               <X className="h-6 w-6" />
             </button>
             {images.length > 1 && (
@@ -295,11 +295,12 @@ export function ListingDetail() {
 }
 
 function GalleryArrow({ side, onClick, dark }: { side: "left" | "right"; onClick: () => void; dark?: boolean }) {
+  const { d } = useI18n();
   const Icon = side === "left" ? ChevronLeft : ChevronRight;
   return (
     <button
       type="button"
-      aria-label={side === "left" ? "Предыдущее фото" : "Следующее фото"}
+      aria-label={side === "left" ? d.detail.prev : d.detail.next}
       onClick={(e) => {
         e.stopPropagation();
         onClick();

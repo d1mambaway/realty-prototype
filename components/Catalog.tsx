@@ -6,18 +6,15 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
 import { SlidersHorizontal, X } from "lucide-react";
 import { ListingCard } from "@/components/ListingCard";
+import { useI18n } from "@/lib/i18n";
 import { useListings } from "@/lib/store";
-import { CITIES, DEAL_LABELS, TYPE_LABELS, type Deal, type PropertyType } from "@/lib/types";
+import { CITIES, DEALS, TYPES, type Deal, type PropertyType } from "@/lib/types";
 
-const SORTS = {
-  new: "Сначала новые",
-  cheap: "Сначала дешёвые",
-  expensive: "Сначала дорогие",
-  area: "По площади",
-} as const;
-type Sort = keyof typeof SORTS;
+const SORTS = ["new", "cheap", "expensive", "area"] as const;
+type Sort = (typeof SORTS)[number];
 
 export function Catalog() {
+  const { d, city: cityName } = useI18n();
   const listings = useListings();
   const router = useRouter();
   const pathname = usePathname();
@@ -60,15 +57,15 @@ export function Catalog() {
   }, [listings, deal, type, city, min, max, rooms, sort]);
 
   const hasFilters = Boolean(deal || type || city || min || max || rooms);
-  const title = deal ? DEAL_LABELS[deal] : "Все объявления";
+  const title = deal ? d.deal[deal] : d.catalog.all;
 
   return (
     <div className="mx-auto max-w-7xl px-4 pb-24 pt-32 sm:px-6 lg:px-8">
       <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}>
-        <p className="text-xs uppercase tracking-[0.3em] text-accent">Каталог</p>
+        <p className="text-xs uppercase tracking-[0.3em] text-accent">{d.catalog.kicker}</p>
         <h1 className="mt-3 font-serif text-5xl font-medium sm:text-7xl">
           {title}
-          {type && <em className="text-accent"> · {TYPE_LABELS[type].toLowerCase()}</em>}
+          {type && <em className="text-accent"> · {d.type[type].toLowerCase()}</em>}
         </h1>
       </motion.div>
 
@@ -76,40 +73,42 @@ export function Catalog() {
       <div className="relative z-30 -mx-4 mt-10 lg:sticky lg:top-[68px] px-4 py-3 sm:mx-0 sm:px-0">
         <div className="glass flex flex-col gap-3 rounded-3xl border border-line p-3 shadow-[0_20px_50px_-30px_rgba(0,0,0,0.35)]">
           <div className="flex flex-wrap items-center gap-2">
-            <Chip active={!deal} onClick={() => set("deal", "")}>Все</Chip>
-            {(Object.keys(DEAL_LABELS) as Deal[]).map((d) => (
-              <Chip key={d} active={deal === d} onClick={() => set("deal", d)} group="deal">
-                {DEAL_LABELS[d]}
+            <Chip active={!deal} onClick={() => set("deal", "")}>{d.catalog.allShort}</Chip>
+            {DEALS.map((x) => (
+              <Chip key={x} active={deal === x} onClick={() => set("deal", x)} group="deal">
+                {d.deal[x]}
               </Chip>
             ))}
             <span className="mx-1 hidden h-6 w-px bg-line sm:block" />
-            {(Object.keys(TYPE_LABELS) as PropertyType[]).map((t) => (
+            {TYPES.map((t) => (
               <Chip key={t} active={type === t} onClick={() => set("type", type === t ? "" : t)} subtle>
-                {TYPE_LABELS[t]}
+                {d.type[t]}
               </Chip>
             ))}
           </div>
           <div className="grid grid-cols-2 gap-2 md:grid-cols-[1fr_1fr_1fr_1fr_1fr_auto]">
-            <Select value={city} onChange={(v) => set("city", v)} label="Город">
-              <option value="">Любой город</option>
+            <Select value={city} onChange={(v) => set("city", v)} label={d.search.city}>
+              <option value="">{d.catalog.anyCity}</option>
               {CITIES.map((c) => (
-                <option key={c}>{c}</option>
+                <option key={c} value={c}>
+                  {cityName(c)}
+                </option>
               ))}
             </Select>
-            <Select value={rooms} onChange={(v) => set("rooms", v)} label="Комнаты">
-              <option value="">Любое кол-во</option>
-              <option value="0">Студия</option>
-              <option value="1">1 комната</option>
-              <option value="2">2 комнаты</option>
-              <option value="3">3 комнаты</option>
-              <option value="4">4 и больше</option>
+            <Select value={rooms} onChange={(v) => set("rooms", v)} label={d.detail.rooms}>
+              <option value="">{d.catalog.anyRooms}</option>
+              {[0, 1, 2, 3, 4].map((n) => (
+                <option key={n} value={n}>
+                  {d.catalog.roomsOption(n)}
+                </option>
+              ))}
             </Select>
-            <NumberInput value={min} onChange={(v) => set("min", v)} placeholder="Цена от" />
-            <NumberInput value={max} onChange={(v) => set("max", v)} placeholder="Цена до" />
-            <Select value={sort} onChange={(v) => set("sort", v === "new" ? "" : v)} label="Сортировка">
-              {Object.entries(SORTS).map(([value, label]) => (
+            <NumberInput value={min} onChange={(v) => set("min", v)} placeholder={d.catalog.priceFrom} />
+            <NumberInput value={max} onChange={(v) => set("max", v)} placeholder={d.catalog.priceTo} />
+            <Select value={sort} onChange={(v) => set("sort", v === "new" ? "" : v)} label={d.catalog.sortLabel}>
+              {SORTS.map((value) => (
                 <option key={value} value={value}>
-                  {label}
+                  {d.catalog.sort[value]}
                 </option>
               ))}
             </Select>
@@ -119,7 +118,7 @@ export function Catalog() {
                 onClick={() => router.replace(pathname, { scroll: false })}
                 className="inline-flex items-center justify-center gap-1.5 rounded-2xl px-4 py-2.5 text-sm font-semibold text-muted transition-colors hover:bg-sand hover:text-ink"
               >
-                <X className="h-4 w-4" /> Сбросить
+                <X className="h-4 w-4" /> {d.catalog.reset}
               </button>
             ) : (
               <span className="hidden items-center justify-center px-4 text-muted md:inline-flex">
@@ -131,7 +130,7 @@ export function Catalog() {
       </div>
 
       <p className="mt-6 text-sm text-muted">
-        Найдено: <span className="font-semibold text-ink">{results.length}</span>
+        {d.catalog.found}: <span className="font-semibold text-ink">{results.length}</span>
       </p>
 
       <motion.div layout className="mt-8 grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
@@ -153,10 +152,10 @@ export function Catalog() {
 
       {results.length === 0 && (
         <div className="mt-10 rounded-3xl border border-dashed border-line p-16 text-center">
-          <p className="font-serif text-3xl">Ничего не нашлось</p>
-          <p className="mt-2 text-muted">Попробуйте ослабить фильтры или разместите своё объявление.</p>
+          <p className="font-serif text-3xl">{d.catalog.emptyTitle}</p>
+          <p className="mt-2 text-muted">{d.catalog.emptyText}</p>
           <Link href="/new/" className="mt-6 inline-block rounded-full bg-ink px-6 py-3 font-semibold text-white hover:bg-accent">
-            Подать объявление
+            {d.cta.post}
           </Link>
         </div>
       )}
@@ -225,7 +224,7 @@ function NumberInput({ value, onChange, placeholder }: { value: string; onChange
     <input
       inputMode="numeric"
       value={value}
-      placeholder={`${placeholder}, ₽`}
+      placeholder={placeholder}
       onChange={(e) => onChange(e.target.value.replace(/\D/g, ""))}
       className="rounded-2xl border border-line bg-white/70 px-4 py-2.5 text-sm font-medium outline-none transition-colors placeholder:text-muted hover:border-accent focus:border-accent"
     />

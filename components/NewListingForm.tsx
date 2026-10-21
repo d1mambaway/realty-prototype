@@ -5,9 +5,10 @@ import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
 import { ArrowLeft, ArrowRight, Check, ImagePlus, Loader2, X } from "lucide-react";
 import { addListing } from "@/lib/store";
-import { CITIES, DEAL_LABELS, FEATURES, TYPE_LABELS, type Deal, type Listing, type PropertyType } from "@/lib/types";
+import { useI18n } from "@/lib/i18n";
+import { CITIES, DEALS, FEATURES, TYPES, type Deal, type Listing, type PropertyType } from "@/lib/types";
 
-const STEPS = ["Сделка и тип", "Параметры", "Фото и описание", "Контакты"];
+const STEP_COUNT = 4;
 const MAX_PHOTOS = 8;
 
 // Сжимаем фото в браузере, чтобы влезть в лимит localStorage (~5 МБ)
@@ -59,6 +60,8 @@ const INITIAL: FormState = {
 };
 
 export function NewListingForm() {
+  const { d, city, feature } = useI18n();
+  const e = d.form.errors;
   const router = useRouter();
   const [step, setStep] = useState(0);
   const [dir, setDir] = useState(1);
@@ -72,18 +75,18 @@ export function NewListingForm() {
 
   function validate(s: number): string {
     if (s === 1) {
-      if (!form.title.trim()) return "Придумайте заголовок";
-      if (!form.address.trim()) return "Укажите адрес";
-      if (!Number(form.price)) return "Укажите цену";
-      if (!Number(form.area)) return "Укажите площадь";
+      if (!form.title.trim()) return e.title;
+      if (!form.address.trim()) return e.address;
+      if (!Number(form.price)) return e.price;
+      if (!Number(form.area)) return e.area;
     }
     if (s === 2) {
-      if (form.images.length === 0) return "Добавьте хотя бы одно фото";
-      if (form.description.trim().length < 20) return "Опишите объект хотя бы парой предложений";
+      if (form.images.length === 0) return e.photos;
+      if (form.description.trim().length < 20) return e.description;
     }
     if (s === 3) {
-      if (!form.contactName.trim()) return "Как к вам обращаться?";
-      if (form.contactPhone.replace(/\D/g, "").length < 10) return "Проверьте номер телефона";
+      if (!form.contactName.trim()) return e.name;
+      if (form.contactPhone.replace(/\D/g, "").length < 8) return e.phone;
     }
     return "";
   }
@@ -92,7 +95,7 @@ export function NewListingForm() {
     const err = validate(step);
     setError(err);
     if (err) return;
-    if (step === STEPS.length - 1) return submit();
+    if (step === STEP_COUNT - 1) return submit();
     setDir(1);
     setStep((s) => s + 1);
   }
@@ -111,7 +114,7 @@ export function NewListingForm() {
       const compressed = await Promise.all(Array.from(files).slice(0, room).map((f) => compress(f)));
       update("images", [...form.images, ...compressed]);
     } catch {
-      setError("Не удалось обработать фото — попробуйте другой файл");
+      setError(e.photoFailed);
     } finally {
       setUploading(false);
       if (fileRef.current) fileRef.current.value = "";
@@ -143,7 +146,7 @@ export function NewListingForm() {
       addListing(listing);
       setDone(id);
     } catch {
-      setError("Не хватает места в браузере — уберите пару фото и попробуйте снова");
+      setError(e.storage);
     }
   }
 
@@ -163,15 +166,15 @@ export function NewListingForm() {
         >
           <Check className="h-10 w-10" />
         </motion.span>
-        <h2 className="mt-6 font-serif text-4xl">Объявление опубликовано</h2>
-        <p className="mt-3 text-muted">Оно уже в каталоге. Пока объявления хранятся только в этом браузере.</p>
+        <h2 className="mt-6 font-serif text-4xl">{d.form.doneTitle}</h2>
+        <p className="mt-3 text-muted">{d.form.doneText}</p>
         <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
           <button
             type="button"
             onClick={() => router.push(`/listing/?id=${done}`)}
             className="rounded-full bg-ink px-6 py-3 font-semibold text-white hover:bg-accent"
           >
-            Посмотреть
+            {d.form.view}
           </button>
           <button
             type="button"
@@ -182,7 +185,7 @@ export function NewListingForm() {
             }}
             className="rounded-full border border-line px-6 py-3 font-semibold hover:border-ink"
           >
-            Подать ещё
+            {d.form.another}
           </button>
         </div>
       </motion.div>
@@ -191,9 +194,15 @@ export function NewListingForm() {
 
   return (
     <div className="mx-auto max-w-3xl">
+      <div className="mb-12">
+        <p className="text-xs uppercase tracking-[0.3em] text-accent">{d.form.kicker}</p>
+        <h1 className="mt-3 font-serif text-5xl font-medium sm:text-7xl">
+          {d.form.title[0]} <em className="text-accent">{d.form.title[1]}</em> {d.form.title[2]}
+        </h1>
+      </div>
       {/* Прогресс */}
       <div className="flex items-center gap-2">
-        {STEPS.map((label, i) => (
+        {d.form.steps.map((label, i) => (
           <div key={label} className="flex-1">
             <div className="h-1 overflow-hidden rounded-full bg-line">
               <motion.div
@@ -219,27 +228,27 @@ export function NewListingForm() {
             transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
           >
             <p className="text-xs uppercase tracking-[0.3em] text-accent">
-              Шаг {step + 1} из {STEPS.length}
+              {d.form.stepOf(step + 1, STEP_COUNT)}
             </p>
-            <h2 className="mt-2 font-serif text-4xl">{STEPS[step]}</h2>
+            <h2 className="mt-2 font-serif text-4xl">{d.form.steps[step]}</h2>
 
             <div className="mt-8 space-y-6">
               {step === 0 && (
                 <>
-                  <Group label="Что хотите сделать?">
+                  <Group label={d.form.whatToDo}>
                     <div className="grid grid-cols-3 gap-3">
-                      {(Object.keys(DEAL_LABELS) as Deal[]).map((d) => (
-                        <Option key={d} active={form.deal === d} onClick={() => update("deal", d)}>
-                          {d === "sale" ? "Продать" : d === "rent" ? "Сдать" : "Сдать посуточно"}
+                      {DEALS.map((x) => (
+                        <Option key={x} active={form.deal === x} onClick={() => update("deal", x)}>
+                          {d.dealAction[x]}
                         </Option>
                       ))}
                     </div>
                   </Group>
-                  <Group label="Тип недвижимости">
+                  <Group label={d.form.propertyType}>
                     <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-                      {(Object.keys(TYPE_LABELS) as PropertyType[]).map((t) => (
+                      {TYPES.map((t) => (
                         <Option key={t} active={form.type === t} onClick={() => update("type", t)}>
-                          {TYPE_LABELS[t]}
+                          {d.type[t]}
                         </Option>
                       ))}
                     </div>
@@ -249,31 +258,33 @@ export function NewListingForm() {
 
               {step === 1 && (
                 <>
-                  <Input label="Заголовок" value={form.title} onChange={(v) => update("title", v)} placeholder="Например: Светлая двушка у парка" />
+                  <Input label={d.form.titleLabel} value={form.title} onChange={(v) => update("title", v)} placeholder={d.form.titlePh} />
                   <div className="grid gap-6 sm:grid-cols-2">
-                    <Group label="Город">
+                    <Group label={d.form.city}>
                       <select value={form.city} onChange={(e) => update("city", e.target.value)} className={inputCls}>
                         {CITIES.map((c) => (
-                          <option key={c}>{c}</option>
+                          <option key={c} value={c}>
+                            {city(c)}
+                          </option>
                         ))}
                       </select>
                     </Group>
-                    <Input label="Адрес" value={form.address} onChange={(v) => update("address", v)} placeholder="Улица, дом" />
+                    <Input label={d.form.address} value={form.address} onChange={(v) => update("address", v)} placeholder={d.form.addressPh} />
                   </div>
                   <div className="grid gap-6 sm:grid-cols-2">
                     <Input
-                      label={form.deal === "sale" ? "Цена, ₽" : form.deal === "rent" ? "Цена в месяц, ₽" : "Цена за сутки, ₽"}
+                      label={form.deal === "sale" ? d.form.priceSale : form.deal === "rent" ? d.form.priceRent : d.form.priceDaily}
                       value={form.price}
                       onChange={(v) => update("price", v.replace(/\D/g, ""))}
                       inputMode="numeric"
                     />
-                    <Input label="Площадь, м²" value={form.area} onChange={(v) => update("area", v.replace(/\D/g, ""))} inputMode="numeric" />
+                    <Input label={d.form.area} value={form.area} onChange={(v) => update("area", v.replace(/\D/g, ""))} inputMode="numeric" />
                   </div>
                   {form.type !== "land" && (
                     <div className="grid gap-6 sm:grid-cols-3">
-                      <Group label="Комнат">
+                      <Group label={d.form.rooms}>
                         <select value={form.rooms} onChange={(e) => update("rooms", e.target.value)} className={inputCls}>
-                          <option value="0">Студия</option>
+                          <option value="0">{d.rooms(0)}</option>
                           {[1, 2, 3, 4, 5, 6, 7, 8].map((n) => (
                             <option key={n} value={n}>
                               {n}
@@ -281,8 +292,8 @@ export function NewListingForm() {
                           ))}
                         </select>
                       </Group>
-                      <Input label="Этаж" value={form.floor} onChange={(v) => update("floor", v.replace(/\D/g, ""))} inputMode="numeric" />
-                      <Input label="Этажей в доме" value={form.floors} onChange={(v) => update("floors", v.replace(/\D/g, ""))} inputMode="numeric" />
+                      <Input label={d.form.floor} value={form.floor} onChange={(v) => update("floor", v.replace(/\D/g, ""))} inputMode="numeric" />
+                      <Input label={d.form.floors} value={form.floors} onChange={(v) => update("floors", v.replace(/\D/g, ""))} inputMode="numeric" />
                     </div>
                   )}
                 </>
@@ -290,7 +301,7 @@ export function NewListingForm() {
 
               {step === 2 && (
                 <>
-                  <Group label={`Фотографии (${form.images.length}/${MAX_PHOTOS})`}>
+                  <Group label={`${d.form.photos} (${form.images.length}/${MAX_PHOTOS})`}>
                     <div className="grid grid-cols-3 gap-3 sm:grid-cols-4">
                       <AnimatePresence>
                         {form.images.map((src, i) => (
@@ -306,12 +317,12 @@ export function NewListingForm() {
                             <img src={src} alt="" className="h-full w-full object-cover" />
                             {i === 0 && (
                               <span className="absolute left-2 top-2 rounded-full bg-accent px-2 py-0.5 text-[10px] font-semibold text-white">
-                                Обложка
+                                {d.form.cover}
                               </span>
                             )}
                             <button
                               type="button"
-                              aria-label="Удалить фото"
+                              aria-label={d.form.removePhoto}
                               onClick={() => update("images", form.images.filter((_, j) => j !== i))}
                               className="absolute right-2 top-2 rounded-full bg-black/60 p-1.5 text-white opacity-0 transition-opacity group-hover:opacity-100"
                             >
@@ -327,22 +338,22 @@ export function NewListingForm() {
                           className="flex aspect-square flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-line text-muted transition-colors hover:border-accent hover:text-accent"
                         >
                           {uploading ? <Loader2 className="h-6 w-6 animate-spin" /> : <ImagePlus className="h-6 w-6" />}
-                          <span className="text-xs font-semibold">Добавить</span>
+                          <span className="text-xs font-semibold">{d.form.add}</span>
                         </button>
                       )}
                     </div>
                     <input ref={fileRef} type="file" accept="image/*" multiple hidden onChange={(e) => onFiles(e.target.files)} />
                   </Group>
-                  <Group label="Описание">
+                  <Group label={d.form.description}>
                     <textarea
                       value={form.description}
                       onChange={(e) => update("description", e.target.value)}
                       rows={5}
-                      placeholder="Расскажите, чем хорош объект: ремонт, вид из окна, район, инфраструктура"
+                      placeholder={d.form.descriptionPh}
                       className={`${inputCls} resize-none`}
                     />
                   </Group>
-                  <Group label="Удобства">
+                  <Group label={d.form.amenities}>
                     <div className="flex flex-wrap gap-2">
                       {FEATURES.map((f) => {
                         const on = form.features.includes(f);
@@ -355,7 +366,7 @@ export function NewListingForm() {
                               on ? "border-accent bg-accent text-white" : "border-line hover:border-ink"
                             }`}
                           >
-                            {f}
+                            {feature(f)}
                           </button>
                         );
                       })}
@@ -366,16 +377,16 @@ export function NewListingForm() {
 
               {step === 3 && (
                 <>
-                  <Input label="Ваше имя" value={form.contactName} onChange={(v) => update("contactName", v)} />
+                  <Input label={d.form.name} value={form.contactName} onChange={(v) => update("contactName", v)} />
                   <Input
-                    label="Телефон"
+                    label={d.form.phone}
                     value={form.contactPhone}
                     onChange={(v) => update("contactPhone", v)}
-                    placeholder="+7 900 000-00-00"
+                    placeholder={d.form.phonePh}
                     inputMode="tel"
                   />
                   <p className="rounded-2xl bg-sand/60 p-4 text-sm text-muted">
-                    Это прототип: объявление сохранится только в вашем браузере. Когда подключим базу, его увидят все.
+                    {d.form.note}
                   </p>
                 </>
               )}
@@ -400,7 +411,7 @@ export function NewListingForm() {
         <div className="mt-10 flex items-center justify-between">
           {step > 0 ? (
             <button type="button" onClick={back} className="inline-flex items-center gap-2 font-semibold text-muted hover:text-ink">
-              <ArrowLeft className="h-4 w-4" /> Назад
+              <ArrowLeft className="h-4 w-4" /> {d.form.back}
             </button>
           ) : (
             <span />
@@ -411,7 +422,7 @@ export function NewListingForm() {
             disabled={uploading}
             className="group inline-flex items-center gap-2 rounded-full bg-ink px-7 py-3.5 font-semibold text-white transition-all duration-300 hover:bg-accent disabled:opacity-50"
           >
-            {step === STEPS.length - 1 ? "Опубликовать" : "Далее"}
+            {step === STEP_COUNT - 1 ? d.form.publish : d.form.next}
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
           </button>
         </div>
