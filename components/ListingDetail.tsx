@@ -23,18 +23,18 @@ import {
 import { ListingCard } from "@/components/ListingCard";
 import { Reveal } from "@/components/Reveal";
 import { useI18n } from "@/lib/i18n";
-import { removeListing, useFavorites, useListingsState } from "@/lib/store";
+import { useFavorites, useSiteData } from "@/lib/store";
+import { ContactButtons, LeadForm } from "@/components/Contact";
 import { hasRooms } from "@/lib/types";
 
 export function ListingDetail() {
   const id = useSearchParams().get("id");
   const router = useRouter();
   const { d, tx, city, feature, price, date } = useI18n();
-  const { listings, ready } = useListingsState();
+  const { listings, settings, ready } = useSiteData();
   const { has, toggle } = useFavorites();
   const [active, setActive] = useState(0);
   const [lightbox, setLightbox] = useState(false);
-  const [phoneShown, setPhoneShown] = useState(false);
 
   const listing = listings.find((l) => l.id === id);
   const images = listing?.images ?? [];
@@ -185,7 +185,7 @@ export function ListingDetail() {
 
         {/* Карточка с ценой и контактом */}
         <aside>
-          <div className="sticky top-24 rounded-[2rem] bg-white p-7 shadow-[0_30px_80px_-40px_rgba(0,0,0,0.35)]">
+          <div className="rounded-[2rem] bg-white p-7 lg:sticky lg:top-24 shadow-[0_30px_80px_-40px_rgba(0,0,0,0.35)]">
             <p className="text-sm text-muted">{listing.deal === "exchange" ? d.detail.estimatedValue : d.deal[listing.deal]}</p>
             <p className="mt-1 font-serif text-4xl font-semibold">{price(listing.price, listing.deal)}</p>
             {listing.exchangeFor && (
@@ -202,52 +202,30 @@ export function ListingDetail() {
 
             <div className="mt-6 flex items-center gap-3 border-t border-line pt-6">
               <span className="flex h-12 w-12 items-center justify-center rounded-full bg-sand font-serif text-xl">
-                {listing.contactName.charAt(0)}
+                {settings.agentName.charAt(0)}
               </span>
               <div>
-                <p className="font-semibold">{listing.contactName}</p>
-                <p className="text-sm text-muted">{listing.own ? d.detail.yourListing : d.detail.owner}</p>
+                <p className="font-semibold">{settings.agentName}</p>
+                <p className="text-sm text-muted">{d.contact.title}</p>
               </div>
             </div>
 
-            {phoneShown ? (
-              <a
-                href={`tel:${listing.contactPhone.replace(/[^\d+]/g, "")}`}
-                className="mt-6 flex items-center justify-center gap-2 rounded-2xl bg-accent py-4 font-semibold text-white"
-              >
-                <Phone className="h-5 w-5" /> {listing.contactPhone}
-              </a>
-            ) : (
-              <button
-                type="button"
-                onClick={() => setPhoneShown(true)}
-                className="mt-6 flex w-full items-center justify-center gap-2 rounded-2xl bg-ink py-4 font-semibold text-white transition-colors hover:bg-accent"
-              >
-                <Phone className="h-5 w-5" /> {d.detail.showPhone}
-              </button>
-            )}
+            <div className="mt-5">
+              <ContactButtons message={`${tx(listing.title)} — ${typeof window === "undefined" ? "" : window.location.href}`} />
+            </div>
             <button
               type="button"
               onClick={() => toggle(listing.id)}
-              className="mt-3 flex w-full items-center justify-center gap-2 rounded-2xl border border-line py-4 font-semibold transition-colors hover:border-ink"
+              className="mt-2 flex w-full items-center justify-center gap-2 rounded-2xl border border-line py-3.5 font-semibold transition-colors hover:border-ink"
             >
               <Heart className={`h-5 w-5 ${liked ? "fill-red-500 text-red-500" : ""}`} />
               {liked ? d.detail.inFav : d.detail.addFav}
             </button>
-            {listing.own && (
-              <button
-                type="button"
-                onClick={() => {
-                  if (confirm(d.detail.removeConfirm)) {
-                    removeListing(listing.id);
-                    router.push("/listings/");
-                  }
-                }}
-                className="mt-3 flex w-full items-center justify-center gap-2 rounded-2xl py-3 text-sm font-semibold text-red-600 hover:bg-red-50"
-              >
-                <Trash2 className="h-4 w-4" /> {d.detail.remove}
-              </button>
-            )}
+
+            <div className="mt-6 border-t border-line pt-6">
+              <p className="mb-3 font-serif text-2xl">{d.contact.formTitle}</p>
+              <LeadForm kind="listing" listingId={listing.id} defaultMessage={d.contact.messagePh} />
+            </div>
           </div>
         </aside>
       </div>

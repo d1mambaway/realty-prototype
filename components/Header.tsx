@@ -33,6 +33,8 @@ export function Header() {
 
   useEffect(() => setOpen(false), [pathname]);
 
+  if (pathname.startsWith("/admin")) return null;
+
   // На главной шапка прозрачная поверх героя, пока не начали скроллить
   const overHero = pathname === "/" && !scrolled && !open;
 

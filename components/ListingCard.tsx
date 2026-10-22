@@ -45,9 +45,12 @@ export function ListingCard({ listing, index = 0 }: { listing: Listing; index?: 
           )}
           <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent" />
 
-          <div className="absolute left-4 top-4 flex gap-2">
+          <div className="absolute left-4 right-16 top-4 flex flex-wrap gap-2">
             <span className="glass rounded-full px-3 py-1 text-xs font-semibold">{d.deal[listing.deal]}</span>
-            {listing.exchangeFor && listing.deal !== "exchange" && (
+            {listing.status === "sold" && (
+              <span className="rounded-full bg-red-600 px-3 py-1 text-xs font-semibold text-white">{d.card.sold}</span>
+            )}
+            {listing.exchangeFor && listing.deal !== "exchange" && listing.status !== "sold" && (
               <span className="rounded-full bg-ink/80 px-3 py-1 text-xs font-semibold text-white backdrop-blur">{d.card.exchangePossible}</span>
             )}
             {listing.own && <span className="rounded-full bg-accent px-3 py-1 text-xs font-semibold text-white">{d.card.own}</span>}

@@ -1,27 +1,16 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
-import { ArrowLeft, ArrowRight, Check, ImagePlus, Loader2, X } from "lucide-react";
-import { addListing } from "@/lib/store";
+import { ArrowLeft, ArrowRight, Check, Loader2 } from "lucide-react";
+import { sendLead } from "@/lib/store";
+import { Consent } from "@/components/Contact";
 import { useI18n } from "@/lib/i18n";
-import { CITIES, DEALS, FEATURES, TYPES, type Deal, type Listing, type PropertyType } from "@/lib/types";
+import { CITIES, DEALS, FEATURES, TYPES, type Deal, type PropertyType } from "@/lib/types";
+import { DICTS } from "@/lib/dict";
 
 const STEP_COUNT = 4;
-const MAX_PHOTOS = 8;
-
-// Сжимаем фото в браузере, чтобы влезть в лимит localStorage (~5 МБ)
-async function compress(file: File, maxSide = 1400, quality = 0.72): Promise<string> {
-  const bitmap = await createImageBitmap(file);
-  const scale = Math.min(1, maxSide / Math.max(bitmap.width, bitmap.height));
-  const canvas = document.createElement("canvas");
-  canvas.width = Math.round(bitmap.width * scale);
-  canvas.height = Math.round(bitmap.height * scale);
-  canvas.getContext("2d")!.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
-  bitmap.close();
-  return canvas.toDataURL("image/jpeg", quality);
-}
 
 interface FormState {
   deal: Deal;
@@ -37,7 +26,6 @@ interface FormState {
   floors: string;
   description: string;
   features: string[];
-  images: string[];
   contactName: string;
   contactPhone: string;
 }
@@ -56,7 +44,6 @@ const INITIAL: FormState = {
   floors: "",
   description: "",
   features: [],
-  images: [],
   contactName: "",
   contactPhone: "",
 };
@@ -69,23 +56,15 @@ export function NewListingForm() {
   const [dir, setDir] = useState(1);
   const [form, setForm] = useState<FormState>(INITIAL);
   const [error, setError] = useState("");
-  const [uploading, setUploading] = useState(false);
-  const [done, setDone] = useState<string | null>(null);
-  const fileRef = useRef<HTMLInputElement>(null);
+  const [sending, setSending] = useState(false);
+  const [done, setDone] = useState(false);
 
   const update = <K extends keyof FormState>(key: K, value: FormState[K]) => setForm((f) => ({ ...f, [key]: value }));
 
   function validate(s: number): string {
     if (s === 1) {
-      if (!form.title.trim()) return e.title;
       if (!form.address.trim()) return e.address;
-      if (!Number(form.price)) return e.price;
       if (form.deal === "exchange" && !form.exchangeFor.trim()) return e.exchangeFor;
-      if (!Number(form.area)) return e.area;
-    }
-    if (s === 2) {
-      if (form.images.length === 0) return e.photos;
-      if (form.description.trim().length < 20) return e.description;
     }
     if (s === 3) {
       if (!form.contactName.trim()) return e.name;
@@ -109,48 +88,34 @@ export function NewListingForm() {
     setStep((s) => s - 1);
   }
 
-  async function onFiles(files: FileList | null) {
-    if (!files) return;
-    setUploading(true);
+  async function submit() {
+    // Подписи — по-русски: заявка уходит агенту в Telegram и в админку
+    const ru = DICTS.ru;
+    setSending(true);
     try {
-      const room = MAX_PHOTOS - form.images.length;
-      const compressed = await Promise.all(Array.from(files).slice(0, room).map((f) => compress(f)));
-      update("images", [...form.images, ...compressed]);
-    } catch {
-      setError(e.photoFailed);
-    } finally {
-      setUploading(false);
-      if (fileRef.current) fileRef.current.value = "";
-    }
-  }
-
-  function submit() {
-    const id = `own-${Date.now().toString(36)}`;
-    const listing: Listing = {
-      id,
-      title: form.title.trim(),
-      deal: form.deal,
-      type: form.type,
-      price: Number(form.price),
-      exchangeFor: form.deal === "exchange" ? form.exchangeFor.trim() : undefined,
-      city: form.city,
-      address: form.address.trim(),
-      area: Number(form.area),
-      rooms: Number(form.rooms),
-      floor: Number(form.floor) || undefined,
-      floors: Number(form.floors) || undefined,
-      description: form.description.trim(),
-      images: form.images,
-      features: form.features,
-      contactName: form.contactName.trim(),
-      contactPhone: form.contactPhone.trim(),
-      createdAt: new Date().toISOString().slice(0, 10),
-    };
-    try {
-      addListing(listing);
-      setDone(id);
+      await sendLead({
+        kind: "sell",
+        name: form.contactName.trim(),
+        phone: form.contactPhone.trim(),
+        message: [form.title.trim(), form.description.trim()].filter(Boolean).join("\n"),
+        data: {
+          Сделка: ru.dealAction[form.deal],
+          Тип: ru.type[form.type],
+          Город: ru.city[form.city as keyof typeof ru.city] ?? form.city,
+          Адрес: form.address.trim(),
+          "Цена, €": form.price,
+          "Обмен на": form.deal === "exchange" ? form.exchangeFor.trim() : "",
+          "Площадь, м²": form.area,
+          Комнат: form.type === "land" ? "" : form.rooms,
+          Этаж: form.floor && `${form.floor}${form.floors ? ` из ${form.floors}` : ""}`,
+          Удобства: form.features.map((f) => ru.feature[f as keyof typeof ru.feature] ?? f),
+        },
+      });
+      setDone(true);
     } catch {
       setError(e.storage);
+    } finally {
+      setSending(false);
     }
   }
 
@@ -175,7 +140,7 @@ export function NewListingForm() {
         <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
           <button
             type="button"
-            onClick={() => router.push(`/listing/?id=${done}`)}
+            onClick={() => router.push("/")}
             className="rounded-full bg-ink px-6 py-3 font-semibold text-white hover:bg-accent"
           >
             {d.form.view}
@@ -185,7 +150,7 @@ export function NewListingForm() {
             onClick={() => {
               setForm(INITIAL);
               setStep(0);
-              setDone(null);
+              setDone(false);
             }}
             className="rounded-full border border-line px-6 py-3 font-semibold hover:border-ink"
           >
@@ -321,49 +286,6 @@ export function NewListingForm() {
 
               {step === 2 && (
                 <>
-                  <Group label={`${d.form.photos} (${form.images.length}/${MAX_PHOTOS})`}>
-                    <div className="grid grid-cols-3 gap-3 sm:grid-cols-4">
-                      <AnimatePresence>
-                        {form.images.map((src, i) => (
-                          <motion.div
-                            key={src.slice(-40) + i}
-                            layout
-                            initial={{ opacity: 0, scale: 0.8 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            exit={{ opacity: 0, scale: 0.8 }}
-                            className="group relative aspect-square overflow-hidden rounded-2xl"
-                          >
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img src={src} alt="" className="h-full w-full object-cover" />
-                            {i === 0 && (
-                              <span className="absolute left-2 top-2 rounded-full bg-accent px-2 py-0.5 text-[10px] font-semibold text-white">
-                                {d.form.cover}
-                              </span>
-                            )}
-                            <button
-                              type="button"
-                              aria-label={d.form.removePhoto}
-                              onClick={() => update("images", form.images.filter((_, j) => j !== i))}
-                              className="absolute right-2 top-2 rounded-full bg-black/60 p-1.5 text-white opacity-0 transition-opacity group-hover:opacity-100"
-                            >
-                              <X className="h-3.5 w-3.5" />
-                            </button>
-                          </motion.div>
-                        ))}
-                      </AnimatePresence>
-                      {form.images.length < MAX_PHOTOS && (
-                        <button
-                          type="button"
-                          onClick={() => fileRef.current?.click()}
-                          className="flex aspect-square flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-line text-muted transition-colors hover:border-accent hover:text-accent"
-                        >
-                          {uploading ? <Loader2 className="h-6 w-6 animate-spin" /> : <ImagePlus className="h-6 w-6" />}
-                          <span className="text-xs font-semibold">{d.form.add}</span>
-                        </button>
-                      )}
-                    </div>
-                    <input ref={fileRef} type="file" accept="image/*" multiple hidden onChange={(e) => onFiles(e.target.files)} />
-                  </Group>
                   <Group label={d.form.description}>
                     <textarea
                       value={form.description}
@@ -408,6 +330,7 @@ export function NewListingForm() {
                   <p className="rounded-2xl bg-sand/60 p-4 text-sm text-muted">
                     {d.form.note}
                   </p>
+                  <Consent />
                 </>
               )}
             </div>
@@ -439,7 +362,7 @@ export function NewListingForm() {
           <button
             type="button"
             onClick={next}
-            disabled={uploading}
+            disabled={sending}
             className="group inline-flex items-center gap-2 rounded-full bg-ink px-7 py-3.5 font-semibold text-white transition-all duration-300 hover:bg-accent disabled:opacity-50"
           >
             {step === STEP_COUNT - 1 ? d.form.publish : d.form.next}

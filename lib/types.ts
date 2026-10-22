@@ -30,6 +30,8 @@ export interface Listing {
   contactPhone: string;
   createdAt: string;
   featured?: boolean;
+  /** active — на сайте, sold — с пометкой «продано», hidden — скрыто (только в админке) */
+  status?: "active" | "sold" | "hidden";
   /** true — объявление подано пользователем в этом браузере */
   own?: boolean;
 }

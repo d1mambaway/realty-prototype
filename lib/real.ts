@@ -1,4 +1,4 @@
-import type { Listing } from "./types";
+import type { Listing } from "./types.ts";
 
 // Настоящие объявления агентства (перенесены с 999.md, фото — в public/listings/)
 // TODO: заменить на реальные имя и телефон агента

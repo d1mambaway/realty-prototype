@@ -13,15 +13,37 @@ npm run dev
 
 Сайт откроется на http://localhost:3000.
 
-## Деплой на Cloudflare (Workers)
+## Как устроено
 
-- Проект создан как Worker, настройки в `wrangler.jsonc` (сайт раздаётся из `out/`)
-- Build command: `npm run build`
-- Deploy command: `npx wrangler deploy`
-- Переменная окружения: `NODE_VERSION` = `22`
+- **Сайт** — статическая сборка Next.js (`out/`), RO/RU/EN.
+- **Worker** (`worker/`) — API, вход в панель администратора, заявки, фото, SEO-теги для страниц объявлений, `sitemap.xml`.
+- **База D1** `rezultat-db` — объявления, заявки, настройки (схема и начальные данные в `migrations/`).
+- **KV** `MEDIA` — фото, загруженные через панель администратора. Фото первых объявлений лежат в `public/listings/`.
 
-Каждый пуш в `main` обновляет сайт автоматически.
+Панель администратора: `/admin/`.
 
-## Ограничения прототипа
+## Деплой
 
-Поданные объявления и избранное хранятся в `localStorage` браузера — другие посетители их не видят. Следующий шаг — база Cloudflare D1.
+```bash
+npm run build
+npx wrangler deploy
+```
+
+Секреты задаются один раз:
+
+```bash
+npx wrangler secret put ADMIN_PASSWORD      # пароль панели администратора
+npx wrangler secret put TELEGRAM_BOT_TOKEN  # бот для заявок (необязательно)
+npx wrangler secret put TELEGRAM_CHAT_ID    # чат агента (необязательно)
+```
+
+Новые миграции базы: `npx wrangler d1 migrations apply rezultat-db --remote`.
+
+## Локальная разработка с API
+
+```bash
+npx wrangler d1 migrations apply rezultat-db --local
+npm run build && npx wrangler dev
+```
+
+Пароль для локального входа — в `.dev.vars` (`ADMIN_PASSWORD=...`, файл не коммитится).

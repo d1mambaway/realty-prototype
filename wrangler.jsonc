@@ -1,10 +1,39 @@
 {
-  // Cloudflare Worker, который раздаёт статическую сборку Next.js из out/
+  // Cloudflare Worker: раздаёт статическую сборку Next.js из out/ и обслуживает API (worker/)
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "realty-prototype1",
+  "main": "./worker/index.ts",
   "compatibility_date": "2026-09-01",
   "assets": {
     "directory": "./out",
-    "not_found_handling": "404-page"
-  }
+    "binding": "ASSETS",
+    "not_found_handling": "404-page",
+    // Worker нужен для API, фото из KV, SEO и подстановки объявлений в HTML-страницы
+    "run_worker_first": [
+      "/api/*",
+      "/media/*",
+      "/",
+      "/listings/*",
+      "/listing/*",
+      "/favorites/*",
+      "/sitemap.xml",
+      "/robots.txt"
+    ]
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "rezultat-db",
+      "database_id": "073a2a10-a90e-4c8a-bc4b-750b3b05387f",
+      "migrations_dir": "migrations"
+    }
+  ],
+  // Загруженные из админки фото (R2 в аккаунте не включён)
+  "kv_namespaces": [
+    {
+      "binding": "MEDIA",
+      "id": "8b004fe9f8b5463eb541356b3243b64f"
+    }
+  ]
+  // Секреты (wrangler secret put): ADMIN_PASSWORD, а для заявок в Telegram — TELEGRAM_BOT_TOKEN и TELEGRAM_CHAT_ID
 }

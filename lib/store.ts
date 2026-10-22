@@ -1,56 +1,75 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { SEED_LISTINGS } from "./seed";
+import { DEFAULT_SETTINGS, type SiteSettings } from "./settings";
 import { CITIES, DEALS, TYPES, matchesDeal, type Listing } from "./types";
 
-// Пока нет базы, объявления пользователя и избранное живут в localStorage браузера.
-const LISTINGS_KEY = "realty:listings";
+// Объявления и контакты приходят из базы: Worker кладёт их прямо в HTML (window.__RZ__),
+// иначе грузим через API. Избранное хранится в localStorage браузера.
 const FAVORITES_KEY = "realty:favorites";
 const CHANGE_EVENT = "realty:change";
 
-function read<T>(key: string, fallback: T): T {
-  try {
-    const raw = localStorage.getItem(key);
-    return raw ? (JSON.parse(raw) as T) : fallback;
-  } catch {
-    return fallback;
+interface SiteData {
+  listings: Listing[];
+  settings: SiteSettings;
+}
+
+declare global {
+  interface Window {
+    __RZ__?: SiteData;
   }
 }
 
-function write(key: string, value: unknown) {
-  localStorage.setItem(key, JSON.stringify(value));
-  window.dispatchEvent(new Event(CHANGE_EVENT));
+let dataPromise: Promise<SiteData> | null = null;
+
+async function fetchSiteData(): Promise<SiteData> {
+  if (window.__RZ__) return window.__RZ__;
+  try {
+    const [listings, settings] = await Promise.all([
+      fetch("/api/listings").then((r) => (r.ok ? r.json() : Promise.reject(r.status))),
+      fetch("/api/settings").then((r) => (r.ok ? r.json() : Promise.reject(r.status))),
+    ]);
+    return { listings, settings };
+  } catch {
+    // `next dev` без Worker: показываем объявления, с которыми собран сайт
+    const { SEED_LISTINGS } = await import("./seed");
+    return { listings: SEED_LISTINGS, settings: DEFAULT_SETTINGS };
+  }
 }
 
-function useStoreVersion() {
-  const [version, setVersion] = useState(0);
+function loadSiteData(): Promise<SiteData> {
+  dataPromise ??= fetchSiteData();
+  return dataPromise;
+}
+
+/** Данные сайта. ready=false, пока они не загрузились (на сервере при сборке — всегда). */
+export function useSiteData(): SiteData & { ready: boolean } {
+  const [state, setState] = useState<SiteData & { ready: boolean }>({
+    listings: [],
+    settings: DEFAULT_SETTINGS,
+    ready: false,
+  });
   useEffect(() => {
-    const bump = () => setVersion((v) => v + 1);
-    bump();
-    window.addEventListener(CHANGE_EVENT, bump);
-    window.addEventListener("storage", bump);
+    let alive = true;
+    loadSiteData().then((data) => alive && setState({ ...data, ready: true }));
     return () => {
-      window.removeEventListener(CHANGE_EVENT, bump);
-      window.removeEventListener("storage", bump);
+      alive = false;
     };
   }, []);
-  return version;
-}
-
-/** Все объявления: свои (сверху) + демо. ready=false, пока localStorage ещё не прочитан. */
-export function useListingsState(): { listings: Listing[]; ready: boolean } {
-  const version = useStoreVersion();
-  const [state, setState] = useState({ listings: SEED_LISTINGS, ready: false });
-  useEffect(() => {
-    if (version === 0) return;
-    setState({ listings: [...read<Listing[]>(LISTINGS_KEY, []), ...SEED_LISTINGS], ready: true });
-  }, [version]);
   return state;
 }
 
+export function useListingsState(): { listings: Listing[]; ready: boolean } {
+  const { listings, ready } = useSiteData();
+  return { listings, ready };
+}
+
 export function useListings(): Listing[] {
-  return useListingsState().listings;
+  return useSiteData().listings;
+}
+
+export function useSettings(): SiteSettings {
+  return useSiteData().settings;
 }
 
 /** Сделки, типы и города, по которым есть хоть одно объявление — пустые разделы не показываем */
@@ -63,30 +82,50 @@ export function useCatalogOptions() {
   };
 }
 
-export function addListing(listing: Listing) {
-  const own = read<Listing[]>(LISTINGS_KEY, []);
-  // Может бросить QuotaExceededError, если фото слишком много — ловим в форме
-  write(LISTINGS_KEY, [{ ...listing, own: true }, ...own]);
+export async function sendLead(lead: {
+  kind: "listing" | "sell" | "contact";
+  name: string;
+  phone: string;
+  message?: string;
+  listingId?: string;
+  data?: Record<string, unknown>;
+  website?: string;
+}): Promise<void> {
+  const res = await fetch("/api/leads", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(lead),
+  });
+  if (!res.ok) throw new Error(`lead failed: ${res.status}`);
 }
 
-export function removeListing(id: string) {
-  write(
-    LISTINGS_KEY,
-    read<Listing[]>(LISTINGS_KEY, []).filter((l) => l.id !== id),
-  );
+function readFavorites(): string[] {
+  try {
+    return JSON.parse(localStorage.getItem(FAVORITES_KEY) ?? "[]") as string[];
+  } catch {
+    return [];
+  }
 }
 
 export function useFavorites() {
-  const version = useStoreVersion();
   const [ids, setIds] = useState<string[]>([]);
   useEffect(() => {
-    if (version === 0) return;
-    setIds(read<string[]>(FAVORITES_KEY, []));
-  }, [version]);
+    const sync = () => setIds(readFavorites());
+    sync();
+    window.addEventListener(CHANGE_EVENT, sync);
+    window.addEventListener("storage", sync);
+    return () => {
+      window.removeEventListener(CHANGE_EVENT, sync);
+      window.removeEventListener("storage", sync);
+    };
+  }, []);
 
   const toggle = useCallback((id: string) => {
-    const current = read<string[]>(FAVORITES_KEY, []);
-    write(FAVORITES_KEY, current.includes(id) ? current.filter((x) => x !== id) : [...current, id]);
+    const current = readFavorites();
+    try {
+      localStorage.setItem(FAVORITES_KEY, JSON.stringify(current.includes(id) ? current.filter((x) => x !== id) : [...current, id]));
+    } catch {}
+    window.dispatchEvent(new Event(CHANGE_EVENT));
   }, []);
 
   return { ids, toggle, has: (id: string) => ids.includes(id) };
