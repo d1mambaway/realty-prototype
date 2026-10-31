@@ -21,6 +21,7 @@ export function SettingsTab({ onError }: { onError: (e: unknown) => void }) {
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [testing, setTesting] = useState("");
+  const [bot, setBot] = useState<{ state: "idle" | "busy" | "ok" | "error"; username?: string; chats?: number; message?: string }>({ state: "idle" });
 
   useEffect(() => {
     // Публичные настройки + значения по умолчанию
@@ -50,7 +51,24 @@ export function SettingsTab({ onError }: { onError: (e: unknown) => void }) {
       await adminFetch("telegram-test", { method: "POST" });
       setTesting("Отправлено — проверьте Telegram");
     } catch (e) {
-      setTesting(e instanceof Error && e.message === "telegram is not configured" ? "Telegram-бот ещё не подключён" : "Не получилось отправить");
+      const msg = e instanceof Error ? e.message : "";
+      setTesting(
+        msg === "telegram is not configured"
+          ? "Токен бота ещё не задан на сервере"
+          : msg === "no chats"
+            ? "К боту ещё не подключён ни один чат: отправьте боту /start пароль"
+            : "Не получилось отправить",
+      );
+    }
+  }
+
+  async function connectBot() {
+    setBot({ state: "busy" });
+    try {
+      const r = await adminFetch<{ username: string; chats: number }>("telegram-setup", { method: "POST" });
+      setBot({ state: "ok", username: r.username, chats: r.chats });
+    } catch (e) {
+      setBot({ state: "error", message: e instanceof Error && e.message === "telegram is not configured" ? "Токен бота ещё не задан на сервере." : `Не получилось: ${e instanceof Error ? e.message : e}` });
     }
   }
 
@@ -82,9 +100,32 @@ export function SettingsTab({ onError }: { onError: (e: unknown) => void }) {
       </div>
 
       <div className="mt-6 rounded-3xl border border-line bg-white p-6">
-        <h2 className="font-serif text-2xl">Заявки в Telegram</h2>
-        <p className="mt-1 text-sm text-muted">Каждая заявка с сайта приходит сообщением в Telegram агента. Проверить, что бот подключён:</p>
-        <div className="mt-4 flex items-center gap-3">
+        <h2 className="font-serif text-2xl">Telegram-бот</h2>
+        <p className="mt-1 text-sm text-muted">
+          Бот добавляет объявления по ссылке с 999.md и присылает заявки с сайта. Нажмите «Подключить», затем откройте бота в Telegram и отправьте
+          ему <b>/start пароль</b> (пароль — тот же, что от этой панели).
+        </p>
+        <div className="mt-4 flex flex-wrap items-center gap-3">
+          <button
+            type="button"
+            onClick={connectBot}
+            disabled={bot.state === "busy"}
+            className="inline-flex items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-sm font-semibold text-white hover:bg-accent disabled:opacity-50"
+          >
+            {bot.state === "busy" && <Loader2 className="h-4 w-4 animate-spin" />} Подключить бота
+          </button>
+          {bot.state === "ok" && (
+            <span className="text-sm">
+              Бот подключён:{" "}
+              <a href={`https://t.me/${bot.username}`} target="_blank" rel="noopener noreferrer" className="font-semibold text-accent underline">
+                @{bot.username}
+              </a>
+              {bot.chats ? ` · чатов: ${bot.chats}` : " · отправьте ему /start пароль"}
+            </span>
+          )}
+          {bot.state === "error" && <span className="text-sm text-red-600">{bot.message}</span>}
+        </div>
+        <div className="mt-3 flex items-center gap-3">
           <button type="button" onClick={testTelegram} className="rounded-full border border-line px-5 py-2.5 text-sm font-semibold hover:border-ink">
             Отправить тестовое сообщение
           </button>

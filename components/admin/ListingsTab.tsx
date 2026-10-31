@@ -18,6 +18,9 @@ export function ListingsTab({ onError }: { onError: (e: unknown) => void }) {
   const [listings, setListings] = useState<Listing[] | null>(null);
   const [editing, setEditing] = useState<Listing | "new" | null>(null);
   const [query, setQuery] = useState("");
+  const [link, setLink] = useState("");
+  const [importing, setImporting] = useState(false);
+  const [importMsg, setImportMsg] = useState("");
 
   const load = () => adminFetch<Listing[]>("listings").then(setListings).catch(onError);
   useEffect(() => {
@@ -37,6 +40,28 @@ export function ListingsTab({ onError }: { onError: (e: unknown) => void }) {
       await load();
     } catch (e) {
       onError(e);
+    }
+  }
+
+  async function importLink(e: React.FormEvent) {
+    e.preventDefault();
+    if (!link.trim()) return;
+    setImporting(true);
+    setImportMsg("Загружаю объявление с 999.md — это займёт до минуты…");
+    try {
+      type Result = { kind: "created"; listing: Listing; notes: string[] } | { kind: "duplicate"; listingId: string; byPhotos: boolean } | { kind: "skipped"; reason: string };
+      const r = await adminFetch<Result>("import-999", { method: "POST", ...jsonBody({ url: link }) });
+      if (r.kind === "created") {
+        setImportMsg(`Добавлено: ${title(r.listing)}${r.notes.length ? `. ${r.notes.join(" ")}` : ""}`);
+        setLink("");
+        await load();
+      } else if (r.kind === "duplicate") {
+        setImportMsg(`Уже есть на сайте${r.byPhotos ? " (совпадают фото)" : ""}: ${r.listingId}`);
+      } else setImportMsg(r.reason);
+    } catch (err) {
+      setImportMsg(err instanceof Error && err.message === "not a 999.md link" ? "Это не ссылка на объявление 999.md" : `Ошибка: ${err instanceof Error ? err.message : err}`);
+    } finally {
+      setImporting(false);
     }
   }
 
@@ -86,6 +111,19 @@ export function ListingsTab({ onError }: { onError: (e: unknown) => void }) {
           </button>
         </div>
       </div>
+
+      <form onSubmit={importLink} className="mt-5 flex flex-wrap items-center gap-2 rounded-3xl border border-line bg-white p-3">
+        <input
+          value={link}
+          onChange={(e) => setLink(e.target.value)}
+          placeholder="Ссылка на объявление 999.md, например https://999.md/ru/105634255"
+          className="min-w-0 flex-1 rounded-full border border-line px-4 py-2.5 text-sm outline-none focus:border-accent"
+        />
+        <button type="submit" disabled={importing || !link.trim()} className="rounded-full border border-ink px-5 py-2.5 text-sm font-semibold hover:bg-ink hover:text-white disabled:opacity-50">
+          {importing ? "Загружаю…" : "Добавить с 999.md"}
+        </button>
+        {importMsg && <p className="w-full px-2 text-sm text-muted">{importMsg}</p>}
+      </form>
 
       {!listings ? (
         <p className="mt-10 text-muted">Загрузка…</p>

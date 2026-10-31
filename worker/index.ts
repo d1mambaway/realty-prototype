@@ -1,6 +1,8 @@
 import type { Listing } from "../lib/types";
 import { DEFAULT_SETTINGS, type LeadKind, type ListingStatus, type SiteSettings } from "../lib/settings";
 import { checkPassword, clearCookie, isAuthed, loginRateLimited, sessionCookie } from "./auth";
+import { leadChats, setupBot, telegramWebhook } from "./telegram";
+import { AD_URL, import999 } from "./import999";
 
 type Row = { id: string; data: string; status: ListingStatus; created_at: string };
 
@@ -31,13 +33,19 @@ const safeJson = (data: unknown) => JSON.stringify(data).replace(/</g, "\\u003c"
 
 // ---------- Заявки ----------
 
-async function notifyTelegram(env: AppEnv, text: string) {
-  if (!env.TELEGRAM_BOT_TOKEN || !env.TELEGRAM_CHAT_ID) return;
-  await fetch(`https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ chat_id: env.TELEGRAM_CHAT_ID, text, disable_web_page_preview: true }),
-  });
+async function notifyTelegram(env: AppEnv, text: string): Promise<number> {
+  if (!env.TELEGRAM_BOT_TOKEN) return 0;
+  const chats = await leadChats(env);
+  await Promise.all(
+    chats.map((chat_id) =>
+      fetch(`https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ chat_id, text, disable_web_page_preview: true }),
+      }),
+    ),
+  );
+  return chats.length;
 }
 
 const KIND_LABEL: Record<LeadKind, string> = {
@@ -122,7 +130,13 @@ async function admin(request: Request, env: AppEnv, path: string): Promise<Respo
     return json({ ok: true });
   }
   if (listingMatch && method === "DELETE") {
-    await env.DB.prepare("DELETE FROM listings WHERE id = ?").bind(listingMatch[1]).run();
+    const id = listingMatch[1];
+    await env.DB.batch([
+      env.DB.prepare("DELETE FROM listings WHERE id = ?").bind(id),
+      // Чтобы бот снова мог загрузить этот объект с 999.md
+      env.DB.prepare("DELETE FROM source_ads WHERE listing_id = ?").bind(id),
+      env.DB.prepare("DELETE FROM source_images WHERE listing_id = ?").bind(id),
+    ]);
     return json({ ok: true });
   }
 
@@ -163,9 +177,24 @@ async function admin(request: Request, env: AppEnv, path: string): Promise<Respo
     return json({ ok: true });
   }
 
+  if (path === "import-999" && method === "POST") {
+    const { url } = (await request.json()) as { url?: string };
+    const id = [...String(url ?? "").matchAll(AD_URL)][0]?.[1];
+    if (!id) return error(400, "not a 999.md link");
+    return json(await import999(env, id));
+  }
+
+  if (path === "telegram-setup" && method === "POST") {
+    if (!env.TELEGRAM_BOT_TOKEN) return error(400, "telegram is not configured");
+    const username = await setupBot(env, new URL(request.url).origin);
+    const { results } = await env.DB.prepare("SELECT COUNT(*) AS n FROM bot_chats").all<{ n: number }>();
+    return json({ ok: true, username, chats: results[0]?.n ?? 0 });
+  }
+
   if (path === "telegram-test" && method === "POST") {
-    if (!env.TELEGRAM_BOT_TOKEN || !env.TELEGRAM_CHAT_ID) return error(400, "telegram is not configured");
-    await notifyTelegram(env, "✅ Сайт REZULTAT подключён: сюда будут приходить заявки.");
+    if (!env.TELEGRAM_BOT_TOKEN) return error(400, "telegram is not configured");
+    const sent = await notifyTelegram(env, "✅ Сайт REZULTAT подключён: сюда будут приходить заявки.");
+    if (!sent) return error(400, "no chats");
     return json({ ok: true });
   }
 
@@ -247,6 +276,7 @@ export default {
       if (pathname === "/api/listings") return json(await publicListings(env));
       if (pathname === "/api/settings") return json(await getSettings(env));
       if (pathname === "/api/leads" && request.method === "POST") return await createLead(request, env, ctx);
+      if (pathname === "/api/telegram" && request.method === "POST") return await telegramWebhook(request, env, ctx);
       if (pathname.startsWith("/api/admin/")) return await admin(request, env, pathname.slice("/api/admin/".length));
       if (pathname.startsWith("/api/")) return error(404, "not found");
     } catch (e) {
