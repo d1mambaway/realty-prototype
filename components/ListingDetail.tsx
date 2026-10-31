@@ -73,7 +73,7 @@ export function ListingDetail() {
     .slice(0, 3);
   const liked = has(listing.id);
   const facts = [
-    { icon: Maximize2, label: d.detail.area, value: `${listing.area.toLocaleString("ru-RU")} m²` },
+    listing.area > 0 && { icon: Maximize2, label: d.detail.area, value: `${listing.area.toLocaleString("ru-RU")} m²` },
     hasRooms(listing) && { icon: BedDouble, label: d.detail.rooms, value: d.rooms(listing.rooms) },
     listing.floor && { icon: Building2, label: d.detail.floor, value: `${listing.floor}${listing.floors ? ` ${d.detail.of} ${listing.floors}` : ""}` },
     !listing.floor && listing.floors && { icon: Building2, label: d.detail.floors, value: String(listing.floors) },
@@ -147,7 +147,7 @@ export function ListingDetail() {
             </div>
             <h1 className="mt-4 font-serif text-4xl font-medium leading-tight sm:text-6xl">{tx(listing.title)}</h1>
             <p className="mt-3 inline-flex items-center gap-2 text-muted">
-              <MapPin className="h-4 w-4" /> {city(listing.city)}, {listing.address}
+              <MapPin className="h-4 w-4" /> {[city(listing.city), listing.address].filter(Boolean).join(", ")}
             </p>
           </Reveal>
 

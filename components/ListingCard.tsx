@@ -81,10 +81,12 @@ export function ListingCard({ listing, index = 0 }: { listing: Listing; index?: 
             <MapPin className="h-4 w-4" />
             {city(listing.city)}
           </span>
-          <span className="inline-flex items-center gap-1.5">
-            <Maximize2 className="h-4 w-4" />
-            {listing.area.toLocaleString("ru-RU")} m²
-          </span>
+          {listing.area > 0 && (
+            <span className="inline-flex items-center gap-1.5">
+              <Maximize2 className="h-4 w-4" />
+              {listing.area.toLocaleString("ru-RU")} m²
+            </span>
+          )}
           {listing.type !== "commercial" && hasRooms(listing) && (
             <span className="inline-flex items-center gap-1.5">
               <BedDouble className="h-4 w-4" />

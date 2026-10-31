@@ -1,0 +1,297 @@
+[
+  {
+    "src": "105465017", "deal": "sale", "type": "land", "price": 670000, "city": "chisinau", "address": "s. Stăuceni, traseul Chișinău – Criuleni", "area": 11800,
+    "title": { "ro": "Teren agricol de 118 ari în Stăuceni", "ru": "Участок 118 соток под с/х в Стэученах", "en": "1.18 ha of farmland in Stăuceni" },
+    "description": { "ro": "Teren agricol de 118 ari la marginea satului Stăuceni, lângă traseul Chișinău – Criuleni.", "ru": "Сельхозучасток 118 соток на окраине Стэучен, у трассы Кишинёв – Криуляны.", "en": "A 1.18 ha agricultural plot on the edge of Stăuceni, by the Chișinău – Criuleni road." },
+    "exchangeFor": { "ro": "Schimb parțial pe automobil până la 50 000 €.", "ru": "Частичный обмен на авто до 50 000 €.", "en": "Partial exchange for a car up to €50,000." }
+  },
+  {
+    "src": "104276527", "deal": "sale", "type": "land", "price": 71500, "city": "chisinau", "address": "or. Vatra, cooperativa Apicultorul", "area": 600,
+    "title": { "ro": "6 ari pentru construcție în Vatra, lângă pădure", "ru": "6 соток под строительство в Ватре, у леса", "en": "6-are building plot in Vatra, by the forest" },
+    "description": { "ro": "Teren de 6 ari în cooperativa Apicultorul din Vatra. În jur — pădure.", "ru": "Участок 6 соток в дачном кооперативе «Апикултурул», Ватра. Вокруг лес.", "en": "A 600 m² plot in the Apicultorul cooperative in Vatra, surrounded by forest." }
+  },
+  {
+    "src": "105737463", "deal": "rent", "type": "commercial", "price": 4000, "city": "chisinau", "address": "str. 31 August 1989, Centru", "area": 300, "features": ["parking", "nearCenter"], "featured": true,
+    "title": { "ro": "Clădire istorică de 300 m² în centru — Casa Masonică", "ru": "Историческое здание 300 м² в центре — Масонский дом", "en": "300 m² historic building in the centre — the Masonic House" },
+    "description": { "ro": "O clădire unică — singura de acest fel în Chișinău. Casa Masonică, construită în 1892. Chirie pe termen lung. Parcare și curte interioară.", "ru": "Уникальное здание — единственное такое в Кишинёве. Масонский дом, год постройки 1892. Аренда долгосрочная. Парковка, внутренний двор.", "en": "A unique building — the only one of its kind in Chișinău. The Masonic House, built in 1892. Long-term lease. Parking and an inner courtyard." }
+  },
+  {
+    "src": "105775277", "deal": "sale", "type": "commercial", "price": 300000, "city": "chisinau", "address": "la 20 de minute de Botanica", "area": 750, "features": ["waterView"],
+    "title": { "ro": "Bază de odihnă pe 7,5 ha pe malul lacului", "ru": "База отдыха на 7,5 га на берегу озера", "en": "Leisure base on 7.5 ha on a lakeshore" },
+    "description": { "ro": "7,5 ha pe malul lacului, clădiri de 750 m². Fântână arteziană și transformator propriu. Mănăstire în apropiere. La 20 de minute de Botanica.", "ru": "7,5 га на берегу озера, строения 750 м². Артезианская скважина, трансформатор. Рядом монастырь. 20 минут от Ботаники.", "en": "7.5 ha on a lakeshore with 750 m² of buildings. Artesian well and its own transformer. A monastery nearby. 20 minutes from Botanica." },
+    "exchangeFor": { "ro": "Schimb pe automobil, imobil sau materiale de construcție până la 50 000 €.", "ru": "Обмен на авто, недвижимость или стройматериалы до 50 000 €.", "en": "Exchange for a car, property or building materials up to €50,000." }
+  },
+  {
+    "src": "105754693", "deal": "sale", "type": "commercial", "price": 95000, "city": "chisinau", "address": "zona Aeroport – Sîngera", "area": 160,
+    "title": { "ro": "Spațiu universal de 160 m² pe 5 ari, zona Aeroport", "ru": "Универсальное помещение 160 м² на 5 сотках, район Аэропорта", "en": "160 m² multi-purpose building on 5 ares, Airport area" },
+    "description": { "ro": "Clădire de 160 m² pe un teren de 5 ari, cu toate comunicațiile. Aproape — Linella, stație de transport, farmacie, cafenele și restaurante.", "ru": "Здание 160 м² на участке 5 соток, все коммуникации. Рядом Linella, остановка, аптека, кафе и рестораны.", "en": "A 160 m² building on a 500 m² plot with all utilities. Linella supermarket, a bus stop, a pharmacy, cafés and restaurants nearby." }
+  },
+  {
+    "src": "105736213", "deal": "sale", "type": "land", "price": 235000, "city": "chisinau", "address": "or. Codru, str. Sfîntul Gheorghe", "area": 600,
+    "title": { "ro": "6 ari în Codru — pentru casă, duplex sau triplex", "ru": "6 соток в Кодру — под дом, дуплекс или триплекс", "en": "6 ares in Codru — for a house, duplex or triplex" },
+    "description": { "ro": "Toate comunicațiile la hotar. În fața terenului — locuri de parcare. Potrivit pentru o casă, un duplex sau un triplex.", "ru": "Все коммуникации на границе. Перед участком парковочные места. Под дом, дуплекс или триплекс.", "en": "All utilities at the boundary and parking spaces in front of the plot. Suitable for a house, duplex or triplex." }
+  },
+  {
+    "src": "105548073", "deal": "sale", "type": "land", "price": 600000, "city": "chisinau", "address": "zona Aeroport", "area": 10000,
+    "title": { "ro": "1 ha de teren agricol în zona Aeroport", "ru": "1 гектар под с/х в районе Аэропорта", "en": "1 ha of farmland in the Airport area" },
+    "description": { "ro": "Teren agricol de 1 ha în zona Aeroport, Chișinău.", "ru": "Сельхозучасток 1 га в районе Аэропорта, Кишинёв.", "en": "A 1 ha agricultural plot in the Airport area of Chișinău." }
+  },
+  {
+    "src": "105667430", "deal": "sale", "type": "land", "price": 500000, "city": "chisinau", "address": "Sculeanca, str. Calea Ghidighiciului", "area": 10000,
+    "title": { "ro": "1 ha pentru construcție, Calea Ghidighiciului", "ru": "1 гектар под строительство, Калea Гидигичулуй", "en": "1 ha building land on Calea Ghidighiciului" },
+    "description": { "ro": "Teren agricol cu bonitate de 30%, ceea ce permite, la nevoie, schimbarea destinației terenului.", "ru": "Земля аграрная, бонитет 30% — это позволяет при необходимости изменить статус земли.", "en": "Agricultural land with a 30% soil rating, which allows its designation to be changed if needed." }
+  },
+  {
+    "src": "105737614", "deal": "sale", "type": "commercial", "price": 950000, "city": "moldova", "address": "", "area": 250000, "features": ["waterView"], "featured": true,
+    "title": { "ro": "IT-sat: 25 ha cu lac, mini-hotel și 8 iurte", "ru": "IT-поселение: 25 га с озером, мини-отелем и 8 юртами", "en": "IT village: 25 ha with a lake, a mini hotel and 8 yurts" },
+    "description": { "ro": "Prețul de 950 000 € include: apă, electricitate, canalizare, drum; 25 ha de teren; mini-hotel; 8 iurte. În proprietate — lac cu pește, pădure, câmpuri, vânat.", "ru": "Стоимость 950 000 € включает: вода, электричество, канализация, дорога; 25 га земли; мини-отель; 8 юрт. В собственности — озеро с рыбой, лес, поля, дичь.", "en": "The €950,000 price includes water, electricity, sewage and road access; 25 ha of land; a mini hotel; 8 yurts. The property has a lake with fish, forest, fields and game." },
+    "exchangeFor": { "ro": "Schimb parțial pe imobil în Chișinău.", "ru": "Частичный обмен на недвижимость в Кишинёве.", "en": "Partial exchange for property in Chișinău." }
+  },
+  {
+    "src": "105703237", "deal": "sale", "type": "land", "price": 28000, "city": "chisinau", "address": "s. Bacioi, la margine", "area": 20000, "features": ["waterView"],
+    "title": { "ro": "2 ha de teren cu pădure în Bacioi", "ru": "2 гектара лесного участка в Бачое", "en": "2 ha of woodland in Bacioi" },
+    "description": { "ro": "Se poate vinde de la 50 până la 200 de ari. Pădure, lac, traseu, bază de odihnă în apropiere. Loc frumos. Se poate aduce electricitatea și face o fântână. Pentru proiecte agricole și altele.", "ru": "Можно продать от 50 до 200 соток. Лес, озеро, трасса, база отдыха рядом. Красивое место. Можно подтянуть электричество, сделать колодец. Под с/х проекты и другое.", "en": "Can be sold in parts from 0.5 to 2 ha. Forest, a lake, the highway and a leisure base nearby. A beautiful spot. Electricity can be brought in and a well dug. Suits farming and other projects." }
+  },
+  {
+    "src": "104826794", "deal": "sale", "type": "land", "price": 149000, "city": "aneniiNoi", "address": "lângă Nistru, la 7 km de Castelul Mimi", "area": 24000, "features": ["waterView"],
+    "title": { "ro": "2,4 ha între Nistru și pădure, cu lacuri", "ru": "2,4 га между Днестром и лесом, с озёрами", "en": "2.4 ha between the Dniester and the forest, with ponds" },
+    "description": { "ro": "Teren agricol de 2,4 ha între Nistru și pădure. Un lac mare și două mici (apa este scursă), se umplu cu pompă din Nistru. La 50 km de Chișinău și 7 km de Castelul Mimi. Drum bun.", "ru": "Сельхозземля 2,4 га между Днестром и лесом. Одно большое озеро и два маленьких (вода спущена), при необходимости наполняются насосом из Днестра. 50 км от Кишинёва, 7 км от замка Мими. Хорошая дорога.", "en": "2.4 ha of farmland between the Dniester and a forest. One large and two small ponds (currently drained) that can be refilled by pump from the river. 50 km from Chișinău, 7 km from Mimi Castle. Good road." },
+    "exchangeFor": { "ro": "Schimb pe imobil sau automobil.", "ru": "Обмен на недвижимость или автомобиль.", "en": "Exchange for property or a car." }
+  },
+  {
+    "src": "104201238", "deal": "sale", "type": "land", "price": 219000, "city": "chisinau", "address": "str. Timișoara, Telecentru", "area": 5000,
+    "title": { "ro": "50 ari pe str. Timișoara, Telecentru", "ru": "50 соток на ул. Тимишоара, Телецентр", "en": "50 ares on Timișoara Street, Telecentru" },
+    "description": { "ro": "Teren de 50 de ari pe str. Timișoara, sectorul Telecentru.", "ru": "Участок 50 соток на ул. Тимишоара, сектор Телецентр.", "en": "A 5,000 m² plot on Timișoara Street in the Telecentru district." }
+  },
+  {
+    "src": "105759834", "deal": "sale", "type": "commercial", "price": 85000, "city": "aneniiNoi", "address": "s. Ciobanovca", "area": 400,
+    "title": { "ro": "Depozit de 380 m² pe 3 ha lângă pădure, Ciobanovca", "ru": "Склад 380 м² на 3 га у леса, Чобановка", "en": "380 m² warehouse on 3 ha by the forest, Ciobanovca" },
+    "description": { "ro": "Teren de 3 ha lângă pădure. Depozit de 380 m² (48 × 8 m). Este apă. Electricitatea — la 800 m.", "ru": "Участок у леса 3 га. Склад 380 м² (48 × 8 м). Есть вода. Электричество — 800 м.", "en": "A 3 ha plot by the forest with a 380 m² warehouse (48 × 8 m). Water on site, electricity 800 m away." },
+    "exchangeFor": { "ro": "Schimb pe automobil până la 25 000 €.", "ru": "Обмен на авто до 25 000 €.", "en": "Exchange for a car up to €25,000." }
+  },
+  {
+    "src": "105186349", "deal": "sale", "type": "land", "price": 39000, "city": "chisinau", "address": "s. Trușeni, zona de vile", "area": 600,
+    "title": { "ro": "6 ari în Trușeni, aproape de plaja Ghidighici", "ru": "6 соток в Трушенах, рядом пляж Гидигич", "en": "6 ares in Trușeni, near Ghidighici beach" },
+    "description": { "ro": "Zonă de vile, drum și acces la comunicații. Aproape — plaja Ghidighici. 6 ari, plus încă 2 ari care se pot folosi.", "ru": "Дачная зона, дорога, доступ к коммуникациям. Недалеко пляж Гидигич. 6 соток + 2 можно использовать.", "en": "A dacha area with road access and utilities nearby, close to Ghidighici beach. 600 m², plus another 200 m² that can be used." }
+  },
+  {
+    "src": "104610412", "deal": "sale", "type": "land", "price": 1200000, "city": "chisinau", "address": "Buiucani", "area": 23000,
+    "title": { "ro": "2,3 ha cu clădire de 1 500 m², Buiucani", "ru": "2,3 га со зданием 1 500 м², Буюканы", "en": "2.3 ha with a 1,500 m² building, Buiucani" },
+    "description": { "ro": "Teren agricol de 2,3 ha și o clădire de 1 500 m².", "ru": "Участок 2,3 га (аграрная земля) и здание 1 500 м².", "en": "A 2.3 ha agricultural plot with a 1,500 m² building." }
+  },
+  {
+    "src": "105737668", "deal": "sale", "type": "land", "price": 68000, "city": "chisinau", "address": "s. Grătiești, traseul M5", "area": 10800,
+    "title": { "ro": "1 ha de teren de producție la traseul M5", "ru": "1 гектар под производство у трассы М5", "en": "1 ha industrial plot on the M5 highway" },
+    "description": { "ro": "Traseul M5 (Betonca), la 35 km de Chișinău. Gaz, apă și electricitate — peste drum. Dimensiuni 60 × 180 m.", "ru": "Трасса М5 (Бетонка), 35 км от Кишинёва. Газ, вода, электричество — через дорогу. Параметры 60 × 180 м.", "en": "On the M5 highway, 35 km from Chișinău. Gas, water and electricity across the road. 60 × 180 m." },
+    "exchangeFor": { "ro": "Schimb pe automobil până la 20 000 €.", "ru": "Обмен на авто до 20 000 €.", "en": "Exchange for a car up to €20,000." }
+  },
+  {
+    "src": "105738246", "deal": "sale", "type": "land", "price": 120000, "city": "chisinau", "address": "Dumbrava", "area": 860,
+    "title": { "ro": "Două loturi de 4,3 ari în Dumbrava", "ru": "Два участка по 4,3 сотки в Думбраве", "en": "Two 4.3-are plots in Dumbrava" },
+    "description": { "ro": "Două loturi a câte 4,3 ari. Se pot vinde separat.", "ru": "2 участка по 4,3 сотки. Можно продать раздельно.", "en": "Two plots of 430 m² each. Can be sold separately." }
+  },
+  {
+    "src": "105434516", "deal": "sale", "type": "land", "price": 99000, "city": "chisinau", "address": "zona Aeroport, la 10 km de Botanica", "area": 5000,
+    "title": { "ro": "50 ari: 8 loturi a câte 6 ari, la 10 km de Botanica", "ru": "50 соток: 8 участков по 6 соток, 10 км от Ботаники", "en": "50 ares: 8 plots of 6 ares, 10 km from Botanica" },
+    "description": { "ro": "La 10 km de Botanica. 8 loturi a câte 6 ari. Drum, apă și electricitate la hotar. Gaz și canalizare — la 300 m.", "ru": "В 10 км от Ботаники. 8 участков по 6 соток каждый. Дорога, вода и электричество на границе. Газ, канализация — 300 м.", "en": "10 km from Botanica. Eight plots of 600 m² each. Road, water and electricity at the boundary; gas and sewage 300 m away." }
+  },
+  {
+    "src": "104396312", "deal": "sale", "type": "land", "price": 225000, "city": "chisinau", "address": "s. Condrița, la margine", "area": 12800,
+    "title": { "ro": "128 ari de teren agricol în Condrița", "ru": "128 соток под с/х в Кондрице", "en": "1.28 ha of farmland in Condrița" },
+    "description": { "ro": "Teren agricol de 128 de ari la marginea satului Condrița, lângă codrii.", "ru": "Сельхозучасток 128 соток на окраине Кондрицы, рядом Кодры.", "en": "A 1.28 ha agricultural plot on the edge of Condrița, near the Codri forests." }
+  },
+  {
+    "src": "104826582", "deal": "sale", "type": "commercial", "price": 165000, "city": "aneniiNoi", "address": "s. Pugăceni", "area": 878,
+    "title": { "ro": "Uscătorie de fructe și legume pe 0,94 ha, Pugăceni", "ru": "Сушилка для фруктов и овощей на 0,94 га, Пугачёны", "en": "Fruit and vegetable drying plant on 0.94 ha, Pugăceni" },
+    "description": { "ro": "Se vinde o uscătorie de fructe și legume. Comunicațiile și capacitățile permit dezvoltarea mai multor direcții.\n\nTeren 0,94 ha. Clădire 878 m², 2 cuptoare (13 m) cu 2 generatoare VPT600, arzătoare italiene pe gaz, zonă de producție, prelucrare, sortare și depozit subteran. Casă de 125 m² (oficiu, cazare pentru personal, pază). Fântână arteziană, turn de apă, gazoduct de presiune medie și joasă, transformator de 160 kW. La 60 km de Chișinău.\n\nVolume: cireșe și vișine — 40 t pe an, mere de vară — 28–35 t, prune — 120–160 t. Prețul include TVA.", "ru": "Продаётся сушилка для фруктов и овощей. Коммуникации и мощности позволяют развивать разные направления.\n\nЗемля 0,94 га. Здание 878 м², 2 печи (13 м) с 2 генераторами VPT600, итальянские газовые форсунки, производственный участок, участки переработки и сортировки, подвальное хранилище. Дом 125 м² (офис, жильё для персонала, охрана). Артезианская скважина, водонапорная башня, газопровод среднего и низкого давления, трансформатор 160 кВт. 60 км от Кишинёва.\n\nОбъёмы: вишня и черешня — 40 т в год, летние яблоки — 28–35 т, сливы — 120–160 т. Цена с НДС.", "en": "A fruit and vegetable drying plant whose utilities and capacity allow for other lines of business.\n\n0.94 ha of land. An 878 m² building with two 13 m kilns and two VPT600 generators, Italian gas burners, production, processing and sorting areas and a cellar store. A 125 m² house (office, staff housing, security). Artesian well, water tower, medium- and low-pressure gas, 160 kW transformer. 60 km from Chișinău.\n\nOutput: cherries — 40 t a year, summer apples — 28–35 t, plums — 120–160 t. Price includes VAT." },
+    "exchangeFor": { "ro": "Schimb parțial pe automobil până la 35 000 €.", "ru": "Частичный бартер на авто до 35 000 €.", "en": "Partial exchange for a car up to €35,000." }
+  },
+  {
+    "src": "103899220", "deal": "sale", "type": "land", "price": 740000, "city": "chisinau", "address": "traseul Budești – Vadul lui Vodă, prima linie", "area": 74000,
+    "title": { "ro": "7,4 ha pe prima linie a traseului Budești – Vadul lui Vodă", "ru": "7,4 га на первой линии трассы Будешты – Вадул-луй-Водэ", "en": "7.4 ha fronting the Budești – Vadul lui Vodă road" },
+    "description": { "ro": "1 000 € pe ar. Teren pe prima linie a traseului Budești – Vadul lui Vodă. Acces la electricitate și apă.", "ru": "1 000 € за сотку. Участок на первой линии трассы Будешты – Вадул-луй-Водэ. Доступ к электричеству и воде.", "en": "€1,000 per are (100 m²). A plot fronting the Budești – Vadul lui Vodă road. Electricity and water available." }
+  },
+  {
+    "src": "105541474", "deal": "sale", "type": "house", "price": 45000, "city": "chisinau", "address": "Dumbrava, Alfa-Agro, la 15 min de Buiucani", "area": 18, "features": ["furniture", "ac", "heating"],
+    "title": { "ro": "Vilă modulară + 7 ari, la 15 minute de Buiucani", "ru": "Дача + 7 соток, 15 минут от Буюкан", "en": "Modular cabin + 7 ares, 15 minutes from Buiucani" },
+    "description": { "ro": "Casă modulară din panouri sandwich de 18 m², complet mobilată. Baie complet utilată: cabină de duș, WC, chiuvetă. Instalație electrică, Smart TV, aer condiționat pentru vară și iarnă, încălzire, boiler. Pat dublu și canapea extensibilă. Ferestre panoramice. Gata de folosit tot anul, fără investiții suplimentare.\n\nTerenul fără casă — 25 000 €.", "ru": "Модульный дом из сэндвич-панелей 18 м², полностью меблирован. Полностью оборудованная ванная: душевая кабина, туалет, раковина. Электрика, Smart TV, кондиционер на лето и зиму, отопление, водонагреватель. Двуспальная кровать и диван-кровать. Панорамные окна. Готов к использованию круглый год, без дополнительных вложений.\n\nУчасток без дома — 25 000 €.", "en": "An 18 m² sandwich-panel modular cabin, fully furnished. A fully equipped bathroom with shower, toilet and sink. Wiring, Smart TV, heat-pump air conditioning, heating and a water heater. Double bed and sofa bed. Panoramic windows. Ready for year-round use with no further investment.\n\nThe plot without the cabin is €25,000." }
+  },
+  {
+    "src": "103647451", "deal": "sale", "type": "house", "price": 43000, "city": "straseni", "address": "s. Lozova, lângă rezervația Codrii", "area": 500,
+    "title": { "ro": "Casă cu mini-fermă de peste 500 m² în Lozova", "ru": "Дом с мини-фермой более 500 м² в Лозово", "en": "House with a mini farm, over 500 m², in Lozova" },
+    "description": { "ro": "Lozova, în jur — rezervația Codrii. Casă și mini-fermă, peste 500 m². Casa necesită reparație, dar construcția e capitală (beton, piatră, cotileț). Electricitate, apă, canalizare, gaz, telefon, drum asfaltat. Teren de 9,4 ari. Margine de sat, priveliște frumoasă spre Codri.", "ru": "Лозово, вокруг резервация Кодры. Дом + мини-ферма, более 500 м². Дом требует ремонта, но конструкция капитальная (бетон, бут, котелец). Электричество, вода, канализация, газ, телефон, асфальтированная дорога. Участок 9,4 сотки. Окраина, красивый вид на Кодры.", "en": "Lozova, surrounded by the Codri nature reserve. A house and mini farm of over 500 m². The house needs renovation but is solidly built (concrete and stone). Electricity, water, sewage, gas, phone and a paved road. 940 m² plot on the edge of the village with a lovely view of the Codri." }
+  },
+  {
+    "src": "104826708", "deal": "sale", "type": "commercial", "price": 52000, "city": "chisinau", "address": "Centru, în spatele Guvernului", "area": 200, "features": ["nearCenter", "pool"],
+    "title": { "ro": "Club sportiv în centru — profit 2 500 € pe lună", "ru": "Спорт-клуб в центре — прибыль 2 500 € в месяц", "en": "Sports club in the centre — €2,500 monthly profit" },
+    "description": { "ro": "Afacere funcțională. Profit net mediu — 2 500 € pe lună. Centru, în spatele Guvernului, se învecinează cu un bazin (acces la bazin și saună).\n\nPrețul include: persoana juridică (casa de marcat, contractul de chirie pentru 200 m²), tot echipamentul, mobila și tehnica. Imobilul este în chirie. Vânzătorul este gata să continue administrarea. Posibilități de dezvoltare datorită vecinilor: bazin, terenuri de tenis, saună. Vânzare de nutriție sportivă.", "ru": "Действующий бизнес. Чистая прибыль в среднем 2 500 € в месяц. Центр, за правительством, граничит с бассейном (есть вход в бассейн и сауну).\n\nСтоимость включает: юридическое лицо (кассовый аппарат, контракт аренды на 200 м²), всё оборудование, мебель, технику. Помещение в аренде. Готов продолжить администрирование. Есть возможности для развития с учётом соседей: бассейн, теннисные корты, сауна. Продажа спортивного питания.", "en": "A running business with an average net profit of €2,500 a month. In the centre behind the Government building, next to a swimming pool (with access to the pool and sauna).\n\nThe price includes the company (cash register, lease for 200 m²), all equipment, furniture and appliances. The premises are leased. The seller is willing to stay on as manager. Room to grow alongside the pool, tennis courts and sauna next door. Sports nutrition sales." }
+  },
+  {
+    "src": "105542407", "deal": "sale", "type": "land", "price": 117000, "city": "chisinau", "address": "s. Bubuieci, str. Școlii", "area": 1500,
+    "title": { "ro": "15 ari în Bubuieci cu toate comunicațiile", "ru": "15 соток в Бубуечь со всеми коммуникациями", "en": "15 ares in Bubuieci with all utilities" },
+    "description": { "ro": "Gaz, apă, electricitate și canalizare pe teren, plus fântână. Casă pentru demolare.", "ru": "Газ, вода, электричество, канализация на участке, плюс колодец. Дом под снос.", "en": "Gas, water, electricity and sewage on the plot, plus a well. The existing house is for demolition." }
+  },
+  {
+    "src": "105704754", "deal": "sale", "type": "commercial", "price": 5300000, "city": "chisinau", "address": "str. Anton Pann, Centru", "area": 6100, "features": ["nearCenter", "elevator", "parking"], "featured": true,
+    "title": { "ro": "Hotel în centru: 12 etaje, 200 de camere", "ru": "Отель в центре: 12 этажей, 200 номеров", "en": "Hotel in the centre: 12 floors, 200 rooms" },
+    "description": { "ro": "Pentru investitori. Teren de 30 de ari, clădire de 6 100 m², 12 etaje, 200 de camere. Sală de conferințe, cafenea, bar.", "ru": "Инвестору. Земельный участок 30 соток, здание 6 100 м², 12 этажей, 200 номеров. Конференц-зал, кафе, бар.", "en": "For investors. A 3,000 m² plot with a 6,100 m² building: 12 floors, 200 rooms, a conference hall, café and bar." }
+  },
+  {
+    "src": "105759285", "deal": "rent", "type": "commercial", "price": 2000, "city": "chisinau", "address": "str. Alexei Mateevici, Centru", "area": 70, "features": ["nearCenter"],
+    "title": { "ro": "Oficiu de 70 m² vizavi de Ambasada SUA", "ru": "Офис 70 м² напротив посольства США", "en": "70 m² office opposite the US Embassy" },
+    "description": { "ro": "Oficiu de 70 m² pe str. Alexei Mateevici, vizavi de Ambasada SUA.", "ru": "Офис 70 м² на ул. Алексея Матеевича, напротив посольства США.", "en": "A 70 m² office on Alexei Mateevici Street, opposite the US Embassy." }
+  },
+  {
+    "src": "105738044", "deal": "sale", "type": "commercial", "price": 250000, "city": "chisinau", "address": "", "area": 0, "features": ["parking"],
+    "title": { "ro": "Spațiu comercial cu chiriași — 2 000 € pe lună", "ru": "Коммерческое помещение с арендаторами — 2 000 € в месяц", "en": "Commercial premises with tenants — €2,000 a month" },
+    "description": { "ro": "Acum un spațiu aduce 1 400 € pe lună. Al doilea, după reparație, va fi dat în chirie pentru 750–850 € pe lună. Parcare.", "ru": "На данный момент одно помещение приносит 1 400 € в месяц. Второе после ремонта планируется сдавать за 750–850 € в месяц. Парковка.", "en": "One unit currently earns €1,400 a month. The second, after renovation, is expected to rent for €750–850 a month. Parking." }
+  },
+  {
+    "src": "105572751", "deal": "sale", "type": "land", "price": 345000, "city": "chisinau", "address": "traseul Chișinău – Ungheni, la 20 km de Chișinău", "area": 30000,
+    "title": { "ro": "3 ha la traseul național Chișinău – Ungheni", "ru": "3 га у трассы Кишинёв – Унгены", "en": "3 ha on the Chișinău – Ungheni highway" },
+    "description": { "ro": "Traseul național Chișinău – Ungheni, la 20 km de Chișinău. 227 m de-a lungul drumului, 115 m în adâncime. Proiect de apă aprobat (600 m).", "ru": "Национальная трасса Кишинёв – Унгены, 20 км от Кишинёва. 227 м вдоль дороги, 115 м в глубину. Согласован проект на воду (600 м).", "en": "On the Chișinău – Ungheni national highway, 20 km from Chișinău. 227 m of road frontage, 115 m deep. Approved water connection project (600 m)." },
+    "exchangeFor": { "ro": "Schimb parțial pe automobil până la 50 000 €.", "ru": "Частичный обмен на авто до 50 000 €.", "en": "Partial exchange for a car up to €50,000." }
+  },
+  {
+    "src": "105569240", "deal": "sale", "type": "commercial", "price": 5000000, "city": "comrat", "address": "ZEL Comrat", "area": 10000,
+    "title": { "ro": "Spațiu de producție de 10 000 m² în ZEL Comrat", "ru": "Производственное помещение 10 000 м² в СЭЗ Комрат", "en": "10,000 m² production facility in the Comrat free economic zone" },
+    "description": { "ro": "Comrat, zona economică liberă. 10 000 m². Vânzare — 5 000 000 €, chirie — 5 € pe m².", "ru": "Комрат, СЭЗ. 10 000 м². Продажа — 5 000 000 €, аренда — 5 € за м².", "en": "Comrat, free economic zone. 10,000 m². For sale at €5,000,000 or for rent at €5 per m²." }
+  },
+  {
+    "src": "104839781", "deal": "sale", "type": "commercial", "price": 200000, "city": "chisinau", "address": "str. Alexandru Hâjdeu 110, Centru", "area": 200, "features": ["heating", "nearCenter"],
+    "title": { "ro": "Spațiu de 200 m² în centru, str. A. Hâjdeu", "ru": "Помещение 200 м² в центре, ул. А. Хаждеу", "en": "200 m² premises in the centre, A. Hâjdeu Street" },
+    "description": { "ro": "1 000 € pe m². Se vinde de la 189 până la 650 m², în trei părți:\n• 204,7 m² — intrare separată din drum, ieșire în curte, contoare intermediare, baie;\n• 189,5 m² — intrare separată din stradă, contoare principale de apă, gaz și electricitate, baie;\n• 262,2 m² — intrare separată, ieșire în curte, cazan pe gaz propriu, baie.\n\nApă, canalizare, ventilație, încălzire autonomă. Spațiu uscat și cald. Pardoseală din gresie. Demisolul unui bloc cu patru etaje.", "ru": "1 000 € за м². Возможна продажа от 189 до 650 м², три части:\n• 204,7 м² — отдельный вход с дороги, выход во двор, промежуточные счётчики, санузел;\n• 189,5 м² — отдельный вход с улицы, основные счётчики воды, газа и электричества, санузел;\n• 262,2 м² — отдельный вход, выход во двор, свой газовый котёл, санузел.\n\nВода, канализация, вентиляция, автономное отопление. Сухое, тёплое помещение. Пол — плитка. Цокольный этаж четырёхэтажного дома.", "en": "€1,000 per m². Available from 189 to 650 m², in three parts:\n• 204.7 m² — own entrance from the road, courtyard exit, sub-meters, bathroom;\n• 189.5 m² — own street entrance, main water, gas and power meters, bathroom;\n• 262.2 m² — own entrance, courtyard exit, its own gas boiler, bathroom.\n\nWater, sewage, ventilation and individual heating. Dry and warm, tiled floors. Lower ground floor of a four-storey building." }
+  },
+  {
+    "src": "103666839", "deal": "sale", "type": "land", "price": 410000, "city": "chisinau", "address": "bd. Alba Iulia 75/14", "area": 600,
+    "title": { "ro": "6 ari pe bd. Alba Iulia", "ru": "6 соток на бул. Алба Юлия", "en": "6 ares on Alba Iulia Boulevard" },
+    "description": { "ro": "Teren pentru construcție de 6 ari, bd. Alba Iulia 75/14.", "ru": "Участок 6 соток под строительство, бул. Алба Юлия 75/14.", "en": "A 600 m² building plot at 75/14 Alba Iulia Boulevard." }
+  },
+  {
+    "src": "104565875", "deal": "sale", "type": "house", "price": 36000, "city": "calarasi", "address": "s. Bahmut", "area": 73, "features": ["pool", "terrace"],
+    "title": { "ro": "Casă cu 35 ari de teren în Bahmut", "ru": "Дом с участком 35 соток в Бахмуте", "en": "House with 35 ares of land in Bahmut" },
+    "description": { "ro": "Satul Bahmut. Teren de 35 de ari, casă de 73 m², bucătărie de vară de 26 m², foișor, bazin, șopron. Teren mare cu pomi fructiferi. Este posibilă cumpărarea în credit ipotecar.", "ru": "Село Бахмут. Участок 35 соток, дом 73 м², летняя кухня 26 м², беседка, бассейн, сарай. Большой участок, плодовые деревья. Возможна покупка в ипотеку.", "en": "Bahmut village. A 3,500 m² plot with a 73 m² house, a 26 m² summer kitchen, a gazebo, a pool and a shed. Large garden with fruit trees. Mortgage possible." }
+  },
+  {
+    "src": "105039055", "deal": "sale", "type": "land", "price": 4300000, "city": "orhei", "address": "s. Peresecina, la intrarea în sat, traseul R6", "area": 1720000, "features": ["waterView"], "featured": true,
+    "title": { "ro": "Fermă de 172 ha în Peresecina: livezi, lac, tehnică", "ru": "Агроучасток 172 га в Пересечине: сады, водоём, техника", "en": "172 ha farm in Peresecina: orchards, a reservoir, machinery" },
+    "description": { "ro": "25 000 € pe hectar. Teren agricol de 172 ha la intrarea în satul Peresecina, raionul Orhei, la 20 km de Chișinău, cu ieșire la traseul R6, drum asfaltat.\n\nComponență: 50 ha teren nelucrat, 50 ha teren arabil, 49 ha livadă de caise, 10 ha livadă de vișini, 12 ha pădure de salcâm (15 ani), lac de acumulare de 1 ha cu posibilitate de extindere la 3 ha.\n\nÎmprejmuire, două intrări cu porți din traseu, posibilitate de conectare la rețeaua electrică, furtunuri de presiune de 2 km de la lac la livezi.\n\nTehnică: 3 tractoare, 4 stivuitoare, 2 tocătoare, 2 grape cu discuri, 2 aspersoare, cisterne, excavator pe tractor, pompă Landini.", "ru": "25 000 € за гектар. Сельхозучасток 172 га на въезде в село Пересечина, Оргеевский район, 20 км от Кишинёва, съезд на трассу R6, асфальтированная дорога.\n\nСостав: 50 га необработанных угодий, 50 га пахотной земли, 49 га абрикосового сада, 10 га вишнёвого сада, 12 га акациевого леса (15 лет), водохранилище 1 га с возможностью расширения до 3 га.\n\nОграждение, два въезда с трассы с воротами, возможность подключения к электросети, шланги высокого давления 2 км от водоёма к садам.\n\nТехника: 3 трактора, 4 погрузчика, 2 измельчителя, 2 дисковые бороны, 2 дождевателя, цистерны, тракторный экскаватор, насос Landini.", "en": "€25,000 per hectare. 172 ha of farmland at the entrance to Peresecina, Orhei district, 20 km from Chișinău, with access to the R6 highway by a paved road.\n\nMade up of 50 ha uncultivated land, 50 ha arable land, 49 ha apricot orchard, 10 ha cherry orchard, 12 ha of 15-year-old acacia forest and a 1 ha reservoir that can be enlarged to 3 ha.\n\nFenced, with two gated entrances from the highway, grid connection possible and 2 km of high-pressure hoses from the reservoir to the orchards.\n\nMachinery: 3 tractors, 4 forklifts, 2 mulchers, 2 disc harrows, 2 sprinklers, tanks, a tractor excavator and a Landini pump." }
+  },
+  {
+    "src": "104714821", "deal": "sale", "type": "land", "price": 575000, "city": "chisinau", "address": "Sculeanca, str. Sportivilor", "area": 13600,
+    "title": { "ro": "136 ari pentru construcție, str. Sportivilor", "ru": "136 соток под строительство, ул. Спортивилор", "en": "1.36 ha building land on Sportivilor Street" },
+    "description": { "ro": "Teren de 136 de ari pentru construcție, str. Sportivilor, Sculeanca. Număr cadastral 8039317.021.", "ru": "Участок 136 соток под строительство, ул. Спортивилор, Скулянка. Кадастровый номер 8039317.021.", "en": "A 1.36 ha building plot on Sportivilor Street, Sculeanca. Cadastral number 8039317.021." }
+  },
+  {
+    "src": "103919761", "deal": "sale", "type": "land", "price": 645000, "city": "chisinau", "address": "or. Vatra, traseul Ungheni – Chișinău", "area": 30000,
+    "title": { "ro": "3 ha de teren agricol în Vatra", "ru": "3 га под с/х в Ватре", "en": "3 ha of farmland in Vatra" },
+    "description": { "ro": "Teren agricol de 3 ha la marginea orașului Vatra, lângă traseul Ungheni – Chișinău.", "ru": "Сельхозучасток 3 га на окраине Ватры, у трассы Унгены – Кишинёв.", "en": "A 3 ha agricultural plot on the edge of Vatra, by the Ungheni – Chișinău road." }
+  },
+  {
+    "src": "105515940", "deal": "sale", "type": "land", "price": 690000, "city": "chisinau", "address": "Șoseaua Poltava, vizavi de PECO Sanatrix", "area": 3000,
+    "title": { "ro": "30 ari pe Șoseaua Poltava, la intrarea în Poiana Domnească", "ru": "30 соток на Полтавском шоссе, у въезда в Poiana Domnească", "en": "30 ares on Poltava Road, at the entrance to Poiana Domnească" },
+    "description": { "ro": "Șoseaua Poltava, vizavi de stația PECO Sanatrix, la intrarea în Poiana Domnească.", "ru": "Полтавское шоссе, напротив АЗС Sanatrix, у въезда в Poiana Domnească.", "en": "On Poltava Road, opposite the Sanatrix petrol station, at the entrance to Poiana Domnească." },
+    "exchangeFor": { "ro": "Schimb parțial pe automobil până la 100 000 €.", "ru": "Частичный обмен на авто до 100 000 €.", "en": "Partial exchange for a car up to €100,000." }
+  },
+  {
+    "src": "104776867", "deal": "sale", "type": "land", "price": 170500, "city": "chisinau", "address": "Dumbrava, str. Tricolorului", "area": 800,
+    "title": { "ro": "8 ari lângă traseu, Dumbrava", "ru": "8 соток у трассы, Думбрава", "en": "8 ares by the road, Dumbrava" },
+    "description": { "ro": "Teren de 8 ari pentru construcție lângă traseu, str. Tricolorului, Dumbrava.", "ru": "Участок 8 соток под строительство у трассы, ул. Триколорулуй, Думбрава.", "en": "An 800 m² building plot by the road on Tricolorului Street, Dumbrava." }
+  },
+  {
+    "src": "105545802", "deal": "sale", "type": "land", "price": 139000, "city": "vadulLuiVoda", "address": "str-la Alexandr Bernardazzi", "area": 8200,
+    "title": { "ro": "82 ari de teren agricol în Vadul lui Vodă", "ru": "82 сотки под с/х в Вадул-луй-Водэ", "en": "82 ares of farmland in Vadul lui Vodă" },
+    "description": { "ro": "Teren agricol de 82 de ari la marginea orașului Vadul lui Vodă.", "ru": "Сельхозучасток 82 сотки на окраине Вадул-луй-Водэ.", "en": "An 8,200 m² agricultural plot on the edge of Vadul lui Vodă." }
+  },
+  {
+    "src": "105039028", "deal": "sale", "type": "land", "price": 87000, "city": "chisinau", "address": "Poșta Veche, str-la Studenților", "area": 400,
+    "title": { "ro": "4 ari pentru construcție, Poșta Veche", "ru": "4 сотки под строительство, Старая Почта", "en": "4-are building plot, Poșta Veche" },
+    "description": { "ro": "Teren de 4 ari pentru construcție, str-la Studenților, Poșta Veche. Număr cadastral 3153201094.", "ru": "Участок 4 сотки под строительство, пер. Студенцилор, Старая Почта. Кадастровый номер 3153201094.", "en": "A 400 m² building plot on Studenților Lane, Poșta Veche. Cadastral number 3153201094." }
+  },
+  {
+    "src": "105577695", "deal": "sale", "type": "land", "price": 43000, "city": "chisinau", "address": "s. Bacioi, lângă lacul Peatihaica", "area": 600, "features": ["waterView", "terrace"],
+    "title": { "ro": "6 ari cu proiect de casă lângă lac, Bacioi", "ru": "6 соток с проектом дома у озера, Бачой", "en": "6 ares with a house project by the lake, Bacioi" },
+    "description": { "ro": "Lacul Peatihaica, Mănăstirea Cneazului Vladimir. Teren de 6 ari, proiect casă + terasă, lucrările executate se văd în fotografii. Electricitate, apă, canalizare proprie.", "ru": "Озеро Пятихаика, монастырь Князя Владимира. Участок 6 соток, проект дом + терраса, выполненные работы видны на фото. Электричество, вода, собственная канализация.", "en": "Near Peatihaica lake and Prince Vladimir Monastery. A 600 m² plot with a house-and-terrace project; the work done so far is shown in the photos. Electricity, water and private sewage." }
+  },
+  {
+    "src": "103907777", "deal": "sale", "type": "land", "price": 46000, "city": "aneniiNoi", "address": "lângă or. Anenii Noi, la 800 m de traseu", "area": 10000,
+    "title": { "ro": "1 ha cu livadă de nuci și migdali + depozit, Anenii Noi", "ru": "1 га с орехом и миндалём + склад, Новые Анены", "en": "1 ha walnut and almond orchard + storage, Anenii Noi" },
+    "description": { "ro": "Lângă orașul Anenii Noi. Teren de 1 ha: 86 de nuci și 28 de migdali. Clădire de 90 m² (electricitate, apă). La 800 m de traseu.", "ru": "Новые Анены, рядом с городом. Земля 1 га: 86 деревьев ореха, 28 миндаля. Здание 90 м² (электричество, вода). 800 м от трассы.", "en": "Next to the town of Anenii Noi. 1 ha with 86 walnut and 28 almond trees and a 90 m² building (electricity, water). 800 m from the highway." }
+  },
+  {
+    "src": "105172808", "deal": "rent", "type": "commercial", "price": 500, "city": "chisinau", "address": "Centrul Comercial ELAT, bd. Decebal, Botanica", "area": 120, "features": ["elevator"],
+    "title": { "ro": "Spațiu de 120 m² pe două niveluri în CC ELAT", "ru": "Помещение 120 м² на двух уровнях в ТЦ «ЭЛАТ»", "en": "120 m² two-level space in ELAT shopping centre" },
+    "description": { "ro": "Centrul Comercial ELAT. Se dă în chirie o fostă cafenea pe două niveluri, cu lift propriu între ele. Se poate adapta pentru comerț, oficiu, servicii.", "ru": "Торговый центр «ЭЛАТ». Сдаётся бывшее кафе на 2 уровнях, между уровнями свой лифт. Можно адаптировать под торговлю, офис, услуги.", "en": "ELAT shopping centre. A former café on two levels with its own lift between them, for rent. Can be adapted for retail, an office or services." }
+  },
+  {
+    "src": "105578717", "deal": "sale", "type": "land", "price": 1237500, "city": "chisinau", "address": "Dumbrava", "area": 22500,
+    "title": { "ro": "2,25 ha de teren agricol în Dumbrava", "ru": "225 соток под с/х в Думбраве", "en": "2.25 ha of farmland in Dumbrava" },
+    "description": { "ro": "5 500 € pe ar. Teren agricol de 225 de ari la marginea Dumbravei.", "ru": "5 500 € за сотку. Сельхозучасток 225 соток на окраине Думбравы.", "en": "€5,500 per are (100 m²). A 2.25 ha agricultural plot on the edge of Dumbrava." }
+  },
+  {
+    "src": "103639812", "deal": "sale", "type": "house", "price": 480000, "city": "criuleni", "address": "s. Pașcani, sector nou", "area": 480,
+    "title": { "ro": "Duplex pentru două familii în Pașcani, 230 și 250 m²", "ru": "Дуплекс на две семьи в Пашканах, 230 и 250 м²", "en": "Two-family duplex in Pașcani, 230 and 250 m²" },
+    "description": { "ro": "Satul Pașcani, sector nou, la 15 minute de Chișinău. Aer foarte curat și liniște. Duplex de 230 și 250 m², materiale de calitate. 1 000 € pe m².", "ru": "Посёлок Пашканы, новый сектор, 15 минут от Кишинёва. Чистый воздух и тишина. Дуплекс 230 и 250 м², качественные материалы. 1 000 € за м².", "en": "Pașcani, a new residential area 15 minutes from Chișinău. Fresh air and quiet. A duplex of 230 and 250 m² built with quality materials. €1,000 per m²." }
+  },
+  {
+    "src": "104621640", "deal": "sale", "type": "land", "price": 650000, "city": "chisinau", "address": "or. Vatra, lângă traseu", "area": 30000,
+    "title": { "ro": "3 ha de teren de producție lângă traseu, Vatra", "ru": "3 га под производство у трассы, Ватра", "en": "3 ha industrial land by the highway, Vatra" },
+    "description": { "ro": "Teren agricol de 3 ha lângă traseu, la marginea orașului Vatra.", "ru": "Аграрная земля 3 га у трассы, окраина Ватры.", "en": "3 ha of agricultural land by the highway on the edge of Vatra." }
+  },
+  {
+    "src": "105464796", "deal": "sale", "type": "land", "price": 36500, "city": "ialoveni", "address": "s. Dănceni, str-la Luncii", "area": 650,
+    "title": { "ro": "6,5 ari lângă râu în Dănceni", "ru": "6,5 сотки у речки в Данченах", "en": "6.5 ares by a stream in Dănceni" },
+    "description": { "ro": "6,5 ari, comunicațiile — aproape. În spatele terenului curge un râuleț: se poate amenaja un iaz și folosi mai mult teren.", "ru": "6,5 сотки, коммуникации рядом. За участком протекает небольшая речка — можно организовать пруд и использовать больше земли.", "en": "650 m² with utilities nearby. A small stream runs behind the plot, so a pond could be made and more land used." }
+  },
+  {
+    "src": "105300196", "deal": "sale", "type": "house", "price": 125000, "city": "chisinau", "address": "Dumbrava, Alfa-Agro, la 15 min de Chișinău", "area": 150, "floors": 3, "features": ["terrace"],
+    "title": { "ro": "Casă pe trei niveluri cu livadă, Alfa-Agro", "ru": "Дом на три уровня с садом, Альфа Агро", "en": "Three-level house with an orchard, Alfa-Agro" },
+    "description": { "ro": "Casă de țară confortabilă lângă pădure, cu livadă tânără, la 15 minute de Chișinău. Trei niveluri a câte 50 m², plus o anexă solidă. Casa e pe deal, cu priveliște frumoasă. Loc liniștit.\n\nPe teren: pomi și arbuști plantați acum 4–5 ani, deja rodesc — vișini, cireși, peri, meri, nuci, migdali, zmeură, căpșuni, gutui, pruni, viță de vie, caiși și altele. Foișor din lemn cu masă mare, loc pentru grătar. Teren de 5,5 ari cu o ușoară pantă.\n\nPentru locuire tot anul sunt necesare investiții (baie, scară între etaje; acum se încălzește doar un nivel).", "ru": "Уютный загородный дом у леса с молодым садом, 15 минут от Кишинёва. Три уровня по 50 м², плюс прочная хозпостройка. Дом на холме, с участка красивый вид. Место тихое.\n\nНа участке: деревья и кустарники, посаженные 4–5 лет назад, уже плодоносят — вишня, черешня, груша, яблоня, орех, миндаль, малина, земляника, айва, слива, виноград, абрикос и другие. Деревянная беседка с большим столом, место для мангала. Участок 5,5 сотки с небольшим уклоном.\n\nДля круглогодичного проживания нужны вложения (санузел, лестница между этажами; сейчас отапливается только один уровень).", "en": "A cosy country house by the forest with a young orchard, 15 minutes from Chișinău. Three levels of 50 m² each plus a solid outbuilding. The house stands on a hill with a lovely view. Quiet and peaceful.\n\nThe garden's trees and shrubs, planted 4–5 years ago, already bear fruit — cherries, pears, apples, walnuts, almonds, raspberries, strawberries, quinces, plums, grapes, apricots and more. A wooden gazebo with a large table and a barbecue area. A 550 m² gently sloping plot.\n\nYear-round living needs some investment (bathroom, stairs between floors; only one level is heated now)." }
+  },
+  {
+    "src": "105012776", "deal": "sale", "type": "land", "price": 65000, "city": "chisinau", "address": "s. Tohatin, intersecția Tohatin – Cruzești – Budești", "area": 1200,
+    "title": { "ro": "12 ari la intersecția din Tohatin", "ru": "12 соток на перекрёстке в Тогатине", "en": "12 ares at the Tohatin crossroads" },
+    "description": { "ro": "Intersecția Tohatin – Cruzești – Budești, lângă Linella. Dimensiuni 12 × 100 m.", "ru": "Перекрёсток Тогатин – Крузешты – Будешты, рядом Linella. Параметры 12 × 100 м.", "en": "At the Tohatin – Cruzești – Budești crossroads, next to Linella. 12 × 100 m." }
+  },
+  {
+    "src": "104705630", "deal": "sale", "type": "land", "price": 140000, "city": "chisinau", "address": "Rîșcani, str. Petricani", "area": 900,
+    "title": { "ro": "9 ari cu construcții pe str. Petricani", "ru": "9 соток со строениями на ул. Петрикань", "en": "9 ares with buildings on Petricani Street" },
+    "description": { "ro": "Gaz, apă, electricitate, canalizare. Construcțiile sunt proprietate privată, terenul urmează a fi privatizat. Număr cadastral 0100403.158.", "ru": "Газ, вода, электричество, канализация. Строения — частная собственность, земля подлежит приватизации. Кадастровый номер 0100403.158.", "en": "Gas, water, electricity and sewage. The buildings are privately owned; the land is eligible for privatisation. Cadastral number 0100403.158." }
+  },
+  {
+    "src": "105555018", "deal": "sale", "type": "apartment", "price": 71000, "city": "straseni", "address": "str. Ștefan cel Mare și Sfînt, Centru", "area": 71, "rooms": 3, "floor": 7, "features": ["heating", "parking"],
+    "title": { "ro": "Apartament cu 3 camere, 71 m², centrul Strășeniului", "ru": "3-комнатная квартира 71 м² в центре Страшен", "en": "Three-room apartment, 71 m², central Strășeni" },
+    "description": { "ro": "2 dormitoare, bucătărie, 2 băi, hol. Geamuri termopan, finisaj brut, încălzire autonomă, conectat la toate comunicațiile. Aproape: parc, grădiniță, școală, piață, restaurant Green Park, bancă, farmacii. Curte închisă, parcare și loc de joacă.", "ru": "2 спальни, кухня, 2 санузла, прихожая. Стеклопакеты, черновая отделка, автономное отопление, подключена ко всем коммуникациям. Рядом парк, детский сад, школа, рынок, ресторан Green Park, банк, аптеки. Закрытый двор, парковка и детская площадка.", "en": "Two bedrooms, kitchen, two bathrooms and a hallway. Double glazing, shell finish, individual heating, all utilities connected. Close to a park, kindergarten, school, market, Green Park restaurant, a bank and pharmacies. Gated courtyard with parking and a playground." }
+  },
+  {
+    "src": "105553489", "deal": "rent", "type": "commercial", "price": 5750, "city": "chisinau", "address": "Artima, str. Calea Ieșilor, Sculeanca", "area": 320,
+    "title": { "ro": "Spațiu de 320 m² în Artima", "ru": "Помещение 320 м² в Artima", "en": "320 m² space in Artima" },
+    "description": { "ro": "Spațiu universal de 320 m² în Artima, str. Calea Ieșilor. Reparație pentru chiriaș.", "ru": "Универсальное помещение 320 м² в Artima, ул. Калea Ешилор. Ремонт под арендатора.", "en": "A 320 m² multi-purpose space in Artima on Calea Ieșilor. Fit-out to the tenant's needs." }
+  },
+  {
+    "src": "105527372", "deal": "sale", "type": "commercial", "price": 165000, "city": "straseni", "address": "or. Strășeni", "area": 280,
+    "title": { "ro": "Spălătorie auto și service auto în Strășeni", "ru": "Автомойка и автосервис в Страшенах", "en": "Car wash and auto service in Strășeni" },
+    "description": { "ro": "Afacere funcțională. Teren de 6 ari, construcții de 280 m².", "ru": "Действующий бизнес. Участок 6 соток, строения 280 м².", "en": "A running business on a 600 m² plot with 280 m² of buildings." }
+  },
+  {
+    "src": "105559639", "deal": "sale", "type": "commercial", "price": 570000, "city": "chisinau", "address": "Ciocana, str. Vadul lui Vodă", "area": 305, "features": ["parking"],
+    "title": { "ro": "Parte de clădire de 305 m² pe prima linie, Ciocana", "ru": "Часть здания 305 м² на первой линии, Чокана", "en": "305 m² of a front-line building, Ciocana" },
+    "description": { "ro": "Se vinde o parte de clădire de 305 m² și 3 ari de teren. Parcare pentru 20 de mașini, prima linie. Trafic auto și pietonal intens. Construcția permite încă un nivel.", "ru": "Продаётся часть здания 305 м² и 3 сотки земли. Парковка на 20 авто, первая линия. Высокий трафик машин и пешеходов. Конструкция позволяет надстроить ещё один уровень.", "en": "Part of a building (305 m²) with 300 m² of land. Parking for 20 cars, right on the main road with heavy car and foot traffic. The structure allows another floor to be added." }
+  },
+  {
+    "src": "103688415", "deal": "sale", "type": "land", "price": 83000, "city": "chisinau", "address": "Dumbrava", "area": 8900,
+    "title": { "ro": "Două loturi agricole de 26 și 63 ari, Dumbrava", "ru": "Два сельхозучастка 26 и 63 сотки, Думбрава", "en": "Two farm plots of 26 and 63 ares, Dumbrava" },
+    "description": { "ro": "Lot 0121204024 — 26 de ari, 31 000 €. Lot 0121204023 — 63 de ari, 70 000 €. Pentru ambele — 90 000 €.", "ru": "0121204024 — 26 соток, 31 000 €. 0121204023 — 63 сотки, 70 000 €. За оба участка — 90 000 €.", "en": "Plot 0121204024 — 2,600 m², €31,000. Plot 0121204023 — 6,300 m², €70,000. Both together — €90,000." }
+  },
+  {
+    "src": "103638025", "deal": "sale", "type": "land", "price": 185000, "city": "orhei", "address": "lângă s. Ivancea, direcția Orheiul Vechi", "area": 63000, "features": ["waterView"], "featured": true,
+    "title": { "ro": "Lac cu pădure pe 6,3 ha — piscicultură, camping, odihnă", "ru": "Озеро с лесом на 6,3 га — рыбоводство, кэмпинг, отдых", "en": "Lake with woodland on 6.3 ha — fish farming, camping, leisure" },
+    "description": { "ro": "Un loc foarte frumos! Permite creșterea peștelui și amenajarea unei zone de odihnă. Lacul e înconjurat de pădure. Direcția turistică Orheiul Vechi, lângă satul Ivancea, la 35 km de Chișinău. Drum bun până la baraj.\n\nAcum apa e puțină: lacul se alimentează din izvoare, iar în preț e inclusă o fântână arteziană planificată. Acces la electricitate, gaz și apeduct. Suprafața totală — 6,3 ha.", "ru": "Очень красивое место! Можно разводить рыбу и обустроить зону отдыха. Озеро окружено лесом. Туристическое направление Орхей Векь, в районе села Иванча, 35 км от Кишинёва. Хорошая дорога до плотины.\n\nСейчас воды мало: озеро питается родниками, в цену включён планируемый артезианский колодец. Доступ к электричеству, газу и центральному водоснабжению. Общая площадь — 6,3 га.", "en": "A beautiful spot for fish farming and a leisure area, with the lake surrounded by forest. On the Old Orhei tourist route near Ivancea, 35 km from Chișinău, with a good road to the dam.\n\nThe water level is low for now: the lake is spring-fed, and a planned artesian well is included in the price. Electricity, gas and mains water available. 6.3 ha in total." },
+    "exchangeFor": { "ro": "Schimb parțial pe automobil sau imobil.", "ru": "Частичный обмен на автомобиль или недвижимость.", "en": "Partial exchange for a car or property." }
+  },
+  {
+    "src": "105029151", "deal": "sale", "type": "house", "price": 90000, "city": "chisinau", "address": "or. Vatra, la 15 min pe jos de plaja Ghidighici", "area": 90, "features": ["terrace"],
+    "title": { "ro": "Casă de vacanță cu 8 ari lângă plaja Ghidighici", "ru": "Дом-дача на 8 сотках у пляжа Гидигич", "en": "Holiday house on 8 ares near Ghidighici beach" },
+    "description": { "ro": "Casă-vilă de 90 m², beci, terasă. Teren de 8 ari. 15 minute pe jos până la plaja Ghidighici.", "ru": "Дом-дача 90 м², погреб, терраса. Участок 8 соток. 15 минут пешком до пляжа Гидигич.", "en": "A 90 m² holiday house with a cellar and terrace on an 800 m² plot. A 15-minute walk to Ghidighici beach." }
+  }
+]
