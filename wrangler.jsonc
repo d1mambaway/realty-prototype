@@ -4,8 +4,8 @@
   "name": "realty-prototype1",
   "main": "./worker/index.ts",
   "compatibility_date": "2026-09-01",
-  // Сайт временно выключен: публичный адрес *.workers.dev отключён. Чтобы включить — поставить true и задеплоить.
-  "workers_dev": false,
+  // Публичный адрес *.workers.dev. Чтобы временно выключить сайт — поставить false и задеплоить.
+  "workers_dev": true,
   "preview_urls": false,
   "assets": {
     "directory": "./out",
