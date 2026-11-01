@@ -171,9 +171,6 @@ export function HowItWorks() {
               {d.home.howTitle[0]} <em className="text-accent-soft">{d.home.howTitle[1]}</em>
             </h2>
           </Reveal>
-          <Reveal delay={0.1}>
-            <p className="mt-4 max-w-lg text-white/70">{d.form.quickText}</p>
-          </Reveal>
           <Reveal delay={0.2} className="mt-8 text-ink">
             {sent ? (
               <div className="rounded-[2rem] bg-white p-8 text-center">
