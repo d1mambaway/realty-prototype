@@ -32,6 +32,7 @@ export function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Пункты меню закрывают его сами: «Купить / Снять / Обмен» ведут на ту же страницу каталога
   useEffect(() => setOpen(false), [pathname]);
 
   if (pathname.startsWith("/admin")) return null;
@@ -99,11 +100,11 @@ export function Header() {
           >
             <div className="flex flex-col gap-1 px-4 pb-4 pt-3">
               {[...nav, { href: "/favorites/", label: d.nav.favorites }].map((item) => (
-                <Link key={item.href} href={item.href} className="rounded-xl px-3 py-2.5 font-serif text-xl hover:bg-sand">
+                <Link key={item.href} href={item.href} onClick={() => setOpen(false)} className="rounded-xl px-3 py-2.5 font-serif text-xl hover:bg-sand">
                   {item.label}
                 </Link>
               ))}
-              <Link href="/new/" className="mt-2 rounded-full bg-ink px-5 py-3 text-center font-semibold text-white">
+              <Link href="/new/" onClick={() => setOpen(false)} className="mt-2 rounded-full bg-ink px-5 py-3 text-center font-semibold text-white">
                 {d.cta.post}
               </Link>
             </div>
