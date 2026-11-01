@@ -52,7 +52,7 @@ export function ListingCard({ listing, index = 0 }: { listing: Listing; index?: 
             {listing.own && <span className="rounded-full bg-accent px-3 py-1 text-xs font-semibold text-white">{d.card.own}</span>}
           </div>
 
-          <p className="pointer-events-none absolute bottom-4 left-4 font-serif text-2xl font-semibold text-white drop-shadow">
+          <p className="pointer-events-none absolute bottom-4 left-4 font-serif text-xl font-semibold text-white drop-shadow">
             {price(listing.price, listing.deal)}
           </p>
         </div>

@@ -138,7 +138,7 @@ export function NewListingForm() {
         >
           <Check className="h-10 w-10" />
         </motion.span>
-        <h2 className="mt-6 font-serif text-4xl">{d.form.doneTitle}</h2>
+        <h2 className="mt-6 font-serif text-3xl">{d.form.doneTitle}</h2>
         <p className="mt-3 text-muted">{d.form.doneText}</p>
         <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
           <button
@@ -169,7 +169,7 @@ export function NewListingForm() {
     <div className="mx-auto max-w-3xl">
       <div className="mb-12">
         <p className="text-xs uppercase tracking-[0.3em] text-accent">{d.form.kicker}</p>
-        <h1 className="mt-3 font-serif text-5xl font-medium sm:text-7xl">
+        <h1 className="mt-3 font-serif text-3xl font-semibold sm:text-5xl">
           {d.form.title[0]} <em className="text-accent">{d.form.title[1]}</em> {d.form.title[2]}
         </h1>
       </div>
@@ -220,7 +220,7 @@ export function NewListingForm() {
             <p className="text-xs uppercase tracking-[0.3em] text-accent">
               {d.form.stepOf(step + 1, STEP_COUNT)}
             </p>
-            <h2 className="mt-2 font-serif text-4xl">{d.form.steps[step]}</h2>
+            <h2 className="mt-2 font-serif text-3xl">{d.form.steps[step]}</h2>
 
             <div className="mt-8 space-y-6">
               {step === 0 && (
@@ -432,7 +432,7 @@ function QuickRequest({ onDone }: { onDone: () => void }) {
 
   return (
     <form onSubmit={submit} className="rounded-[2rem] bg-white p-6 shadow-[0_30px_80px_-40px_rgba(0,0,0,0.35)] sm:p-10">
-      <h2 className="font-serif text-4xl">{d.form.quickTitle}</h2>
+      <h2 className="font-serif text-3xl">{d.form.quickTitle}</h2>
       <p className="mt-2 text-muted">{d.form.quickText}</p>
       <div className="mt-8 grid gap-4 sm:grid-cols-2">
         <label className="block">

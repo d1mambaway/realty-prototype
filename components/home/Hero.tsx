@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import { ArrowDown } from "lucide-react";
 import { img } from "@/lib/format";
@@ -22,6 +22,15 @@ export function Hero() {
   const imageScale = useTransform(scrollYProgress, [0, 1], [1.05, 1.2]);
   const contentY = useTransform(scrollYProgress, [0, 1], ["0%", "40%"]);
   const contentOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
+  // На телефоне поиск высокий: если текст уезжает вниз при прокрутке, он обрезается — там без этого эффекта
+  const [wide, setWide] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 1024px)");
+    const update = () => setWide(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
 
   return (
     <section ref={ref} className="relative flex min-h-[100svh] items-center overflow-hidden bg-deep">
@@ -40,22 +49,22 @@ export function Hero() {
       <div className="absolute inset-0 bg-gradient-to-r from-black/65 via-black/25 to-transparent" />
 
       <motion.div
-        style={{ y: contentY, opacity: contentOpacity }}
+        style={wide ? { y: contentY, opacity: contentOpacity } : undefined}
         className="relative mx-auto w-full max-w-7xl px-4 pb-16 pt-32 sm:px-6 lg:px-8"
       >
         <motion.p
           initial={{ opacity: 0, letterSpacing: "0.6em" }}
           animate={{ opacity: 1, letterSpacing: "0.3em" }}
           transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1] }}
-          className="text-xs uppercase text-[#E6CC94] sm:text-sm"
+          className="text-xs uppercase text-accent-soft sm:text-sm"
         >
           {d.hero.kicker}
         </motion.p>
 
         {/* Первая строка белая, вторая — тёплое золото курсивом */}
-        <h1 className="mt-6 max-w-4xl font-serif text-5xl font-medium leading-[1.02] text-white [text-shadow:0_2px_30px_rgba(0,0,0,0.35)] sm:text-7xl lg:text-8xl">
+        <h1 className="mt-6 max-w-4xl font-serif text-4xl font-bold leading-[1.08] text-white [text-shadow:0_2px_30px_rgba(0,0,0,0.35)] sm:text-6xl lg:text-7xl">
           {lines.map((line, li) => (
-            <span key={`${lang}-${li}`} className={`block ${li > 0 ? "italic text-[#EBD3A0]" : ""}`}>
+            <span key={`${lang}-${li}`} className={`block ${li > 0 ? "italic text-accent-soft" : ""}`}>
               {line.map((word, wi) => {
                 const i = lines.slice(0, li).flat().length + wi;
                 return (

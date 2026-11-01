@@ -80,7 +80,7 @@ export function SettingsTab({ onError }: { onError: (e: unknown) => void }) {
 
   return (
     <div className="mx-auto max-w-2xl">
-      <h1 className="font-serif text-4xl">Настройки</h1>
+      <h1 className="font-serif text-3xl">Настройки</h1>
       <p className="mt-1 text-sm text-muted">Контакты агентства — они показываются на сайте и в кнопках связи.</p>
 
       <div className="mt-8 space-y-4 rounded-3xl border border-line bg-white p-6">

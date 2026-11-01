@@ -88,7 +88,7 @@ export function ListingsTab({ onError }: { onError: (e: unknown) => void }) {
     <div>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="font-serif text-4xl">Объявления</h1>
+          <h1 className="font-serif text-3xl">Объявления</h1>
           {listings && (
             <p className="mt-1 text-sm text-muted">
               Всего {listings.length} · на сайте {listings.filter((l) => l.status === "active").length}

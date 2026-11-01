@@ -184,7 +184,7 @@ export function Catalog() {
     <div className="mx-auto max-w-7xl px-4 pb-24 pt-32 sm:px-6 lg:px-8">
       <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}>
         <p className="text-xs uppercase tracking-[0.3em] text-accent">{d.catalog.kicker}</p>
-        <h1 className="mt-3 font-serif text-5xl font-medium sm:text-7xl">
+        <h1 className="mt-3 font-serif text-3xl font-semibold sm:text-5xl">
           {title}
           {type && <em className="text-accent"> · {(isLand && use ? d.landUse[use] : d.typePlural[type]).toLowerCase()}</em>}
         </h1>

@@ -119,7 +119,7 @@ export function ListingEditor({
       <button type="button" onClick={onCancel} className="inline-flex items-center gap-2 text-sm font-semibold text-muted hover:text-ink">
         <ArrowLeft className="h-4 w-4" /> К списку
       </button>
-      <h1 className="mt-3 font-serif text-4xl">{listing ? "Редактирование" : "Новое объявление"}</h1>
+      <h1 className="mt-3 font-serif text-3xl">{listing ? "Редактирование" : "Новое объявление"}</h1>
 
       <div className="mt-8 space-y-8">
         <Section title="Фотографии" hint="Первое фото — обложка. Стрелками можно менять порядок.">

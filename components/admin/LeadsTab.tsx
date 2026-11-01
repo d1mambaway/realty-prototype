@@ -32,7 +32,7 @@ export function LeadsTab({ onError }: { onError: (e: unknown) => void }) {
     <div>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="font-serif text-4xl">Заявки</h1>
+          <h1 className="font-serif text-3xl">Заявки</h1>
           {leads && <p className="mt-1 text-sm text-muted">Новых: {leads.filter((l) => l.status === "new").length}</p>}
         </div>
         <label className="flex items-center gap-2 text-sm font-medium">

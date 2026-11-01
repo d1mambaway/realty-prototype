@@ -37,7 +37,7 @@ export function Featured() {
       <div className="flex flex-wrap items-end justify-between gap-6">
         <Reveal>
           <p className="text-xs uppercase tracking-[0.3em] text-accent">{d.home.featuredKicker}</p>
-          <h2 className="mt-3 font-serif text-4xl font-medium sm:text-6xl">
+          <h2 className="mt-3 font-serif text-3xl font-semibold sm:text-5xl">
             {d.home.featuredTitle[0]} <em className="text-accent">{d.home.featuredTitle[1]}</em>
           </h2>
         </Reveal>
@@ -69,7 +69,7 @@ export function Categories() {
     <section className="bg-sand/60 py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <Reveal>
-          <h2 className="font-serif text-4xl font-medium sm:text-6xl">{d.home.categoriesTitle}</h2>
+          <h2 className="font-serif text-3xl font-semibold sm:text-5xl">{d.home.categoriesTitle}</h2>
         </Reveal>
         <div className={`mt-12 grid gap-4 sm:grid-cols-2 ${{ 3: "lg:grid-cols-3", 5: "lg:grid-cols-5", 6: "lg:grid-cols-3" }[categories.length] ?? "lg:grid-cols-4"}`}>
           {categories.map((cat, i) => (
@@ -134,7 +134,7 @@ export function Stats() {
     <section className="mx-auto grid max-w-7xl gap-10 px-4 py-24 sm:grid-cols-2 sm:px-6 lg:grid-cols-4 lg:px-8">
       {stats.map((s, i) => (
         <Reveal key={i} delay={i * 0.08} className="border-t border-ink pt-6">
-          <p className="font-serif text-6xl font-medium">
+          <p className="font-serif text-5xl font-semibold">
             <Counter to={s.to} suffix={s.suffix} />
           </p>
           <p className="mt-2 text-muted">{d.home.stats[i]}</p>
@@ -164,7 +164,7 @@ export function HowItWorks() {
         <div>
           <Reveal>
             <p className="text-xs uppercase tracking-[0.3em] text-accent-soft">{d.home.howKicker}</p>
-            <h2 className="mt-3 font-serif text-4xl font-medium sm:text-6xl">
+            <h2 className="mt-3 font-serif text-3xl font-semibold sm:text-5xl">
               {d.home.howTitle[0]} <em className="text-accent-soft">{d.home.howTitle[1]}</em>
             </h2>
           </Reveal>

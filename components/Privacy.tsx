@@ -37,7 +37,7 @@ export function Privacy() {
   const settings = useSettings();
   return (
     <article className="mx-auto max-w-3xl px-4 pb-24 pt-32 sm:px-6">
-      <h1 className="font-serif text-5xl font-medium sm:text-6xl">{d.privacy.title}</h1>
+      <h1 className="font-serif text-5xl font-semibold sm:text-6xl">{d.privacy.title}</h1>
       <div className="mt-12 space-y-10">
         {SECTIONS[lang].map((s) => (
           <section key={s.title}>

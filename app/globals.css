@@ -4,14 +4,15 @@
   --color-ivory: #f1f0ee;
   --color-sand: #e5e3df;
   --color-ink: #2b2a28;
-  --color-muted: #75726d;
+  --color-muted: #5e5a54;
   --color-line: #d7d4cf;
-  --color-accent: #8a7f72;
-  --color-accent-soft: #d6cfc4;
+  --color-accent: #8b5e2b;
+  --color-accent-soft: #e3c48e;
   --color-deep: #1f1e1c;
 
   --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
-  --font-serif: var(--font-cormorant), ui-serif, Georgia, serif;
+  --font-serif: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+  --font-logo: var(--font-cormorant), ui-serif, Georgia, serif;
 
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -77,5 +78,13 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .hero-word {
     animation: none;
+  }
+}
+
+/* Заголовки Montserrat: чуть плотнее и жирнее, чем обычный текст */
+@layer base {
+  .font-serif {
+    font-weight: 600;
+    letter-spacing: -0.02em;
   }
 }

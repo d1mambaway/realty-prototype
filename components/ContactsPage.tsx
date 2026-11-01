@@ -18,7 +18,7 @@ export function ContactsPage() {
     <div className="mx-auto max-w-7xl px-4 pb-24 pt-32 sm:px-6 lg:px-8">
       <Reveal>
         <p className="text-xs uppercase tracking-[0.3em] text-accent">{d.contactsPage.kicker}</p>
-        <h1 className="mt-3 font-serif text-5xl font-medium sm:text-7xl">
+        <h1 className="mt-3 font-serif text-3xl font-semibold sm:text-5xl">
           {d.contactsPage.title[0]} <em className="text-accent">{d.contactsPage.title[1]}</em>
         </h1>
         <p className="mt-4 max-w-xl text-lg text-ink/75">{d.contactsPage.sub}</p>

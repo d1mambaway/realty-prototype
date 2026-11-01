@@ -67,7 +67,7 @@ export function ListingDetail() {
     if (!ready) return <div className="min-h-screen" />;
     return (
       <div className="mx-auto flex min-h-[70vh] max-w-xl flex-col items-center justify-center px-4 pt-24 text-center">
-        <p className="font-serif text-5xl">{d.detail.notFoundTitle}</p>
+        <p className="font-serif text-3xl">{d.detail.notFoundTitle}</p>
         <p className="mt-3 text-muted">{d.detail.notFoundText}</p>
         <Link href="/listings/" className="mt-8 rounded-full bg-ink px-6 py-3 font-semibold text-white hover:bg-accent">
           {d.detail.toCatalog}
@@ -151,7 +151,7 @@ export function ListingDetail() {
                 <span className="rounded-full border border-line px-3 py-1 text-xs font-semibold">{d.landUse[listing.landUse]}</span>
               )}
             </div>
-            <h1 className="mt-4 font-serif text-4xl font-medium leading-tight sm:text-6xl">{tx(listing.title)}</h1>
+            <h1 className="mt-4 font-serif text-3xl font-semibold leading-tight sm:text-5xl">{tx(listing.title)}</h1>
             <p className="mt-3 inline-flex items-center gap-2 text-muted">
               <MapPin className="h-4 w-4" /> {[city(listing.city), listing.address].filter(Boolean).join(", ")}
             </p>
@@ -193,7 +193,7 @@ export function ListingDetail() {
         <aside>
           <div className="rounded-[2rem] bg-white p-7 lg:sticky lg:top-24 shadow-[0_30px_80px_-40px_rgba(0,0,0,0.35)]">
             <p className="text-sm text-muted">{listing.deal === "exchange" ? d.detail.estimatedValue : d.deal[listing.deal]}</p>
-            <p className="mt-1 font-serif text-4xl font-semibold">{price(listing.price, listing.deal)}</p>
+            <p className="mt-1 font-serif text-3xl font-semibold">{price(listing.price, listing.deal)}</p>
             {listing.exchangeFor && (
               <div className="mt-5 rounded-2xl bg-sand/70 p-4">
                 <p className="text-xs font-semibold uppercase tracking-[0.15em] text-muted">{listing.deal === "exchange" ? d.detail.exchangeFor : d.detail.exchangePossible}</p>
@@ -236,7 +236,7 @@ export function ListingDetail() {
       {similar.length > 0 && (
         <section className="mt-24">
           <Reveal>
-            <h2 className="font-serif text-4xl font-medium">{reallySimilar ? d.detail.similar : d.detail.others}</h2>
+            <h2 className="font-serif text-3xl font-semibold">{reallySimilar ? d.detail.similar : d.detail.others}</h2>
           </Reveal>
           <div className="mt-10 grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
             {similar.map((l, i) => (
@@ -251,7 +251,7 @@ export function ListingDetail() {
         className="fixed inset-x-0 bottom-0 z-40 flex items-center gap-2 border-t border-line bg-ivory/95 px-4 pt-3 backdrop-blur lg:hidden"
         style={{ paddingBottom: "calc(12px + env(safe-area-inset-bottom, 0px))" }}
       >
-        <p className="min-w-0 flex-1 truncate font-serif text-2xl font-semibold">{price(listing.price, listing.deal)}</p>
+        <p className="min-w-0 flex-1 truncate font-serif text-xl font-semibold">{price(listing.price, listing.deal)}</p>
         {settings.phone && (
           <>
             <a

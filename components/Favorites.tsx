@@ -16,7 +16,7 @@ export function Favorites() {
   const heading = (
     <>
       <p className="text-xs uppercase tracking-[0.3em] text-accent">{d.favorites.kicker}</p>
-      <h1 className="mt-3 font-serif text-5xl font-medium sm:text-7xl">{d.favorites.title}</h1>
+      <h1 className="mt-3 font-serif text-3xl font-semibold sm:text-5xl">{d.favorites.title}</h1>
     </>
   );
 
