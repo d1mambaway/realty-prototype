@@ -135,7 +135,7 @@ const ro = {
   },
   form: {
     kicker: "Pentru proprietari",
-    title: ["Vindeți sau schimbați", "imobilul", "cu noi"],
+    title: ["Vindeți, schimbați sau dați în chirie", "imobilul", "cu noi"],
     steps: ["Tranzacție și tip", "Parametri", "Descriere", "Contacte"],
     stepOf: (n: number, m: number) => `Pasul ${n} din ${m}`,
     whatToDo: "Ce doriți să faceți?",
@@ -378,7 +378,7 @@ const ru: Dict = {
   },
   form: {
     kicker: "Собственникам",
-    title: ["Продайте или обменяйте", "недвижимость", "с нами"],
+    title: ["Продайте, обменяйте или сдайте в аренду", "недвижимость", "с нами"],
     steps: ["Сделка и тип", "Параметры", "Описание", "Контакты"],
     stepOf: (n, m) => `Шаг ${n} из ${m}`,
     whatToDo: "Что хотите сделать?",
@@ -613,7 +613,7 @@ const en: Dict = {
   },
   form: {
     kicker: "For owners",
-    title: ["Sell or exchange", "your property", "with us"],
+    title: ["Sell, exchange or let", "your property", "with us"],
     steps: ["Deal and type", "Details", "Description", "Contacts"],
     stepOf: (n, m) => `Step ${n} of ${m}`,
     whatToDo: "What would you like to do?",
