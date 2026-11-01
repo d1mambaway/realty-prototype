@@ -3,10 +3,11 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
-import { ArrowLeft, ArrowRight, Check, Loader2 } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, Loader2, Phone } from "lucide-react";
 import { sendLead } from "@/lib/store";
 import { Consent } from "@/components/Contact";
 import { useI18n } from "@/lib/i18n";
+import { usePageMeta } from "@/lib/meta";
 import { CITIES, DEALS, FEATURES, TYPES, type Deal, type PropertyType } from "@/lib/types";
 import { DICTS } from "@/lib/dict";
 
@@ -58,6 +59,8 @@ export function NewListingForm() {
   const [error, setError] = useState("");
   const [sending, setSending] = useState(false);
   const [done, setDone] = useState(false);
+  const [detailed, setDetailed] = useState(false);
+  usePageMeta(d.meta.sell);
 
   const update = <K extends keyof FormState>(key: K, value: FormState[K]) => setForm((f) => ({ ...f, [key]: value }));
 
@@ -150,6 +153,7 @@ export function NewListingForm() {
             onClick={() => {
               setForm(INITIAL);
               setStep(0);
+              setDetailed(false);
               setDone(false);
             }}
             className="rounded-full border border-line px-6 py-3 font-semibold hover:border-ink"
@@ -169,6 +173,23 @@ export function NewListingForm() {
           {d.form.title[0]} <em className="text-accent">{d.form.title[1]}</em> {d.form.title[2]}
         </h1>
       </div>
+      {!detailed ? (
+        <>
+          <QuickRequest onDone={() => setDone(true)} />
+          <div className="mt-10 flex flex-col items-center gap-3 text-center">
+            <p className="text-muted">{d.form.detailedTitle}</p>
+            <button
+              type="button"
+              onClick={() => setDetailed(true)}
+              className="rounded-full border border-ink px-7 py-3 font-semibold transition-colors hover:bg-ink hover:text-white"
+            >
+              {d.form.detailedButton}
+            </button>
+          </div>
+        </>
+      ) : (
+      <>
+      <p className="mb-6 text-sm text-muted">{d.form.photosNote}</p>
       {/* Прогресс */}
       <div className="flex items-center gap-2">
         {d.form.steps.map((label, i) => (
@@ -370,7 +391,100 @@ export function NewListingForm() {
           </button>
         </div>
       </div>
+      </>
+      )}
     </div>
+  );
+}
+
+/** Короткая заявка: агент сам перезвонит и заполнит объявление */
+function QuickRequest({ onDone }: { onDone: () => void }) {
+  const { d, city } = useI18n();
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [type, setType] = useState<PropertyType>("land");
+  const [place, setPlace] = useState<string>(CITIES[0]);
+  const [error, setError] = useState("");
+  const [sending, setSending] = useState(false);
+
+  async function submit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!name.trim()) return setError(d.form.errors.name);
+    if (phone.replace(/\D/g, "").length < 8) return setError(d.form.errors.phone);
+    setError("");
+    setSending(true);
+    const ru = DICTS.ru;
+    try {
+      await sendLead({
+        kind: "sell",
+        name: name.trim(),
+        phone: phone.trim(),
+        message: "Быстрая заявка: агент перезвонит и заполнит объявление",
+        data: { Тип: ru.type[type], Город: ru.city[place as keyof typeof ru.city] ?? place },
+      });
+      onDone();
+    } catch {
+      setError(d.form.errors.storage);
+    } finally {
+      setSending(false);
+    }
+  }
+
+  return (
+    <form onSubmit={submit} className="rounded-[2rem] bg-white p-6 shadow-[0_30px_80px_-40px_rgba(0,0,0,0.35)] sm:p-10">
+      <h2 className="font-serif text-4xl">{d.form.quickTitle}</h2>
+      <p className="mt-2 text-muted">{d.form.quickText}</p>
+      <div className="mt-8 grid gap-4 sm:grid-cols-2">
+        <label className="block">
+          <span className="mb-2 block text-sm font-semibold">{d.form.name}</span>
+          <input value={name} onChange={(e) => setName(e.target.value)} autoComplete="name" className={inputCls} />
+        </label>
+        <label className="block">
+          <span className="mb-2 block text-sm font-semibold">{d.form.phone}</span>
+          <input
+            type="tel"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            placeholder={d.form.phonePh}
+            inputMode="tel"
+            autoComplete="tel"
+            className={inputCls}
+          />
+        </label>
+        <label className="block">
+          <span className="mb-2 block text-sm font-semibold">{d.form.propertyType}</span>
+          <select value={type} onChange={(e) => setType(e.target.value as PropertyType)} className={inputCls}>
+            {TYPES.map((t) => (
+              <option key={t} value={t}>
+                {d.type[t]}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label className="block">
+          <span className="mb-2 block text-sm font-semibold">{d.form.city}</span>
+          <select value={place} onChange={(e) => setPlace(e.target.value)} className={inputCls}>
+            {CITIES.map((c) => (
+              <option key={c} value={c}>
+                {city(c)}
+              </option>
+            ))}
+          </select>
+        </label>
+      </div>
+      {error && <p className="mt-4 text-sm font-medium text-red-500">{error}</p>}
+      <button
+        type="submit"
+        disabled={sending}
+        className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-ink px-7 py-4 font-semibold text-white transition-colors hover:bg-accent disabled:opacity-50 sm:w-auto"
+      >
+        {sending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Phone className="h-4 w-4" />}
+        {d.form.quickButton}
+      </button>
+      <div className="mt-4">
+        <Consent />
+      </div>
+    </form>
   );
 }
 

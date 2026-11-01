@@ -3,10 +3,12 @@
 import Link from "next/link";
 import { ListingCard } from "@/components/ListingCard";
 import { useI18n } from "@/lib/i18n";
+import { usePageMeta } from "@/lib/meta";
 import { useFavorites, useListingsState } from "@/lib/store";
 
 export function Favorites() {
   const { d } = useI18n();
+  usePageMeta(d.meta.favorites);
   const { listings, ready } = useListingsState();
   const { ids } = useFavorites();
   const items = listings.filter((l) => ids.includes(l.id));

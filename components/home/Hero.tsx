@@ -5,6 +5,7 @@ import { motion, useScroll, useTransform } from "motion/react";
 import { ArrowDown } from "lucide-react";
 import { img } from "@/lib/format";
 import { useI18n } from "@/lib/i18n";
+import { usePageMeta } from "@/lib/meta";
 import { SearchPanel } from "./SearchPanel";
 
 // Поля и город на рассвете с дрона (Unsplash, оригинал 13 000 px)
@@ -13,6 +14,7 @@ const HERO = "1775762951334-8db09e259811";
 export function Hero() {
   const { d, lang } = useI18n();
   const lines = d.hero.lines;
+  usePageMeta(d.meta.home.title, d.meta.home.description);
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   // Параллакс: фото уезжает медленнее страницы и чуть приближается, текст тает
@@ -57,15 +59,8 @@ export function Hero() {
               {line.map((word, wi) => {
                 const i = lines.slice(0, li).flat().length + wi;
                 return (
-                  <span key={wi} className="inline-block overflow-hidden pb-2 pr-[0.08em] align-bottom">
-                    <motion.span
-                      className="mr-[0.2em] inline-block"
-                      initial={{ y: "110%" }}
-                      animate={{ y: 0 }}
-                      transition={{ duration: 1.1, delay: 0.2 + i * 0.09, ease: [0.16, 1, 0.3, 1] }}
-                    >
-                      {word}
-                    </motion.span>
+                  <span key={wi} className="hero-word mr-[0.2em] inline-block pb-2" style={{ animationDelay: `${0.1 + i * 0.08}s` }}>
+                    {word}
                   </span>
                 );
               })}
@@ -73,14 +68,11 @@ export function Hero() {
           ))}
         </h1>
 
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        <p
           className="mt-6 max-w-xl text-base leading-relaxed text-white/90 [text-shadow:0_1px_12px_rgba(0,0,0,0.5)] sm:text-lg"
         >
           {d.hero.sub}
-        </motion.p>
+        </p>
 
         <motion.div
           initial={{ opacity: 0, y: 40 }}

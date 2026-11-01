@@ -5,11 +5,13 @@ import { LeadForm } from "@/components/Contact";
 import { PhoneWithMessengers } from "@/components/Messengers";
 import { Reveal } from "@/components/Reveal";
 import { useI18n } from "@/lib/i18n";
+import { usePageMeta } from "@/lib/meta";
 import { useSettings } from "@/lib/store";
 
 export function ContactsPage() {
   const { d } = useI18n();
   const settings = useSettings();
+  usePageMeta(d.meta.contacts.title, d.meta.contacts.description);
   const phones = [settings.phone, settings.phone2].filter(Boolean);
 
   return (

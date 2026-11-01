@@ -30,6 +30,8 @@ export interface Listing {
   features: string[];
   /** Только для участков: под строительство / сельхоз / под производство */
   landUse?: LandUse;
+  /** Продаётся бизнес, а не недвижимость (помещение в аренде) — без цены за м² */
+  business?: boolean;
   contactName: string;
   contactPhone: string;
   createdAt: string;

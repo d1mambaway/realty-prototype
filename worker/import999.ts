@@ -275,6 +275,7 @@ export async function import999(env: AppEnv, id: string): Promise<ImportResult> 
     area: areaOf(type, ad.chars, ad.title),
     rooms,
     ...(type === "land" && landUseOf(ad.chars) ? { landUse: landUseOf(ad.chars) } : {}),
+    ...(ad.category.includes("Действующий бизнес") ? { business: true } : {}),
     ...(floor ? { floor } : {}),
     ...(floors ? { floors } : {}),
     description: ai ? tri(ai.ro.description, ai.ru.description, ai.en.description) : cleanDescription,

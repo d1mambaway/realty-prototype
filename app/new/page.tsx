@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { NewListingForm } from "@/components/NewListingForm";
 
-export const metadata: Metadata = { title: "Anunț nou — REZULTAT" };
+export const metadata: Metadata = { title: "Vindeți sau dați în chirie cu REZULTAT" };
 
 export default function NewListingPage() {
   return (

@@ -53,12 +53,14 @@ export function FloatingContact() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   if (pathname.startsWith("/admin") || !settings.phone) return null;
+  // На странице объявления у телефона своя нижняя панель связи
+  const onListing = pathname.startsWith("/listing/") || pathname === "/listing";
 
   const items = [{ label: d.contact.call, href: `tel:+${digitsOf(settings.phone)}`, color: "bg-ink" }, ...messengerLinks(settings.phone)];
 
   return (
     <div
-      className="fixed z-40 flex flex-col items-end gap-2"
+      className={`fixed z-40 flex-col items-end gap-2 ${onListing ? "hidden lg:flex" : "flex"}`}
       style={{ right: "max(16px, env(safe-area-inset-right, 0px))", bottom: "calc(16px + env(safe-area-inset-bottom, 0px))" }}
     >
       <AnimatePresence>

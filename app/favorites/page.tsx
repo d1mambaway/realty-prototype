@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Favorites } from "@/components/Favorites";
 
-export const metadata: Metadata = { title: "Favorite — REZULTAT" };
+export const metadata: Metadata = { title: "Favorite | REZULTAT", robots: { index: false } };
 
 export default function FavoritesPage() {
   return (

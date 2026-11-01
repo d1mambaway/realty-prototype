@@ -1,11 +1,13 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import { motion } from "motion/react";
 import { Heart, MapPin, Maximize2, BedDouble } from "lucide-react";
 import { useI18n } from "@/lib/i18n";
 import { useFavorites } from "@/lib/store";
 import { hasRooms, type Listing } from "@/lib/types";
+import { areaText } from "@/lib/format";
 
 export function ListingCard({ listing, index = 0 }: { listing: Listing; index?: number }) {
   const { d, tx, city, price } = useI18n();
@@ -13,6 +15,8 @@ export function ListingCard({ listing, index = 0 }: { listing: Listing; index?: 
   const liked = has(listing.id);
   const title = tx(listing.title);
   const [first, second] = listing.images;
+  // Второе фото грузим только при наведении мышью, чтобы не тратить трафик на телефонах
+  const [hovered, setHovered] = useState(false);
 
   return (
     <motion.article
@@ -23,7 +27,7 @@ export function ListingCard({ listing, index = 0 }: { listing: Listing; index?: 
       transition={{ duration: 0.8, delay: (index % 3) * 0.08, ease: [0.16, 1, 0.3, 1] }}
       className="group relative"
     >
-      <Link href={`/listing/?id=${listing.id}`} className="block">
+      <Link href={`/listing/?id=${listing.id}`} className="block" onMouseEnter={() => setHovered(true)}>
         <div className="relative aspect-[4/3] overflow-hidden rounded-3xl bg-sand">
           {first && (
             // eslint-disable-next-line @next/next/no-img-element
@@ -34,7 +38,7 @@ export function ListingCard({ listing, index = 0 }: { listing: Listing; index?: 
               className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1.2s] ease-out-expo group-hover:scale-110"
             />
           )}
-          {second && (
+          {second && hovered && (
             // eslint-disable-next-line @next/next/no-img-element
             <img
               src={second}
@@ -87,7 +91,7 @@ export function ListingCard({ listing, index = 0 }: { listing: Listing; index?: 
           {listing.area > 0 && (
             <span className="inline-flex items-center gap-1.5">
               <Maximize2 className="h-4 w-4" />
-              {listing.area.toLocaleString("ru-RU")} m²
+              {areaText(listing, d)}
             </span>
           )}
           {listing.type !== "commercial" && hasRooms(listing) && (

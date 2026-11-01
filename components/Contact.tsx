@@ -61,11 +61,13 @@ export function LeadForm({
   kind,
   listingId,
   defaultMessage = "",
+  submitLabel,
   dark = false,
 }: {
   kind: "listing" | "contact";
   listingId?: string;
   defaultMessage?: string;
+  submitLabel?: string;
   dark?: boolean;
 }) {
   const { d } = useI18n();
@@ -93,6 +95,8 @@ export function LeadForm({
       : "border-line bg-ivory/60 placeholder:text-muted/70 focus:border-accent focus:bg-white"
   }`;
 
+  const label = `mb-1 block text-xs font-semibold ${dark ? "text-white/70" : "text-ink/70"}`;
+
   return (
     <AnimatePresence mode="wait" initial={false}>
       {state === "sent" ? (
@@ -109,23 +113,33 @@ export function LeadForm({
         </motion.p>
       ) : (
         <motion.form key="form" onSubmit={submit} className="space-y-2.5" exit={{ opacity: 0 }}>
-          <input required value={name} onChange={(e) => setName(e.target.value)} placeholder={d.contact.name} className={input} autoComplete="name" />
-          <input
-            required
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            placeholder={`${d.contact.phone}: +373 …`}
-            inputMode="tel"
-            autoComplete="tel"
-            className={input}
-          />
-          <textarea
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            placeholder={d.contact.messagePh}
-            rows={3}
-            className={`${input} resize-none`}
-          />
+          <label className="block">
+            <span className={label}>{d.contact.name}</span>
+            <input required value={name} onChange={(e) => setName(e.target.value)} className={input} autoComplete="name" />
+          </label>
+          <label className="block">
+            <span className={label}>{d.contact.phone}</span>
+            <input
+              required
+              type="tel"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              placeholder="+373 …"
+              inputMode="tel"
+              autoComplete="tel"
+              className={input}
+            />
+          </label>
+          <label className="block">
+            <span className={label}>{d.contact.message}</span>
+            <textarea
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              placeholder={d.contact.messagePh}
+              rows={3}
+              className={`${input} resize-none`}
+            />
+          </label>
           {/* Ловушка для ботов: поле скрыто от людей */}
           <input value={website} onChange={(e) => setWebsite(e.target.value)} tabIndex={-1} autoComplete="off" className="hidden" aria-hidden />
           <button
@@ -136,7 +150,7 @@ export function LeadForm({
             }`}
           >
             {state === "sending" ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
-            {d.contact.send}
+            {submitLabel ?? d.contact.send}
           </button>
           {state === "error" && <p className="text-sm text-red-500">{d.contact.failed}</p>}
           <Consent dark={dark} />

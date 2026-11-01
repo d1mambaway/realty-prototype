@@ -210,24 +210,26 @@ async function page(request: Request, env: AppEnv, url: URL): Promise<Response> 
 
   const [listings, settings] = await Promise.all([publicListings(env), getSettings(env)]);
   const bootstrap = `<script>window.__RZ__=${safeJson({ listings, settings })}</script>`;
+  // Канонический адрес: без фильтров каталога, у объявления — с его id
+  const id = url.pathname.startsWith("/listing/") ? url.searchParams.get("id") : null;
+  const canonical = url.origin + url.pathname + (id ? `?id=${encodeURIComponent(id)}` : "");
   let rewriter = new HTMLRewriter().on("head", {
     element(el) {
-      el.append(bootstrap, { html: true });
+      el.append(`${bootstrap}<link rel="canonical" href="${escapeHtml(canonical)}">`, { html: true });
     },
   });
 
   // Превью в Telegram/Viber/Google для страницы объявления
-  const id = url.pathname.startsWith("/listing") ? url.searchParams.get("id") : null;
   const listing = id ? listings.find((l) => l.id === id) : undefined;
   if (listing) {
-    const title = `${ro(listing.title)} — REZULTAT`;
+    const title = `${ro(listing.title)} — ${listing.price.toLocaleString("ro-RO")} € | REZULTAT`;
     const description = ro(listing.description).replace(/\s+/g, " ").slice(0, 200);
     const image = listing.images[0] ? new URL(listing.images[0], url.origin).href : "";
     const meta = [
       ["og:title", title],
       ["og:description", description],
       ["og:image", image],
-      ["og:url", url.href],
+      ["og:url", canonical],
       ["og:type", "website"],
     ]
       .filter(([, v]) => v)
@@ -246,7 +248,7 @@ async function page(request: Request, env: AppEnv, url: URL): Promise<Response> 
       })
       .on("head", {
         element(el) {
-          el.append(`${meta}<meta name="twitter:card" content="summary_large_image">`, { html: true });
+          el.append(`${meta}<meta name="twitter:card" content="summary_large_image">${listingJsonLd(listing, canonical, image, description)}`, { html: true });
         },
       });
   }
@@ -257,9 +259,29 @@ async function page(request: Request, env: AppEnv, url: URL): Promise<Response> 
   return new Response(response.body, { status: response.status, headers });
 }
 
+/** Разметка объявления для поисковиков (schema.org) */
+function listingJsonLd(listing: Listing, url: string, image: string, description: string): string {
+  const data = {
+    "@context": "https://schema.org",
+    "@type": "RealEstateListing",
+    name: ro(listing.title),
+    description,
+    url,
+    ...(image ? { image } : {}),
+    datePosted: listing.createdAt,
+    offers: {
+      "@type": "Offer",
+      price: listing.price,
+      priceCurrency: "EUR",
+      availability: listing.status === "sold" ? "https://schema.org/SoldOut" : "https://schema.org/InStock",
+    },
+  };
+  return `<script type="application/ld+json">${safeJson(data)}</script>`;
+}
+
 async function sitemap(env: AppEnv, origin: string): Promise<Response> {
   const listings = await publicListings(env);
-  const urls = ["/", "/listings/", "/new/", "/privacy/", ...listings.map((l) => `/listing/?id=${l.id}`)];
+  const urls = ["/", "/listings/", "/contacts/", "/new/", "/privacy/", ...listings.map((l) => `/listing/?id=${l.id}`)];
   const xml =
     `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">` +
     urls.map((u) => `<url><loc>${escapeHtml(origin + u)}</loc></url>`).join("") +

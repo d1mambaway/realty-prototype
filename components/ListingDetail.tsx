@@ -25,7 +25,10 @@ import { Reveal } from "@/components/Reveal";
 import { useI18n } from "@/lib/i18n";
 import { useFavorites, useSiteData } from "@/lib/store";
 import { ContactButtons, LeadForm } from "@/components/Contact";
-import { hasRooms } from "@/lib/types";
+import { hasRooms, type Listing } from "@/lib/types";
+import { areaText, unitPriceText } from "@/lib/format";
+import { usePageMeta } from "@/lib/meta";
+import { messengerLinks } from "@/components/Messengers";
 
 export function ListingDetail() {
   const id = useSearchParams().get("id");
@@ -38,6 +41,10 @@ export function ListingDetail() {
 
   const listing = listings.find((l) => l.id === id);
   const images = listing?.images ?? [];
+  usePageMeta(
+    listing && `${tx(listing.title)} — ${price(listing.price, listing.deal)} | REZULTAT`,
+    listing && tx(listing.description).replace(/\s+/g, " ").slice(0, 160),
+  );
 
   const go = useCallback(
     (dir: number) => setActive((i) => (i + dir + images.length) % images.length),
@@ -68,12 +75,12 @@ export function ListingDetail() {
     );
   }
 
-  const similar = listings
-    .filter((l) => l.id !== listing.id && (l.deal === listing.deal || l.type === listing.type))
-    .slice(0, 3);
+  const similar = similarTo(listing, listings);
+  const reallySimilar = similar.length > 0 && similar[0].type === listing.type;
+  const unitPrice = unitPriceText(listing, d);
   const liked = has(listing.id);
   const facts = [
-    listing.area > 0 && { icon: Maximize2, label: d.detail.area, value: `${listing.area.toLocaleString("ru-RU")} m²` },
+    listing.area > 0 && { icon: Maximize2, label: d.detail.area, value: areaText(listing, d) },
     hasRooms(listing) && { icon: BedDouble, label: d.detail.rooms, value: d.rooms(listing.rooms) },
     listing.floor && { icon: Building2, label: d.detail.floor, value: `${listing.floor}${listing.floors ? ` ${d.detail.of} ${listing.floors}` : ""}` },
     !listing.floor && listing.floors && { icon: Building2, label: d.detail.floors, value: String(listing.floors) },
@@ -81,7 +88,7 @@ export function ListingDetail() {
   ].filter(Boolean) as { icon: typeof Maximize2; label: string; value: string }[];
 
   return (
-    <div className="mx-auto max-w-7xl px-4 pb-24 pt-28 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-7xl px-4 pb-32 pt-28 sm:px-6 lg:px-8 lg:pb-24">
       <button
         type="button"
         onClick={() => router.back()}
@@ -197,11 +204,8 @@ export function ListingDetail() {
                 <p className="mt-1.5 font-medium leading-snug">{tx(listing.exchangeFor)}</p>
               </div>
             )}
-            {listing.deal === "sale" && listing.area > 0 && (
-              <p className="mt-1 text-sm text-muted">
-                {Math.round(listing.price / listing.area).toLocaleString("ru-RU")} {d.price.perSqm}
-              </p>
-            )}
+            {listing.business && <p className="mt-1 text-sm font-medium text-accent">{d.detail.businessSale}</p>}
+            {unitPrice && <p className="mt-1 text-sm text-muted">{unitPrice}</p>}
 
             <div className="mt-6 flex items-center gap-3 border-t border-line pt-6">
               <span className="flex h-12 w-12 items-center justify-center rounded-full bg-sand font-serif text-xl">
@@ -226,8 +230,8 @@ export function ListingDetail() {
             </button>
 
             <div className="mt-6 border-t border-line pt-6">
-              <p className="mb-3 font-serif text-2xl">{d.contact.formTitle}</p>
-              <LeadForm kind="listing" listingId={listing.id} defaultMessage={d.contact.messagePh} />
+              <p className="mb-3 font-serif text-2xl">{d.detail.viewingTitle}</p>
+              <LeadForm kind="listing" listingId={listing.id} defaultMessage={d.detail.viewingMessage} submitLabel={d.detail.viewingButton} />
             </div>
           </div>
         </aside>
@@ -236,7 +240,7 @@ export function ListingDetail() {
       {similar.length > 0 && (
         <section className="mt-24">
           <Reveal>
-            <h2 className="font-serif text-4xl font-medium">{d.detail.similar}</h2>
+            <h2 className="font-serif text-4xl font-medium">{reallySimilar ? d.detail.similar : d.detail.others}</h2>
           </Reveal>
           <div className="mt-10 grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
             {similar.map((l, i) => (
@@ -245,6 +249,32 @@ export function ListingDetail() {
           </div>
         </section>
       )}
+
+      {/* На телефоне цена и связь всегда под рукой */}
+      <div
+        className="fixed inset-x-0 bottom-0 z-40 flex items-center gap-2 border-t border-line bg-ivory/95 px-4 pt-3 backdrop-blur lg:hidden"
+        style={{ paddingBottom: "calc(12px + env(safe-area-inset-bottom, 0px))" }}
+      >
+        <p className="min-w-0 flex-1 truncate font-serif text-2xl font-semibold">{price(listing.price, listing.deal)}</p>
+        {settings.phone && (
+          <>
+            <a
+              href={`tel:+${settings.phone.replace(/\D/g, "")}`}
+              className="inline-flex items-center gap-1.5 rounded-full bg-ink px-4 py-2.5 text-sm font-semibold text-white"
+            >
+              <Phone className="h-4 w-4" /> {d.contact.call}
+            </a>
+            <a
+              href={`${messengerLinks(settings.phone)[0].href}?text=${encodeURIComponent(`${tx(listing.title)} — ${typeof window === "undefined" ? "" : window.location.href}`)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-full bg-[#25D366] px-4 py-2.5 text-sm font-semibold text-white"
+            >
+              WhatsApp
+            </a>
+          </>
+        )}
+      </div>
 
       <AnimatePresence>
         {lightbox && (
@@ -280,6 +310,22 @@ export function ListingDetail() {
       </AnimatePresence>
     </div>
   );
+}
+
+/** Похожие: сначала тот же тип объекта, затем сделка, бюджет и город */
+function similarTo(listing: Listing, listings: Listing[]): Listing[] {
+  const score = (l: Listing) =>
+    (l.type === listing.type ? 100 : 0) +
+    (l.type === "land" && l.landUse && l.landUse === listing.landUse ? 15 : 0) +
+    (l.deal === listing.deal ? 40 : 0) +
+    (l.price > 0 && listing.price > 0 && l.price / listing.price < 2 && listing.price / l.price < 2 ? 20 : 0) +
+    (l.city === listing.city ? 10 : 0);
+  return listings
+    .filter((l) => l.id !== listing.id)
+    .map((l) => ({ l, s: score(l) }))
+    .sort((a, b) => b.s - a.s)
+    .slice(0, 3)
+    .map(({ l }) => l);
 }
 
 function GalleryArrow({ side, onClick, dark }: { side: "left" | "right"; onClick: () => void; dark?: boolean }) {

@@ -63,3 +63,19 @@ body {
   html { scroll-behavior: auto; }
   .marquee { animation: none; }
 }
+
+/* Лозунг на главной: текст виден сразу (для скорости загрузки), лишь мягко «проявляется» */
+@keyframes hero-word {
+  from {
+    transform: translateY(0.25em);
+    filter: blur(10px);
+  }
+}
+.hero-word {
+  animation: hero-word 1.1s var(--ease-out-expo) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-word {
+    animation: none;
+  }
+}

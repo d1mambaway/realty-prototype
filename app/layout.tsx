@@ -15,8 +15,9 @@ const cormorant = Cormorant_Garamond({
 });
 
 export const metadata: Metadata = {
-  title: "REZULTAT — Tranzactii Imobiliare",
-  description: "Vânzare, cumpărare și chirie de apartamente, case și spații comerciale în Moldova.",
+  title: "Imobiliare în Moldova — terenuri, case și spații comerciale | REZULTAT",
+  description:
+    "Vânzare, chirie și schimb de imobile în Moldova. Terenuri, case și spații comerciale cu fotografii, prețuri și condiții. Contactați agenția REZULTAT.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
