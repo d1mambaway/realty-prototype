@@ -12,7 +12,7 @@ const HERO = "1775762951334-8db09e259811";
 
 export function Hero() {
   const { d, lang } = useI18n();
-  const words = d.hero.words;
+  const lines = d.hero.lines;
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   // Параллакс: фото уезжает медленнее страницы и чуть приближается, текст тает
@@ -45,22 +45,30 @@ export function Hero() {
           initial={{ opacity: 0, letterSpacing: "0.6em" }}
           animate={{ opacity: 1, letterSpacing: "0.3em" }}
           transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1] }}
-          className="text-xs uppercase text-accent-soft sm:text-sm"
+          className="text-xs uppercase text-[#E6CC94] sm:text-sm"
         >
           {d.hero.kicker}
         </motion.p>
 
-        <h1 className="mt-6 max-w-4xl font-serif text-5xl font-medium leading-[1.02] text-white sm:text-7xl lg:text-8xl">
-          {words.map((word, i) => (
-            <span key={`${lang}-${i}`} className="inline-block overflow-hidden pb-2 align-bottom">
-              <motion.span
-                className={`mr-[0.25em] inline-block ${i === words.length - 1 ? "italic text-accent-soft" : ""}`}
-                initial={{ y: "110%" }}
-                animate={{ y: 0 }}
-                transition={{ duration: 1.1, delay: 0.2 + i * 0.09, ease: [0.16, 1, 0.3, 1] }}
-              >
-                {word}
-              </motion.span>
+        {/* Первая строка белая, вторая — тёплое золото курсивом */}
+        <h1 className="mt-6 max-w-4xl font-serif text-5xl font-medium leading-[1.02] text-white [text-shadow:0_2px_30px_rgba(0,0,0,0.35)] sm:text-7xl lg:text-8xl">
+          {lines.map((line, li) => (
+            <span key={`${lang}-${li}`} className={`block ${li > 0 ? "italic text-[#EBD3A0]" : ""}`}>
+              {line.map((word, wi) => {
+                const i = lines.slice(0, li).flat().length + wi;
+                return (
+                  <span key={wi} className="inline-block overflow-hidden pb-2 pr-[0.08em] align-bottom">
+                    <motion.span
+                      className="mr-[0.2em] inline-block"
+                      initial={{ y: "110%" }}
+                      animate={{ y: 0 }}
+                      transition={{ duration: 1.1, delay: 0.2 + i * 0.09, ease: [0.16, 1, 0.3, 1] }}
+                    >
+                      {word}
+                    </motion.span>
+                  </span>
+                );
+              })}
             </span>
           ))}
         </h1>
@@ -69,7 +77,7 @@ export function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-6 max-w-xl text-base leading-relaxed text-white/80 sm:text-lg"
+          className="mt-6 max-w-xl text-base leading-relaxed text-white/90 [text-shadow:0_1px_12px_rgba(0,0,0,0.5)] sm:text-lg"
         >
           {d.hero.sub}
         </motion.p>

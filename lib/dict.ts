@@ -51,8 +51,8 @@ const ro = {
   listingsCount: (n: number) => (n === 1 ? "1 anunț" : n % 100 >= 20 || n === 0 ? `${n} de anunțuri` : `${n} anunțuri`),
   hero: {
     kicker: "Vânzare · Cumpărare · Chirie · Schimb",
-    words: ["Imobiliare", "cu", "rezultat"],
-    sub: "Case, terenuri și spații comerciale în toată Moldova — multe cu posibilitate de schimb. Găsește-ți locul sau lasă-ne imobilul tău spre vânzare.",
+    lines: [["Imobiliare"], ["cu", "rezultat"]],
+    sub: "Apartamente, case, terenuri și spații comerciale în toată Moldova. Găsim obiectul potrivit și vă însoțim până la semnarea actelor — inclusiv la schimb.",
     scroll: "Derulează în jos",
   },
   search: { city: "Oraș", type: "Tip", maxPrice: "Preț până la, €", any: "Oricare", noLimit: "Fără limită", find: "Caută" },
@@ -270,8 +270,8 @@ const ru: Dict = {
   },
   hero: {
     kicker: "Покупка · Продажа · Аренда · Обмен",
-    words: ["Недвижимость", "с", "результатом"],
-    sub: "Дома, участки и коммерческая недвижимость по всей Молдове — многое можно обменять. Найдите своё или доверьте нам продажу вашего объекта.",
+    lines: [["Недвижимость"], ["с", "результатом"]],
+    sub: "Квартиры, дома, участки и коммерция по всей Молдове. Подберём подходящий объект и проведём сделку до подписания документов — в том числе обмен.",
     scroll: "Листать вниз",
   },
   search: { city: "Город", type: "Тип", maxPrice: "Цена до, €", any: "Любой", noLimit: "Без ограничений", find: "Найти" },
@@ -481,8 +481,8 @@ const en: Dict = {
   listingsCount: (n) => (n === 1 ? "1 listing" : `${n} listings`),
   hero: {
     kicker: "Buy · Sell · Rent · Exchange",
-    words: ["Real", "estate", "that", "delivers"],
-    sub: "Houses, land and commercial property across Moldova — much of it open to exchange. Find your place or let us sell yours.",
+    lines: [["Real", "estate"], ["that", "delivers"]],
+    sub: "Apartments, houses, land and commercial property across Moldova. We find the right one and see the deal through to signing — exchanges included.",
     scroll: "Scroll down",
   },
   search: { city: "City", type: "Type", maxPrice: "Max price, €", any: "Any", noLimit: "No limit", find: "Search" },
