@@ -2,6 +2,8 @@
 export interface SiteSettings {
   agentName: string;
   phone: string;
+  /** Второй номер для звонков (необязательно) */
+  phone2: string;
   /** Номер для WhatsApp и Viber в международном формате, только цифры (373...) */
   messenger: string;
   telegram: string;
@@ -19,6 +21,7 @@ export interface SiteSettings {
 export const DEFAULT_SETTINGS: SiteSettings = {
   agentName: "REZULTAT",
   phone: "+373 22 000 000",
+  phone2: "",
   messenger: "",
   telegram: "",
   email: "office@rezultat.example",

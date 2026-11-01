@@ -28,12 +28,15 @@ export function ContactButtons({ message }: { message?: string }) {
 
   return (
     <div className="space-y-2">
-      <a
-        href={`tel:+${digits(settings.phone)}`}
-        className="flex items-center justify-center gap-2 rounded-2xl bg-ink py-4 font-semibold text-white transition-colors hover:bg-accent"
-      >
-        <Phone className="h-5 w-5" /> {d.contact.call}: {settings.phone}
-      </a>
+      {[settings.phone, settings.phone2].filter(Boolean).map((phone) => (
+        <a
+          key={phone}
+          href={`tel:+${digits(phone)}`}
+          className="flex items-center justify-center gap-2 rounded-2xl bg-ink py-4 font-semibold text-white transition-colors hover:bg-accent"
+        >
+          <Phone className="h-5 w-5" /> {d.contact.call}: {phone}
+        </a>
+      ))}
       {links.length > 0 && (
         <div className={`grid gap-2 ${links.length === 3 ? "grid-cols-3" : "grid-cols-2"}`}>
           {links.map((l) => (

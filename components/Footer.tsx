@@ -33,9 +33,11 @@ export function Footer() {
         </div>
         <div className="space-y-3 text-sm">
           <p className="text-xs uppercase tracking-[0.2em] text-accent-soft">{d.footer.contacts}</p>
-          <a href={`tel:+${settings.phone.replace(/\D/g, "")}`} className="block hover:text-white">
-            {settings.phone}
-          </a>
+          {[settings.phone, settings.phone2].filter(Boolean).map((phone) => (
+            <a key={phone} href={`tel:+${phone.replace(/\D/g, "")}`} className="block hover:text-white">
+              {phone}
+            </a>
+          ))}
           <a href={`mailto:${settings.email}`} className="block hover:text-white">
             {settings.email}
           </a>

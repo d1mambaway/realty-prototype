@@ -8,6 +8,7 @@ import { adminFetch, jsonBody } from "./api";
 const FIELDS: { key: keyof SiteSettings; label: string; hint?: string }[] = [
   { key: "agentName", label: "Имя агента или название", hint: "Показывается рядом с кнопками связи" },
   { key: "phone", label: "Телефон", hint: "Например: +373 69 123 456" },
+  { key: "phone2", label: "Второй телефон", hint: "Необязательно — покажется второй кнопкой «Позвонить»" },
   { key: "messenger", label: "Номер для WhatsApp и Viber", hint: "Если пусто — используется телефон выше" },
   { key: "telegram", label: "Telegram", hint: "Имя пользователя, например @rezultat_md (необязательно)" },
   { key: "email", label: "Email" },

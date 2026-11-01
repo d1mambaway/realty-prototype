@@ -52,7 +52,7 @@ export function Privacy() {
             {settings.idno && `, IDNO ${settings.idno}`}
           </p>
           <p className="mt-1 text-muted">
-            {settings.phone} · {settings.email} · {settings.address}
+            {[settings.phone, settings.phone2, settings.email, settings.address].filter(Boolean).join(" · ")}
           </p>
         </section>
       </div>
