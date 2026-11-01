@@ -179,7 +179,7 @@ export function NewListingForm() {
       </div>
       {!detailed ? (
         <>
-          <QuickRequest onDone={() => setDone(true)} />
+          <QuickRequest heading={false} onDone={() => setDone(true)} />
           <div className="mt-10 flex flex-col items-center gap-3 text-center">
             <p className="text-muted">{d.form.detailedTitle}</p>
             <button
