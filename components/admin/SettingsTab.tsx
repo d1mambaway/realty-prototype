@@ -12,8 +12,11 @@ const FIELDS: { key: keyof SiteSettings; label: string; hint?: string }[] = [
   { key: "telegram", label: "Telegram", hint: "Имя пользователя, например @rezultat_md (необязательно)" },
   { key: "email", label: "Email" },
   { key: "address", label: "Адрес офиса" },
+  { key: "hours", label: "Часы работы", hint: "Например: Пн–Пт 9:00–18:00, Сб 10:00–14:00 (необязательно)" },
   { key: "instagram", label: "Instagram", hint: "Полная ссылка (необязательно)" },
   { key: "facebook", label: "Facebook", hint: "Полная ссылка (необязательно)" },
+  { key: "legalName", label: "Юридическое название фирмы", hint: "Показывается внизу сайта и в политике конфиденциальности" },
+  { key: "idno", label: "IDNO фирмы" },
 ];
 
 export function SettingsTab({ onError }: { onError: (e: unknown) => void }) {

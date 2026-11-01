@@ -40,6 +40,7 @@ export function Footer() {
             {settings.email}
           </a>
           <p>{settings.address}</p>
+          {settings.hours && <p>{settings.hours}</p>}
           {(settings.instagram || settings.facebook) && (
             <div className="flex gap-4 pt-1">
               {settings.instagram && (
@@ -59,7 +60,9 @@ export function Footer() {
       <div className="border-t border-white/10">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-6 text-xs sm:px-6 lg:px-8">
           <p>
-            © 2026 REZULTAT · Tranzactii Imobiliare. {d.footer.prototype}{" "}
+            © 2026 REZULTAT · Tranzactii Imobiliare
+            {settings.legalName && ` · ${settings.legalName}`}
+            {settings.idno && `, IDNO ${settings.idno}`}. {d.footer.prototype}{" "}
             <Link href="/privacy/" className="underline-offset-2 hover:text-white hover:underline">
               {d.privacy.link}
             </Link>

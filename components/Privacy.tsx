@@ -4,7 +4,7 @@ import type { Lang } from "@/lib/dict";
 import { useI18n } from "@/lib/i18n";
 import { useSettings } from "@/lib/store";
 
-// Текст политики. TODO: перед запуском вписать юридическое название агентства и IDNO.
+// Текст политики. Юридическое название и IDNO берутся из настроек (панель администратора).
 const SECTIONS: Record<Lang, { title: string; text: string }[]> = {
   ro: [
     { title: "Cine prelucrează datele", text: "Datele sunt prelucrate de agenția imobiliară REZULTAT — Tranzacții Imobiliare (Republica Moldova), conform legislației Republicii Moldova privind protecția datelor cu caracter personal." },
@@ -46,7 +46,11 @@ export function Privacy() {
           </section>
         ))}
         <section className="rounded-3xl bg-sand/60 p-6">
-          <p className="font-semibold">{settings.agentName}</p>
+          <p className="font-semibold">
+            {settings.agentName}
+            {settings.legalName && ` — ${settings.legalName}`}
+            {settings.idno && `, IDNO ${settings.idno}`}
+          </p>
           <p className="mt-1 text-muted">
             {settings.phone} · {settings.email} · {settings.address}
           </p>

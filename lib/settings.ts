@@ -9,6 +9,11 @@ export interface SiteSettings {
   address: string;
   instagram: string;
   facebook: string;
+  /** Например: «Пн–Пт 9:00–18:00, Сб 10:00–14:00» */
+  hours: string;
+  /** Юридическое лицо — для подвала и политики конфиденциальности */
+  legalName: string;
+  idno: string;
 }
 
 export const DEFAULT_SETTINGS: SiteSettings = {
@@ -20,6 +25,9 @@ export const DEFAULT_SETTINGS: SiteSettings = {
   address: "Chișinău, Moldova",
   instagram: "",
   facebook: "",
+  hours: "",
+  legalName: "",
+  idno: "",
 };
 
 export type LeadKind = "listing" | "sell" | "contact";
