@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import { ArrowLeft, ArrowRight, ImagePlus, Loader2, X } from "lucide-react";
 import { DICTS, type Lang } from "@/lib/dict";
-import { CITIES, DEALS, FEATURES, TYPES, type Listing, type Localized } from "@/lib/types";
+import { CITIES, DEALS, FEATURES, LAND_USES, TYPES, type LandUse, type Listing, type Localized } from "@/lib/types";
 import { uploadPhoto } from "./api";
 
 const ru = DICTS.ru;
@@ -161,6 +161,14 @@ export function ListingEditor({
                 {TYPES.map((x) => <option key={x} value={x}>{ru.type[x]}</option>)}
               </select>
             </Field>
+            {l.type === "land" && (
+              <Field label="Назначение участка">
+                <select value={l.landUse ?? ""} onChange={(e) => set("landUse", (e.target.value || undefined) as LandUse | undefined)} className={input}>
+                  <option value="">Не указано</option>
+                  {LAND_USES.map((x) => <option key={x} value={x}>{ru.landUse[x]}</option>)}
+                </select>
+              </Field>
+            )}
             <Field label="Статус">
               <select value={l.status ?? "active"} onChange={(e) => set("status", e.target.value as Listing["status"])} className={input}>
                 <option value="active">На сайте</option>

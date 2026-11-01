@@ -1,6 +1,6 @@
 // Импорт одного объявления с 999.md: разбор страницы, проверка дублей, фото в KV,
 // перевод и оформление через Workers AI, запись в базу.
-import type { Deal, Listing, PropertyType } from "../lib/types";
+import type { Deal, LandUse, Listing, PropertyType } from "../lib/types";
 import { CITIES, FEATURES } from "../lib/types";
 
 export const AD_URL = /https?:\/\/(?:www\.)?999\.md\/(?:ru\/|ro\/)?(\d{6,})/g;
@@ -74,13 +74,23 @@ function dealOf(text: string): Deal | null {
   return null;
 }
 
-function typeOf(category: string): PropertyType | null {
+function typeOf(category: string, chars: Record<string, string>): PropertyType | null {
   if (category.includes("Участки")) return "land";
+  if (/таунхаус/i.test(chars["Тип"] ?? "")) return "townhouse";
   if (category.includes("Дома") || category.includes("Дачи")) return "house";
   if (category.includes("Квартиры")) return "apartment";
   if (category.includes("Комнаты")) return "room";
   if (category.includes("Коммерческая") || category.includes("Разное") || category.includes("Действующий бизнес")) return "commercial";
   return null;
+}
+
+/** Назначение участка по полю «Тип участка» / «Назначение» на 999.md */
+function landUseOf(chars: Record<string, string>): LandUse | undefined {
+  const v = (chars["Тип участка"] ?? chars["Назначение"] ?? "").toLowerCase();
+  if (/строител|садов|жил/.test(v)) return "building";
+  if (/с\/х|сельск|плантац|лес|водо[её]м|пахот/.test(v)) return "agricultural";
+  if (/производ|промыш|коммерч|индустр/.test(v)) return "industrial";
+  return undefined;
 }
 
 const CITY_WORDS: [RegExp, string][] = [
@@ -208,7 +218,7 @@ export async function import999(env: AppEnv, id: string): Promise<ImportResult> 
   if (!ad) return { kind: "skipped", reason: "Не удалось открыть объявление на 999.md — проверьте ссылку." };
 
   const deal = dealOf(ad.dealText);
-  const type = typeOf(ad.category);
+  const type = typeOf(ad.category, ad.chars);
   if (!type) return { kind: "skipped", reason: `Это не недвижимость (рубрика «${ad.category || "?"}»), пропускаю.` };
   if (!deal) return { kind: "skipped", reason: `Это объявление «${ad.dealText}», а не предложение — пропускаю.` };
 
@@ -264,6 +274,7 @@ export async function import999(env: AppEnv, id: string): Promise<ImportResult> 
     address: ai?.ro.address ?? ad.location.replace(/^Кишин[её]в мун\.,?\s*/, ""),
     area: areaOf(type, ad.chars, ad.title),
     rooms,
+    ...(type === "land" && landUseOf(ad.chars) ? { landUse: landUseOf(ad.chars) } : {}),
     ...(floor ? { floor } : {}),
     ...(floors ? { floors } : {}),
     description: ai ? tri(ai.ro.description, ai.ru.description, ai.en.description) : cleanDescription,

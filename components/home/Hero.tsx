@@ -7,6 +7,9 @@ import { img } from "@/lib/format";
 import { useI18n } from "@/lib/i18n";
 import { SearchPanel } from "./SearchPanel";
 
+// Поля и город на рассвете с дрона (Unsplash, оригинал 13 000 px)
+const HERO = "1775762951334-8db09e259811";
+
 export function Hero() {
   const { d, lang } = useI18n();
   const words = d.hero.words;
@@ -22,7 +25,14 @@ export function Hero() {
     <section ref={ref} className="relative flex min-h-[100svh] items-center overflow-hidden bg-deep">
       <motion.div style={{ y: imageY, scale: imageScale }} className="absolute inset-0">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={img("1600596542815-ffad4c1539a9", 2400)} alt="" className="h-full w-full object-cover" />
+        <img
+          src={img(HERO, 2400)}
+          srcSet={[1280, 1920, 2560, 3200].map((w) => `${img(HERO, w)} ${w}w`).join(", ")}
+          sizes="100vw"
+          alt=""
+          fetchPriority="high"
+          className="h-full w-full object-cover object-[50%_60%]"
+        />
       </motion.div>
       <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/25 to-black/70" />
       <div className="absolute inset-0 bg-gradient-to-r from-black/65 via-black/25 to-transparent" />

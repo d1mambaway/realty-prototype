@@ -6,18 +6,19 @@ import { useI18n } from "@/lib/i18n";
 import { useCatalogOptions, useSettings } from "@/lib/store";
 import { Logo } from "./Logo";
 import { MoldovaFlag } from "./MoldovaFlag";
+import { PhoneWithMessengers } from "./Messengers";
 
 export function Footer() {
   const { d } = useI18n();
   const settings = useSettings();
-  const { deals } = useCatalogOptions();
+  const { deals, types } = useCatalogOptions();
   const pathname = usePathname();
   const dealLinks = { sale: d.nav.buy, rent: d.nav.rent, daily: d.nav.daily, exchange: d.nav.exchange };
   if (pathname.startsWith("/admin")) return null;
 
   return (
     <footer className="bg-deep text-white/70">
-      <div className="mx-auto grid max-w-7xl gap-10 px-4 py-16 sm:px-6 md:grid-cols-4 lg:px-8">
+      <div className="mx-auto grid max-w-7xl gap-10 px-4 py-16 sm:px-6 md:grid-cols-5 lg:px-8">
         <div className="md:col-span-2">
           <Logo className="text-white" />
           <p className="mt-6 max-w-sm text-sm leading-relaxed">{d.footer.about}</p>
@@ -30,38 +31,21 @@ export function Footer() {
             </Link>
           ))}
           <Link href="/new/" className="block hover:text-white">{d.cta.post}</Link>
+          <Link href="/contacts/" className="block hover:text-white">{d.nav.contacts}</Link>
+        </div>
+        <div className="space-y-3 text-sm">
+          <p className="text-xs uppercase tracking-[0.2em] text-accent-soft">{d.catalog.kicker}</p>
+          {types.map((t) => (
+            <Link key={t} href={`/listings/?type=${t}`} className="block hover:text-white">
+              {d.typePlural[t]}
+            </Link>
+          ))}
         </div>
         <div className="space-y-3 text-sm">
           <p className="text-xs uppercase tracking-[0.2em] text-accent-soft">{d.footer.contacts}</p>
-          {[settings.phone, settings.phone2].filter(Boolean).map((phone) => {
-            const digits = phone.replace(/\D/g, "");
-            // Мессенджеры на этом же номере
-            const messengers = [
-              { label: "WhatsApp", href: `https://wa.me/${digits}`, color: "bg-[#25D366]" },
-              { label: "Viber", href: `viber://chat?number=%2B${digits}`, color: "bg-[#7360F2]" },
-              { label: "Telegram", href: `https://t.me/+${digits}`, color: "bg-[#229ED9]" },
-            ];
-            return (
-              <div key={phone} className="space-y-2">
-                <a href={`tel:+${digits}`} className="block text-base font-semibold text-white/90 hover:text-white">
-                  {phone}
-                </a>
-                <div className="flex flex-wrap gap-1.5">
-                  {messengers.map((m) => (
-                    <a
-                      key={m.label}
-                      href={m.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={`${m.color} rounded-full px-3 py-1 text-xs font-semibold text-white transition-opacity hover:opacity-85`}
-                    >
-                      {m.label}
-                    </a>
-                  ))}
-                </div>
-              </div>
-            );
-          })}
+          {[settings.phone, settings.phone2].filter(Boolean).map((phone) => (
+            <PhoneWithMessengers key={phone} phone={phone} dark />
+          ))}
           <a href={`mailto:${settings.email}`} className="block hover:text-white">
             {settings.email}
           </a>

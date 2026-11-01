@@ -19,7 +19,7 @@
       "/listings/*",
       "/listing/*",
       "/favorites/*",
-      "/new/*",
+      "/new/*","/contacts/*",
       "/privacy/*",
       "/admin/*",
       "/sitemap.xml",

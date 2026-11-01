@@ -144,6 +144,9 @@ export function ListingDetail() {
             <div className="flex flex-wrap gap-2">
               <span className="rounded-full bg-ink px-3 py-1 text-xs font-semibold text-white">{d.deal[listing.deal]}</span>
               <span className="rounded-full border border-line px-3 py-1 text-xs font-semibold">{d.type[listing.type]}</span>
+              {listing.type === "land" && listing.landUse && (
+                <span className="rounded-full border border-line px-3 py-1 text-xs font-semibold">{d.landUse[listing.landUse]}</span>
+              )}
             </div>
             <h1 className="mt-4 font-serif text-4xl font-medium leading-tight sm:text-6xl">{tx(listing.title)}</h1>
             <p className="mt-3 inline-flex items-center gap-2 text-muted">

@@ -74,7 +74,10 @@ export function ListingCard({ listing, index = 0 }: { listing: Listing; index?: 
       </button>
 
       <Link href={`/listing/?id=${listing.id}`} className="mt-4 block px-1">
-        <p className="text-xs uppercase tracking-[0.18em] text-muted">{d.type[listing.type]}</p>
+        <p className="text-xs uppercase tracking-[0.18em] text-muted">
+          {d.type[listing.type]}
+          {listing.type === "land" && listing.landUse && ` · ${d.landUse[listing.landUse]}`}
+        </p>
         <h3 className="mt-1 text-lg font-semibold leading-snug transition-colors group-hover:text-accent">{title}</h3>
         <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted">
           <span className="inline-flex items-center gap-1.5">

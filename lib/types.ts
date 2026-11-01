@@ -1,7 +1,9 @@
 import type { Lang } from "./dict";
 
 export type Deal = "sale" | "rent" | "daily" | "exchange";
-export type PropertyType = "apartment" | "house" | "room" | "commercial" | "land";
+export type PropertyType = "apartment" | "house" | "townhouse" | "room" | "commercial" | "land";
+/** Назначение участка */
+export type LandUse = "building" | "agricultural" | "industrial";
 
 /** Текст на одном языке (как ввёл пользователь) или переводы по языкам */
 export type Localized = string | Partial<Record<Lang, string>>;
@@ -26,6 +28,8 @@ export interface Listing {
   images: string[];
   /** Ключи удобств из словаря (parking, balcony…) */
   features: string[];
+  /** Только для участков: под строительство / сельхоз / под производство */
+  landUse?: LandUse;
   contactName: string;
   contactPhone: string;
   createdAt: string;
@@ -37,7 +41,8 @@ export interface Listing {
 }
 
 export const DEALS: Deal[] = ["sale", "rent", "daily", "exchange"];
-export const TYPES: PropertyType[] = ["apartment", "house", "room", "commercial", "land"];
+export const TYPES: PropertyType[] = ["apartment", "house", "townhouse", "room", "commercial", "land"];
+export const LAND_USES: LandUse[] = ["building", "agricultural", "industrial"];
 export const CITIES = ["chisinau", "balti", "orhei", "hincesti", "aneniiNoi", "ialoveni", "straseni", "criuleni", "calarasi", "comrat", "cahul", "ungheni", "vadulLuiVoda", "moldova"];
 
 /** Подходит ли объявление под тип сделки (продажа с возможным обменом попадает и в «Обмен») */

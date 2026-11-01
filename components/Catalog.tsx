@@ -1,14 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
 import { SlidersHorizontal, X } from "lucide-react";
 import { ListingCard } from "@/components/ListingCard";
 import { useI18n } from "@/lib/i18n";
 import { useCatalogOptions, useListings } from "@/lib/store";
-import { matchesDeal, type Deal, type PropertyType } from "@/lib/types";
+import { LAND_USES, matchesDeal, type Deal, type LandUse, type PropertyType } from "@/lib/types";
+
+const PAGE = 24;
 
 const SORTS = ["new", "cheap", "expensive", "area"] as const;
 type Sort = (typeof SORTS)[number];
@@ -27,7 +29,17 @@ export function Catalog() {
   const min = params.get("min") ?? "";
   const max = params.get("max") ?? "";
   const rooms = params.get("rooms") ?? "";
+  const use = (params.get("use") ?? "") as LandUse | "";
+  // Площадь в URL — в м²; для участков поле ввода в сотках
+  const amin = params.get("amin") ?? "";
+  const amax = params.get("amax") ?? "";
   const sort = (params.get("sort") ?? "new") as Sort;
+  const isLand = type === "land";
+  const showRooms = !type || ["apartment", "house", "townhouse", "room"].includes(type);
+  const areaUnit = isLand ? 100 : 1;
+  const [limit, setLimit] = useState(PAGE);
+  const paramsKey = params.toString();
+  useEffect(() => setLimit(PAGE), [paramsKey]);
 
   function set(key: string, value: string) {
     const next = new URLSearchParams(params.toString());
@@ -40,6 +52,9 @@ export function Catalog() {
     const filtered = listings.filter((l) => {
       if (deal && !matchesDeal(l, deal)) return false;
       if (type && l.type !== type) return false;
+      if (use && l.landUse !== use) return false;
+      if (amin && l.area < Number(amin)) return false;
+      if (amax && l.area > Number(amax)) return false;
       if (city && l.city !== city) return false;
       if (min && l.price < Number(min)) return false;
       if (max && l.price > Number(max)) return false;
@@ -55,9 +70,10 @@ export function Catalog() {
       if (sort === "area") return b.area - a.area;
       return b.createdAt.localeCompare(a.createdAt);
     });
-  }, [listings, deal, type, city, min, max, rooms, sort]);
+  }, [listings, deal, type, use, city, min, max, rooms, amin, amax, sort]);
+  const landUses = LAND_USES.filter((u) => listings.some((l) => l.type === "land" && l.landUse === u));
 
-  const hasFilters = Boolean(deal || type || city || min || max || rooms);
+  const hasFilters = Boolean(deal || type || use || city || min || max || rooms || amin || amax);
   const title = deal ? d.deal[deal] : d.catalog.all;
 
   return (
@@ -66,7 +82,7 @@ export function Catalog() {
         <p className="text-xs uppercase tracking-[0.3em] text-accent">{d.catalog.kicker}</p>
         <h1 className="mt-3 font-serif text-5xl font-medium sm:text-7xl">
           {title}
-          {type && <em className="text-accent"> · {d.type[type].toLowerCase()}</em>}
+          {type && <em className="text-accent"> · {(isLand && use ? d.landUse[use] : d.typePlural[type]).toLowerCase()}</em>}
         </h1>
       </motion.div>
 
@@ -82,12 +98,36 @@ export function Catalog() {
             ))}
             <span className="mx-1 hidden h-6 w-px bg-line sm:block" />
             {TYPES.map((t) => (
-              <Chip key={t} active={type === t} onClick={() => set("type", type === t ? "" : t)} subtle>
-                {d.type[t]}
+              <Chip
+                key={t}
+                active={type === t}
+                onClick={() => {
+                  // Смена категории сбрасывает её подкатегорию и площадь (у участков она в сотках)
+                  const next = new URLSearchParams(params.toString());
+                  for (const k of ["use", "amin", "amax", "rooms"]) next.delete(k);
+                  if (type === t) next.delete("type");
+                  else next.set("type", t);
+                  router.replace(`${pathname}?${next}`, { scroll: false });
+                }}
+                subtle
+              >
+                {d.typePlural[t]}
               </Chip>
             ))}
           </div>
-          <div className="grid grid-cols-2 gap-2 md:grid-cols-[1fr_1fr_1fr_1fr_1fr_auto]">
+          {isLand && landUses.length > 1 && (
+            <div className="flex flex-wrap items-center gap-2 border-t border-line/70 pt-3">
+              <Chip active={!use} onClick={() => set("use", "")} group="use">
+                {d.catalog.allShort}
+              </Chip>
+              {landUses.map((u) => (
+                <Chip key={u} active={use === u} onClick={() => set("use", u)} group="use">
+                  {d.landUse[u]}
+                </Chip>
+              ))}
+            </div>
+          )}
+          <div className="grid grid-cols-2 gap-2 md:grid-cols-4 xl:grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr_1fr_auto]">
             <Select value={city} onChange={(v) => set("city", v)} label={d.search.city}>
               <option value="">{d.catalog.anyCity}</option>
               {CITIES.map((c) => (
@@ -96,14 +136,26 @@ export function Catalog() {
                 </option>
               ))}
             </Select>
-            <Select value={rooms} onChange={(v) => set("rooms", v)} label={d.detail.rooms}>
-              <option value="">{d.catalog.anyRooms}</option>
-              {[0, 1, 2, 3, 4].map((n) => (
-                <option key={n} value={n}>
-                  {d.catalog.roomsOption(n)}
-                </option>
-              ))}
-            </Select>
+            {showRooms && (
+              <Select value={rooms} onChange={(v) => set("rooms", v)} label={d.detail.rooms}>
+                <option value="">{d.catalog.anyRooms}</option>
+                {[0, 1, 2, 3, 4].map((n) => (
+                  <option key={n} value={n}>
+                    {d.catalog.roomsOption(n)}
+                  </option>
+                ))}
+              </Select>
+            )}
+            <NumberInput
+              value={amin ? String(Math.round(Number(amin) / areaUnit)) : ""}
+              onChange={(v) => set("amin", v ? String(Number(v) * areaUnit) : "")}
+              placeholder={`${d.catalog.area} ${d.catalog.areaFrom}, ${isLand ? d.catalog.unitAre : "m²"}`}
+            />
+            <NumberInput
+              value={amax ? String(Math.round(Number(amax) / areaUnit)) : ""}
+              onChange={(v) => set("amax", v ? String(Number(v) * areaUnit) : "")}
+              placeholder={`${d.catalog.area} ${d.catalog.areaTo}, ${isLand ? d.catalog.unitAre : "m²"}`}
+            />
             <NumberInput value={min} onChange={(v) => set("min", v)} placeholder={d.catalog.priceFrom} />
             <NumberInput value={max} onChange={(v) => set("max", v)} placeholder={d.catalog.priceTo} />
             <Select value={sort} onChange={(v) => set("sort", v === "new" ? "" : v)} label={d.catalog.sortLabel}>
@@ -136,7 +188,7 @@ export function Catalog() {
 
       <motion.div layout className="mt-8 grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
         <AnimatePresence mode="popLayout">
-          {results.map((listing, i) => (
+          {results.slice(0, limit).map((listing, i) => (
             <motion.div
               key={listing.id}
               layout
@@ -150,6 +202,19 @@ export function Catalog() {
           ))}
         </AnimatePresence>
       </motion.div>
+
+      {results.length > limit && (
+        <div className="mt-14 flex flex-col items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setLimit((n) => n + PAGE)}
+            className="rounded-full border border-ink px-8 py-3.5 font-semibold transition-colors hover:bg-ink hover:text-white"
+          >
+            {d.catalog.showMore}
+          </button>
+          <p className="text-sm text-muted">{d.catalog.shown(limit, results.length)}</p>
+        </div>
+      )}
 
       {results.length === 0 && (
         <div className="mt-10 rounded-3xl border border-dashed border-line p-16 text-center">

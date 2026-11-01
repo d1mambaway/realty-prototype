@@ -71,7 +71,7 @@ export function Categories() {
         <Reveal>
           <h2 className="font-serif text-4xl font-medium sm:text-6xl">{d.home.categoriesTitle}</h2>
         </Reveal>
-        <div className={`mt-12 grid gap-4 sm:grid-cols-2 ${categories.length === 3 ? "lg:grid-cols-3" : "lg:grid-cols-4"}`}>
+        <div className={`mt-12 grid gap-4 sm:grid-cols-2 ${{ 3: "lg:grid-cols-3", 5: "lg:grid-cols-5", 6: "lg:grid-cols-3" }[categories.length] ?? "lg:grid-cols-4"}`}>
           {categories.map((cat, i) => (
             <Reveal key={cat.type} delay={i * 0.08}>
               <Link href={`/listings/?type=${cat.type}`} className="group relative block aspect-[3/4] overflow-hidden rounded-3xl">
