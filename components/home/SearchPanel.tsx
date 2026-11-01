@@ -30,7 +30,7 @@ export function SearchPanel() {
 
   return (
     <form onSubmit={submit} className="w-full max-w-4xl">
-      <div className="inline-flex rounded-t-2xl bg-white/15 p-1 backdrop-blur-md">
+      <div className="inline-flex rounded-t-2xl border border-b-0 border-white/10 bg-deep/70 p-1 backdrop-blur-xl">
         {tabs.map((tab) => (
           <button
             key={tab.deal}
@@ -52,7 +52,7 @@ export function SearchPanel() {
         ))}
       </div>
 
-      <div className="glass grid gap-2 rounded-2xl rounded-tl-none p-2 shadow-2xl sm:grid-cols-[1fr_1fr_1fr_auto]">
+      <div className="grid gap-2 rounded-2xl rounded-tl-none border border-white/10 bg-deep/70 p-2 shadow-2xl backdrop-blur-xl sm:grid-cols-[1fr_1fr_1fr_auto]">
         <Field label={d.search.city}>
           <select value={city} onChange={(e) => setCity(e.target.value)} className="w-full bg-transparent outline-none">
             <option value="">{d.search.any}</option>
@@ -83,12 +83,12 @@ export function SearchPanel() {
             placeholder={d.search.noLimit}
             value={maxPrice}
             onChange={(e) => setMaxPrice(e.target.value)}
-            className="w-full bg-transparent outline-none placeholder:text-muted/70"
+            className="w-full bg-transparent outline-none placeholder:text-white/45"
           />
         </Field>
         <button
           type="submit"
-          className="group inline-flex items-center justify-center gap-2 rounded-xl bg-ink px-8 py-4 font-semibold text-white transition-all duration-300 hover:bg-accent"
+          className="group inline-flex items-center justify-center gap-2 rounded-xl bg-accent px-8 py-4 font-semibold text-white transition-all duration-300 hover:bg-accent-soft hover:text-ink"
         >
           <Search className="h-5 w-5 transition-transform duration-300 group-hover:rotate-12" />
           {d.search.find}
@@ -100,8 +100,8 @@ export function SearchPanel() {
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <label className="block rounded-xl px-4 py-2.5 text-ink transition-colors hover:bg-white/70">
-      <span className="block text-[11px] font-semibold uppercase tracking-[0.15em] text-muted">{label}</span>
+    <label className="block rounded-xl bg-white/[0.06] px-4 py-2.5 text-white transition-colors hover:bg-white/[0.12] [&_option]:text-ink">
+      <span className="block text-xs font-bold uppercase tracking-[0.15em] text-accent-soft">{label}</span>
       <span className="mt-0.5 block text-[15px] font-medium">{children}</span>
     </label>
   );
