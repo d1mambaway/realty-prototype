@@ -33,11 +33,35 @@ export function Footer() {
         </div>
         <div className="space-y-3 text-sm">
           <p className="text-xs uppercase tracking-[0.2em] text-accent-soft">{d.footer.contacts}</p>
-          {[settings.phone, settings.phone2].filter(Boolean).map((phone) => (
-            <a key={phone} href={`tel:+${phone.replace(/\D/g, "")}`} className="block hover:text-white">
-              {phone}
-            </a>
-          ))}
+          {[settings.phone, settings.phone2].filter(Boolean).map((phone) => {
+            const digits = phone.replace(/\D/g, "");
+            // Мессенджеры на этом же номере
+            const messengers = [
+              { label: "WhatsApp", href: `https://wa.me/${digits}`, color: "bg-[#25D366]" },
+              { label: "Viber", href: `viber://chat?number=%2B${digits}`, color: "bg-[#7360F2]" },
+              { label: "Telegram", href: `https://t.me/+${digits}`, color: "bg-[#229ED9]" },
+            ];
+            return (
+              <div key={phone} className="space-y-2">
+                <a href={`tel:+${digits}`} className="block text-base font-semibold text-white/90 hover:text-white">
+                  {phone}
+                </a>
+                <div className="flex flex-wrap gap-1.5">
+                  {messengers.map((m) => (
+                    <a
+                      key={m.label}
+                      href={m.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`${m.color} rounded-full px-3 py-1 text-xs font-semibold text-white transition-opacity hover:opacity-85`}
+                    >
+                      {m.label}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
           <a href={`mailto:${settings.email}`} className="block hover:text-white">
             {settings.email}
           </a>
