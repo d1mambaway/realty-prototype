@@ -99,7 +99,7 @@ export function Header() {
           >
             <div className="flex flex-col gap-1 px-4 pb-4 pt-3">
               {[...nav, { href: "/favorites/", label: d.nav.favorites }].map((item) => (
-                <Link key={item.href} href={item.href} className="rounded-xl px-3 py-3 font-serif text-2xl hover:bg-sand">
+                <Link key={item.href} href={item.href} className="rounded-xl px-3 py-2.5 font-serif text-xl hover:bg-sand">
                   {item.label}
                 </Link>
               ))}
