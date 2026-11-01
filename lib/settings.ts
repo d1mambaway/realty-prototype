@@ -24,7 +24,7 @@ export const DEFAULT_SETTINGS: SiteSettings = {
   phone2: "",
   messenger: "",
   telegram: "",
-  email: "office@rezultat.example",
+  email: "office@rezultat.md",
   address: "Chișinău, Moldova",
   instagram: "",
   facebook: "",
