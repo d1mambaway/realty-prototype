@@ -174,7 +174,7 @@ export function NewListingForm() {
       <div className="mb-12">
         <p className="text-xs uppercase tracking-[0.3em] text-accent">{d.form.kicker}</p>
         <h1 className="mt-3 font-serif text-3xl font-semibold sm:text-5xl">
-          {d.form.title[0]} <em className="text-accent">{d.form.title[1]}</em> {d.form.title[2]}
+          {d.form.title[0]} <em className="not-italic text-accent">{d.form.title[1]}</em> {d.form.title[2]}
         </h1>
       </div>
       {!detailed ? (

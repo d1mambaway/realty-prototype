@@ -186,7 +186,7 @@ export function Catalog() {
         <p className="text-xs uppercase tracking-[0.3em] text-accent">{d.catalog.kicker}</p>
         <h1 className="mt-3 font-serif text-3xl font-semibold sm:text-5xl">
           {title}
-          {type && <em className="text-accent"> · {(isLand && use ? d.landUse[use] : d.category[type]).toLowerCase()}</em>}
+          {type && <em className="not-italic text-accent"> · {(isLand && use ? d.landUse[use] : d.category[type]).toLowerCase()}</em>}
         </h1>
       </motion.div>
 

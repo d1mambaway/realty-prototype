@@ -11,7 +11,6 @@ const manrope = Manrope({ subsets: ["latin", "latin-ext", "cyrillic"], variable:
 const montserrat = Montserrat({
   subsets: ["latin", "latin-ext", "cyrillic"],
   weight: ["500", "600", "700"],
-  style: ["normal", "italic"],
   variable: "--font-montserrat",
 });
 // Только для логотипа: повторяет фирменный знак

@@ -20,7 +20,7 @@ export function CityMarquee() {
     <div className="overflow-hidden border-y border-line bg-ivory py-6">
       <div className="marquee flex w-max gap-12">
         {[...items, ...items].map((c, i) => (
-          <span key={i} className="flex items-center gap-12 font-serif text-3xl italic text-ink/70">
+          <span key={i} className="flex items-center gap-12 font-serif text-3xl text-ink/70">
             {city(c)}
             <span className="h-1.5 w-1.5 rounded-full bg-accent" />
           </span>
@@ -40,7 +40,7 @@ export function Featured() {
         <Reveal>
           <p className="text-xs uppercase tracking-[0.3em] text-accent">{d.home.featuredKicker}</p>
           <h2 className="mt-3 font-serif text-3xl font-semibold sm:text-5xl">
-            {d.home.featuredTitle[0]} <em className="text-accent">{d.home.featuredTitle[1]}</em>
+            {d.home.featuredTitle[0]} <em className="not-italic text-accent">{d.home.featuredTitle[1]}</em>
           </h2>
         </Reveal>
         <Reveal delay={0.1}>
