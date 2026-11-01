@@ -272,6 +272,12 @@ export default {
     const url = new URL(request.url);
     const { pathname } = url;
 
+    // www.rezultat.md → rezultat.md (одна версия адреса для посетителей и Google)
+    if (url.hostname.startsWith("www.")) {
+      url.hostname = url.hostname.slice(4);
+      return Response.redirect(url.toString(), 301);
+    }
+
     try {
       if (pathname === "/api/listings") return json(await publicListings(env));
       if (pathname === "/api/settings") return json(await getSettings(env));

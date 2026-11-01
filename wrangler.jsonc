@@ -19,10 +19,18 @@
       "/listings/*",
       "/listing/*",
       "/favorites/*",
+      "/new/*",
+      "/privacy/*",
+      "/admin/*",
       "/sitemap.xml",
       "/robots.txt"
     ]
   },
+  // Основной адрес сайта; www перенаправляется на него в worker/index.ts
+  "routes": [
+    { "pattern": "rezultat.md", "custom_domain": true },
+    { "pattern": "www.rezultat.md", "custom_domain": true }
+  ],
   "d1_databases": [
     {
       "binding": "DB",
