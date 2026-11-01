@@ -11,7 +11,7 @@ import { PhoneWithMessengers } from "./Messengers";
 export function Footer() {
   const { d } = useI18n();
   const settings = useSettings();
-  const { deals, types } = useCatalogOptions();
+  const { deals, categories } = useCatalogOptions();
   const pathname = usePathname();
   const dealLinks = { sale: d.nav.buy, rent: d.nav.rent, daily: d.nav.daily, exchange: d.nav.exchange };
   if (pathname.startsWith("/admin")) return null;
@@ -35,9 +35,9 @@ export function Footer() {
         </div>
         <div className="space-y-3 text-sm">
           <p className="text-xs uppercase tracking-[0.2em] text-accent-soft">{d.catalog.kicker}</p>
-          {types.map((t) => (
+          {categories.map((t) => (
             <Link key={t} href={`/listings/?type=${t}`} className="block hover:text-white">
-              {d.typePlural[t]}
+              {d.category[t]}
             </Link>
           ))}
         </div>

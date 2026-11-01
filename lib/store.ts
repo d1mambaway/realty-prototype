@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { DEFAULT_SETTINGS, type SiteSettings } from "./settings";
-import { CITIES, DEALS, TYPES, matchesDeal, type Listing } from "./types";
+import { CATEGORIES, CITIES, DEALS, categoryOf, matchesDeal, type Listing } from "./types";
 
 // Объявления и контакты приходят из базы: Worker кладёт их прямо в HTML (window.__RZ__),
 // иначе грузим через API. Избранное хранится в localStorage браузера.
@@ -77,7 +77,7 @@ export function useCatalogOptions() {
   const listings = useListings();
   return {
     deals: DEALS.filter((d) => listings.some((l) => matchesDeal(l, d))),
-    types: TYPES.filter((t) => listings.some((l) => l.type === t)),
+    categories: CATEGORIES.filter((c) => listings.some((l) => categoryOf(l.type) === c)),
     cities: CITIES.filter((c) => listings.some((l) => l.city === c)),
   };
 }

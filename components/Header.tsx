@@ -21,7 +21,7 @@ export function Header() {
   const options = useCatalogOptions();
   const nav = [
     ...options.deals.map((deal) => ({ href: `/listings/?deal=${deal}`, label: navLabel(d, deal) })),
-    ...(options.types.includes("commercial") ? [{ href: "/listings/?type=commercial", label: d.nav.commercial }] : []),
+    ...(options.categories.includes("commercial") ? [{ href: "/listings/?type=commercial", label: d.nav.commercial }] : []),
     { href: "/contacts/", label: d.nav.contacts },
   ];
 

@@ -44,6 +44,24 @@ export interface Listing {
 
 export const DEALS: Deal[] = ["sale", "rent", "daily", "exchange"];
 export const TYPES: PropertyType[] = ["apartment", "house", "townhouse", "room", "commercial", "land"];
+/** Разделы каталога: дома и таунхаусы вместе, квартиры и комнаты — в «Прочее» */
+export type Category = "land" | "commercial" | "house" | "other";
+export const CATEGORIES: Category[] = ["land", "commercial", "house", "other"];
+
+export function categoryOf(type: PropertyType): Category {
+  if (type === "land" || type === "commercial") return type;
+  if (type === "house" || type === "townhouse") return "house";
+  return "other";
+}
+
+/** Раздел из адреса: понимает и старые ссылки вида ?type=townhouse */
+export function toCategory(value: string | null): Category | "" {
+  if (!value) return "";
+  if ((CATEGORIES as string[]).includes(value)) return value as Category;
+  if ((TYPES as string[]).includes(value)) return categoryOf(value as PropertyType);
+  return "";
+}
+
 export const LAND_USES: LandUse[] = ["building", "agricultural", "industrial"];
 export const CITIES = ["chisinau", "balti", "orhei", "hincesti", "aneniiNoi", "ialoveni", "straseni", "criuleni", "calarasi", "comrat", "cahul", "ungheni", "vadulLuiVoda", "moldova"];
 

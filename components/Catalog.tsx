@@ -9,7 +9,7 @@ import { ListingCard } from "@/components/ListingCard";
 import { useI18n } from "@/lib/i18n";
 import { usePageMeta } from "@/lib/meta";
 import { useCatalogOptions, useListings } from "@/lib/store";
-import { LAND_USES, matchesDeal, type Deal, type LandUse, type PropertyType } from "@/lib/types";
+import { LAND_USES, categoryOf, matchesDeal, toCategory, type Category, type Deal, type LandUse } from "@/lib/types";
 
 const PAGE = 24;
 
@@ -19,13 +19,13 @@ type Sort = (typeof SORTS)[number];
 export function Catalog() {
   const { d, city: cityName } = useI18n();
   const listings = useListings();
-  const { deals: DEALS, types: TYPES, cities: CITIES } = useCatalogOptions();
+  const { deals: DEALS, categories: CATS, cities: CITIES } = useCatalogOptions();
   const router = useRouter();
   const pathname = usePathname();
   const params = useSearchParams();
 
   const deal = (params.get("deal") ?? "") as Deal | "";
-  const type = (params.get("type") ?? "") as PropertyType | "";
+  const type = toCategory(params.get("type"));
   const city = params.get("city") ?? "";
   const min = params.get("min") ?? "";
   const max = params.get("max") ?? "";
@@ -36,7 +36,7 @@ export function Catalog() {
   const amax = params.get("amax") ?? "";
   const sort = (params.get("sort") ?? "new") as Sort;
   const isLand = type === "land";
-  const showRooms = !type || ["apartment", "house", "townhouse", "room"].includes(type);
+  const showRooms = !type || type === "house" || type === "other";
   const areaUnit = isLand ? 100 : 1;
   const [limit, setLimit] = useState(PAGE);
   const [sheet, setSheet] = useState(false);
@@ -54,7 +54,7 @@ export function Catalog() {
   const results = useMemo(() => {
     const filtered = listings.filter((l) => {
       if (deal && !matchesDeal(l, deal)) return false;
-      if (type && l.type !== type) return false;
+      if (type && categoryOf(l.type) !== type) return false;
       if (use && l.landUse !== use) return false;
       if (amin && l.area < Number(amin)) return false;
       if (amax && l.area > Number(amax)) return false;
@@ -81,7 +81,7 @@ export function Catalog() {
   // Выбранные условия: метка и какие параметры она сбрасывает
   const active = [
     deal && { label: d.deal[deal], keys: ["deal"] },
-    type && { label: d.typePlural[type], keys: ["type", "use", "amin", "amax", "rooms"] },
+    type && { label: d.category[type], keys: ["type", "use", "amin", "amax", "rooms"] },
     use && { label: d.landUse[use], keys: ["use"] },
     city && { label: cityName(city), keys: ["city"] },
     rooms && { label: d.catalog.roomsOption(Number(rooms)), keys: ["rooms"] },
@@ -98,7 +98,7 @@ export function Catalog() {
     router.replace(`${pathname}?${next}`, { scroll: false });
   }
 
-  function pickType(t: PropertyType) {
+  function pickType(t: Category) {
     // Смена категории сбрасывает её подкатегорию и площадь (у участков она в сотках)
     const next = new URLSearchParams(params.toString());
     for (const k of ["use", "amin", "amax", "rooms"]) next.delete(k);
@@ -120,9 +120,9 @@ export function Catalog() {
       </FilterRow>
       <FilterRow label={d.catalog.typeLabel}>
         <Chip active={!type} onClick={() => clear(["type", "use", "amin", "amax", "rooms"])} group={`${prefix}-type`}>{d.catalog.allShort}</Chip>
-        {TYPES.map((t) => (
+        {CATS.map((t) => (
           <Chip key={t} active={type === t} onClick={() => pickType(t)} group={`${prefix}-type`}>
-            {d.typePlural[t]}
+            {d.category[t]}
           </Chip>
         ))}
       </FilterRow>
@@ -186,7 +186,7 @@ export function Catalog() {
         <p className="text-xs uppercase tracking-[0.3em] text-accent">{d.catalog.kicker}</p>
         <h1 className="mt-3 font-serif text-3xl font-semibold sm:text-5xl">
           {title}
-          {type && <em className="text-accent"> · {(isLand && use ? d.landUse[use] : d.typePlural[type]).toLowerCase()}</em>}
+          {type && <em className="text-accent"> · {(isLand && use ? d.landUse[use] : d.category[type]).toLowerCase()}</em>}
         </h1>
       </motion.div>
 

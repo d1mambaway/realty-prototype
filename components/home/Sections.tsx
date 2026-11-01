@@ -9,6 +9,7 @@ import { Reveal } from "@/components/Reveal";
 import { img } from "@/lib/format";
 import { useI18n } from "@/lib/i18n";
 import { useCatalogOptions, useListings } from "@/lib/store";
+import { categoryOf, type Category } from "@/lib/types";
 
 export function CityMarquee() {
   const { city } = useI18n();
@@ -60,11 +61,13 @@ export function Featured() {
 export function Categories() {
   const { d } = useI18n();
   const listings = useListings();
-  const { types } = useCatalogOptions();
+  const { categories: cats } = useCatalogOptions();
   // Обложка категории — фото избранного объявления этого типа (или первого попавшегося)
-  const cover = (type: string) =>
-    (listings.find((l) => l.type === type && l.featured) ?? listings.find((l) => l.type === type))?.images[0] ?? "";
-  const categories = types.map((type) => ({ type, image: cover(type) }));
+  const cover = (cat: Category) => {
+    const inCat = listings.filter((l) => categoryOf(l.type) === cat);
+    return (inCat.find((l) => l.featured) ?? inCat[0])?.images[0] ?? "";
+  };
+  const categories = cats.map((type) => ({ type, image: cover(type) }));
   return (
     <section className="bg-sand/60 py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -78,15 +81,15 @@ export function Categories() {
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={cat.image}
-                  alt={d.typePlural[cat.type]}
+                  alt={d.category[cat.type]}
                   loading="lazy"
                   className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1.4s] ease-out-expo group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent transition-opacity duration-500 group-hover:opacity-80" />
                 <div className="absolute inset-x-0 bottom-0 flex items-end justify-between p-6 text-white">
                   <div>
-                    <p className="font-serif text-3xl">{d.typePlural[cat.type]}</p>
-                    <p className="mt-1 text-sm text-white/70">{d.listingsCount(listings.filter((l) => l.type === cat.type).length)}</p>
+                    <p className="font-serif text-3xl">{d.category[cat.type]}</p>
+                    <p className="mt-1 text-sm text-white/70">{d.listingsCount(listings.filter((l) => categoryOf(l.type) === cat.type).length)}</p>
                   </div>
                   <span className="rounded-full bg-white/20 p-3 backdrop-blur transition-all duration-500 group-hover:rotate-45 group-hover:bg-white group-hover:text-ink">
                     <ArrowUpRight className="h-5 w-5" />

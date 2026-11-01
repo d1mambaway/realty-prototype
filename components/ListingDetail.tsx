@@ -25,7 +25,7 @@ import { Reveal } from "@/components/Reveal";
 import { useI18n } from "@/lib/i18n";
 import { useFavorites, useSiteData } from "@/lib/store";
 import { ContactButtons, LeadForm } from "@/components/Contact";
-import { hasRooms, type Listing } from "@/lib/types";
+import { categoryOf, hasRooms, type Listing } from "@/lib/types";
 import { areaText, unitPriceText } from "@/lib/format";
 import { usePageMeta } from "@/lib/meta";
 import { messengerLinks } from "@/components/Messengers";
@@ -77,7 +77,7 @@ export function ListingDetail() {
   }
 
   const similar = similarTo(listing, listings);
-  const reallySimilar = similar.length > 0 && similar[0].type === listing.type;
+  const reallySimilar = similar.length > 0 && categoryOf(similar[0].type) === categoryOf(listing.type);
   const unitPrice = unitPriceText(listing, d);
   const liked = has(listing.id);
   const facts = [
@@ -311,7 +311,7 @@ export function ListingDetail() {
 /** Похожие: сначала тот же тип объекта, затем сделка, бюджет и город */
 function similarTo(listing: Listing, listings: Listing[]): Listing[] {
   const score = (l: Listing) =>
-    (l.type === listing.type ? 100 : 0) +
+    (categoryOf(l.type) === categoryOf(listing.type) ? 100 : 0) +
     (l.type === "land" && l.landUse && l.landUse === listing.landUse ? 15 : 0) +
     (l.deal === listing.deal ? 40 : 0) +
     (l.price > 0 && listing.price > 0 && l.price / listing.price < 2 && listing.price / l.price < 2 ? 20 : 0) +

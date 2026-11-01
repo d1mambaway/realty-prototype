@@ -6,17 +6,17 @@ import { motion } from "motion/react";
 import { Search } from "lucide-react";
 import { useI18n } from "@/lib/i18n";
 import { useCatalogOptions } from "@/lib/store";
-import type { Deal, PropertyType } from "@/lib/types";
+import type { Category, Deal } from "@/lib/types";
 
 export function SearchPanel() {
   const { d, city: cityName } = useI18n();
   const router = useRouter();
-  const { deals, types, cities } = useCatalogOptions();
+  const { deals, categories, cities } = useCatalogOptions();
   const labels: Record<Deal, string> = { sale: d.nav.buy, rent: d.nav.rent, daily: d.nav.daily, exchange: d.nav.exchange };
   const tabs = deals.map((deal) => ({ deal, label: labels[deal] }));
   const [deal, setDeal] = useState<Deal>("sale");
   const [city, setCity] = useState("");
-  const [type, setType] = useState<PropertyType | "">("");
+  const [type, setType] = useState<Category | "">("");
   const [maxPrice, setMaxPrice] = useState("");
 
   function submit(e: React.FormEvent) {
@@ -66,13 +66,13 @@ export function SearchPanel() {
         <Field label={d.search.type}>
           <select
             value={type}
-            onChange={(e) => setType(e.target.value as PropertyType | "")}
+            onChange={(e) => setType(e.target.value as Category | "")}
             className="w-full bg-transparent outline-none"
           >
             <option value="">{d.search.any}</option>
-            {types.map((t) => (
+            {categories.map((t) => (
               <option key={t} value={t}>
-                {d.type[t]}
+                {d.category[t]}
               </option>
             ))}
           </select>
