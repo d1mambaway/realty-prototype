@@ -87,10 +87,8 @@ export function FloatingContact() {
         aria-label={open ? d.floating.close : d.floating.open}
         aria-expanded={open}
         onClick={() => setOpen((v) => !v)}
-        className="relative flex h-14 w-14 items-center justify-center rounded-full bg-[#0f7b6c] text-white shadow-[0_12px_30px_-8px_rgba(0,0,0,0.45)] ring-2 ring-white/80 transition-transform hover:scale-105 active:scale-95"
+        className="flex h-14 w-14 items-center justify-center rounded-full border-2 border-ink bg-accent text-white shadow-[0_12px_30px_-8px_rgba(0,0,0,0.45)] transition-transform hover:scale-105 active:scale-95"
       >
-        {/* Своё изумрудное пятно и мягкая пульсация — кнопку видно на любом фоне */}
-        {!open && <span className="absolute inset-0 -z-10 animate-ping rounded-full bg-[#0f7b6c]/40 [animation-duration:2.4s]" />}
         {open ? <X className="h-6 w-6" /> : <MessageCircle className="h-6 w-6" />}
       </button>
     </div>
