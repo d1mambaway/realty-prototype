@@ -168,7 +168,7 @@ export function HowItWorks() {
           <Reveal>
             <p className="text-xs uppercase tracking-[0.3em] text-accent-soft">{d.home.howKicker}</p>
             <h2 className="mt-3 font-serif text-3xl font-semibold sm:text-5xl">
-              {d.home.howTitle[0]} <em className="text-accent-soft">{d.home.howTitle[1]}</em>
+              {d.home.howTitle[0]} <em className="not-italic text-accent-soft">{d.home.howTitle[1]}</em>
             </h2>
           </Reveal>
           <Reveal delay={0.2} className="mt-8 text-ink">
