@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
 import { ArrowLeft, ArrowRight, Check, Loader2, Phone } from "lucide-react";
@@ -33,7 +33,7 @@ interface FormState {
 
 const INITIAL: FormState = {
   deal: "sale",
-  type: "apartment",
+  type: "land",
   title: "",
   city: CITIES[0],
   address: "",
@@ -60,6 +60,10 @@ export function NewListingForm() {
   const [sending, setSending] = useState(false);
   const [done, setDone] = useState(false);
   const [detailed, setDetailed] = useState(false);
+  // С главной ведёт ссылка «Добавить подробности» — сразу открываем подробную форму
+  useEffect(() => {
+    if (new URLSearchParams(window.location.search).has("details")) setDetailed(true);
+  }, []);
   usePageMeta(d.meta.sell);
 
   const update = <K extends keyof FormState>(key: K, value: FormState[K]) => setForm((f) => ({ ...f, [key]: value }));
@@ -398,7 +402,7 @@ export function NewListingForm() {
 }
 
 /** Короткая заявка: агент сам перезвонит и заполнит объявление */
-function QuickRequest({ onDone }: { onDone: () => void }) {
+export function QuickRequest({ onDone, heading = true }: { onDone: () => void; heading?: boolean }) {
   const { d, city } = useI18n();
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -432,9 +436,13 @@ function QuickRequest({ onDone }: { onDone: () => void }) {
 
   return (
     <form onSubmit={submit} className="rounded-[2rem] bg-white p-6 shadow-[0_30px_80px_-40px_rgba(0,0,0,0.35)] sm:p-10">
-      <h2 className="font-serif text-3xl">{d.form.quickTitle}</h2>
-      <p className="mt-2 text-muted">{d.form.quickText}</p>
-      <div className="mt-8 grid gap-4 sm:grid-cols-2">
+      {heading && (
+        <>
+          <h2 className="mb-2 font-serif text-3xl">{d.form.quickTitle}</h2>
+          <p className="mb-8 text-muted">{d.form.quickText}</p>
+        </>
+      )}
+      <div className="grid gap-4 sm:grid-cols-2">
         <label className="block">
           <span className="mb-2 block text-sm font-semibold">{d.form.name}</span>
           <input value={name} onChange={(e) => setName(e.target.value)} autoComplete="name" className={inputCls} />

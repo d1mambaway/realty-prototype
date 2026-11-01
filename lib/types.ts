@@ -43,7 +43,7 @@ export interface Listing {
 }
 
 export const DEALS: Deal[] = ["sale", "rent", "daily", "exchange"];
-export const TYPES: PropertyType[] = ["apartment", "house", "townhouse", "room", "commercial", "land"];
+export const TYPES: PropertyType[] = ["land", "commercial", "house", "townhouse", "apartment", "room"];
 /** Разделы каталога: дома и таунхаусы вместе, квартиры и комнаты — в «Прочее» */
 export type Category = "land" | "commercial" | "house" | "other";
 export const CATEGORIES: Category[] = ["land", "commercial", "house", "other"];

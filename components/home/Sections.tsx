@@ -3,8 +3,9 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { animate, motion, useInView, useScroll, useTransform } from "motion/react";
-import { ArrowUpRight, Camera, FileText, Sparkles } from "lucide-react";
+import { ArrowUpRight, Check } from "lucide-react";
 import { ListingCard } from "@/components/ListingCard";
+import { QuickRequest } from "@/components/NewListingForm";
 import { Reveal } from "@/components/Reveal";
 import { img } from "@/lib/format";
 import { useI18n } from "@/lib/i18n";
@@ -147,10 +148,9 @@ export function Stats() {
   );
 }
 
-const STEP_ICONS = [FileText, Camera, Sparkles];
-
 export function HowItWorks() {
   const { d } = useI18n();
+  const [sent, setSent] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
   const y = useTransform(scrollYProgress, [0, 1], ["-12%", "12%"]);
@@ -158,7 +158,7 @@ export function HowItWorks() {
   return (
     <section className="bg-deep py-24 text-white">
       <div ref={ref} className="mx-auto grid max-w-7xl items-center gap-16 px-4 sm:px-6 lg:grid-cols-2 lg:px-8">
-        <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem]">
+        <div className="relative hidden aspect-[4/5] overflow-hidden rounded-[2rem] lg:block">
           <motion.div style={{ y }} className="absolute -inset-y-[12%] inset-x-0">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={img("1600210492486-724fe5c67fb0", 1400)} alt="" loading="lazy" className="h-full w-full object-cover" />
@@ -171,32 +171,26 @@ export function HowItWorks() {
               {d.home.howTitle[0]} <em className="text-accent-soft">{d.home.howTitle[1]}</em>
             </h2>
           </Reveal>
-          <div className="mt-12 space-y-8">
-            {d.home.steps.map((step, i) => {
-              const Icon = STEP_ICONS[i];
-              return (
-                <Reveal key={i} delay={0.1 + i * 0.1} className="flex gap-5">
-                  <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-white/20 text-accent-soft">
-                    <Icon className="h-5 w-5" />
-                  </span>
-                  <div>
-                    <p className="text-xl font-semibold">
-                      <span className="mr-2 font-serif text-accent-soft">0{i + 1}</span>
-                      {step.title}
-                    </p>
-                    <p className="mt-1 text-white/60">{step.text}</p>
-                  </div>
-                </Reveal>
-              );
-            })}
-          </div>
-          <Reveal delay={0.4}>
-            <Link
-              href="/new/"
-              className="mt-12 inline-flex items-center gap-2 rounded-full bg-accent px-8 py-4 font-semibold text-white transition-all duration-300 hover:-translate-y-1 hover:bg-accent-soft hover:text-ink"
-            >
-              {d.cta.post}
-              <ArrowUpRight className="h-5 w-5" />
+          <Reveal delay={0.1}>
+            <p className="mt-4 max-w-lg text-white/70">{d.form.quickText}</p>
+          </Reveal>
+          <Reveal delay={0.2} className="mt-8 text-ink">
+            {sent ? (
+              <div className="rounded-[2rem] bg-white p-8 text-center">
+                <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-accent text-white">
+                  <Check className="h-7 w-7" />
+                </span>
+                <p className="mt-4 font-serif text-2xl">{d.form.doneTitle}</p>
+                <p className="mt-2 text-muted">{d.form.doneText}</p>
+              </div>
+            ) : (
+              <QuickRequest heading={false} onDone={() => setSent(true)} />
+            )}
+          </Reveal>
+          <Reveal delay={0.3}>
+            <Link href="/new/?details=1" className="mt-6 inline-flex items-center gap-2 font-semibold text-accent-soft hover:text-white">
+              {d.form.detailedButton}
+              <ArrowUpRight className="h-4 w-4" />
             </Link>
           </Reveal>
         </div>
