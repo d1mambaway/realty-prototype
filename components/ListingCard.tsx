@@ -8,15 +8,18 @@ import { useI18n } from "@/lib/i18n";
 import { useFavorites } from "@/lib/store";
 import { hasRooms, type Listing } from "@/lib/types";
 import { areaText } from "@/lib/format";
+import { PhotoSlider, SliderDots } from "@/components/PhotoSlider";
+
+// На карточке листаем первые фото — остальные в самом объявлении
+const CARD_PHOTOS = 6;
 
 export function ListingCard({ listing, index = 0 }: { listing: Listing; index?: number }) {
   const { d, tx, city, price } = useI18n();
   const { has, toggle } = useFavorites();
   const liked = has(listing.id);
   const title = tx(listing.title);
-  const [first, second] = listing.images;
-  // Второе фото грузим только при наведении мышью, чтобы не тратить трафик на телефонах
-  const [hovered, setHovered] = useState(false);
+  const photos = listing.images.slice(0, CARD_PHOTOS);
+  const [photo, setPhoto] = useState(0);
 
   return (
     <motion.article
@@ -27,29 +30,18 @@ export function ListingCard({ listing, index = 0 }: { listing: Listing; index?: 
       transition={{ duration: 0.8, delay: (index % 3) * 0.08, ease: [0.16, 1, 0.3, 1] }}
       className="group relative"
     >
-      <Link href={`/listing/?id=${listing.id}`} className="block" onMouseEnter={() => setHovered(true)}>
+      <Link href={`/listing/?id=${listing.id}`} className="block">
         <div className="relative aspect-[4/3] overflow-hidden rounded-3xl bg-sand">
-          {first && (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={first}
-              alt={title}
-              loading="lazy"
-              className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1.2s] ease-out-expo group-hover:scale-110"
-            />
+          {photos.length > 0 && (
+            // Карточки листаются не синхронно: у каждой в ряду свой интервал
+            <PhotoSlider images={photos} alt={title} index={photo} onIndexChange={setPhoto} interval={3500 + (index % 3) * 700} />
           )}
-          {second && hovered && (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={second}
-              alt=""
-              loading="lazy"
-              className="absolute inset-0 h-full w-full scale-110 object-cover opacity-0 transition-all duration-[1.2s] ease-out-expo group-hover:scale-100 group-hover:opacity-100"
-            />
-          )}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent" />
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent" />
+          <div className="absolute bottom-5 right-4">
+            <SliderDots count={photos.length} index={photo} onSelect={setPhoto} />
+          </div>
 
-          <div className="absolute left-4 right-16 top-4 flex flex-wrap gap-2">
+          <div className="pointer-events-none absolute left-4 right-16 top-4 flex flex-wrap gap-2">
             <span className="glass rounded-full px-3 py-1 text-xs font-semibold">{d.deal[listing.deal]}</span>
             {listing.status === "sold" && (
               <span className="rounded-full bg-red-600 px-3 py-1 text-xs font-semibold text-white">{d.card.sold}</span>
@@ -60,7 +52,7 @@ export function ListingCard({ listing, index = 0 }: { listing: Listing; index?: 
             {listing.own && <span className="rounded-full bg-accent px-3 py-1 text-xs font-semibold text-white">{d.card.own}</span>}
           </div>
 
-          <p className="absolute bottom-4 left-4 font-serif text-2xl font-semibold text-white drop-shadow">
+          <p className="pointer-events-none absolute bottom-4 left-4 font-serif text-2xl font-semibold text-white drop-shadow">
             {price(listing.price, listing.deal)}
           </p>
         </div>

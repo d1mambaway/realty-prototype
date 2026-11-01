@@ -29,6 +29,7 @@ import { hasRooms, type Listing } from "@/lib/types";
 import { areaText, unitPriceText } from "@/lib/format";
 import { usePageMeta } from "@/lib/meta";
 import { messengerLinks } from "@/components/Messengers";
+import { PhotoSlider } from "@/components/PhotoSlider";
 
 export function ListingDetail() {
   const id = useSearchParams().get("id");
@@ -100,20 +101,15 @@ export function ListingDetail() {
       {/* Галерея */}
       <div className="mt-6 grid gap-3 lg:grid-cols-[1fr_180px]">
         <div className="group relative aspect-[16/10] overflow-hidden rounded-[2rem] bg-sand">
-          <AnimatePresence initial={false} mode="popLayout">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <motion.img
-              key={active}
-              src={images[active]}
-              alt={tx(listing.title)}
-              initial={{ opacity: 0, scale: 1.06 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="absolute inset-0 h-full w-full cursor-zoom-in object-cover"
-              onClick={() => setLightbox(true)}
-            />
-          </AnimatePresence>
+          <PhotoSlider
+            images={images}
+            alt={tx(listing.title)}
+            index={active}
+            onIndexChange={setActive}
+            interval={5000}
+            imgClassName="cursor-zoom-in"
+            onTap={() => setLightbox(true)}
+          />
           {images.length > 1 && (
             <>
               <GalleryArrow side="left" onClick={() => go(-1)} />
