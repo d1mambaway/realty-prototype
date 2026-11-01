@@ -9,7 +9,7 @@ export const LANGS: { code: Lang; label: string; locale: string }[] = [
 
 const ro = {
   nav: { buy: "Cumpără", rent: "Închiriază", daily: "Pe zi", exchange: "Schimb", commercial: "Comercial", contacts: "Contacte", favorites: "Favorite", menu: "Meniu", home: "REZULTAT — pagina principală" },
-  cta: { post: "Vinde cu noi" },
+  cta: { post: "Propuneți un imobil" },
   deal: { sale: "Vânzare", rent: "Chirie", daily: "Chirie pe zi", exchange: "Schimb" },
   dealAction: { sale: "Vând", rent: "Dau în chirie", daily: "Dau în chirie pe zi", exchange: "Fac schimb" },
   type: { apartment: "Apartament", house: "Casă", townhouse: "Townhouse", room: "Cameră", commercial: "Spațiu comercial", land: "Teren" },
@@ -246,7 +246,7 @@ export type Dict = typeof ro;
 
 const ru: Dict = {
   nav: { buy: "Купить", rent: "Снять", daily: "Посуточно", exchange: "Обмен", commercial: "Коммерция", contacts: "Контакты", favorites: "Избранное", menu: "Меню", home: "REZULTAT — на главную" },
-  cta: { post: "Продать с нами" },
+  cta: { post: "Предложить объект" },
   deal: { sale: "Продажа", rent: "Аренда", daily: "Посуточно", exchange: "Обмен" },
   dealAction: { sale: "Продать", rent: "Сдать", daily: "Сдать посуточно", exchange: "Обменять" },
   type: { apartment: "Квартира", house: "Дом", townhouse: "Таунхаус", room: "Комната", commercial: "Коммерция", land: "Участок" },
@@ -487,7 +487,7 @@ const ru: Dict = {
 
 const en: Dict = {
   nav: { buy: "Buy", rent: "Rent", daily: "Short stay", exchange: "Exchange", commercial: "Commercial", contacts: "Contacts", favorites: "Favourites", menu: "Menu", home: "REZULTAT — home" },
-  cta: { post: "Sell with us" },
+  cta: { post: "List a property" },
   deal: { sale: "For sale", rent: "For rent", daily: "Short stay", exchange: "Exchange" },
   dealAction: { sale: "Sell", rent: "Rent out", daily: "Rent out daily", exchange: "Swap" },
   type: { apartment: "Apartment", house: "House", townhouse: "Townhouse", room: "Room", commercial: "Commercial", land: "Land" },
