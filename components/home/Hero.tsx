@@ -61,10 +61,10 @@ export function Hero() {
           {d.hero.kicker}
         </motion.p>
 
-        {/* Первая строка белая, вторая — тёплое золото курсивом */}
+        {/* Лозунг в две строки, обе белые и одним начертанием */}
         <h1 className="mt-6 max-w-4xl font-serif text-4xl font-bold leading-[1.08] text-white [text-shadow:0_2px_30px_rgba(0,0,0,0.35)] sm:text-6xl lg:text-7xl">
           {lines.map((line, li) => (
-            <span key={`${lang}-${li}`} className={`block ${li > 0 ? "italic text-accent-soft" : ""}`}>
+            <span key={`${lang}-${li}`} className="block">
               {line.map((word, wi) => {
                 const i = lines.slice(0, li).flat().length + wi;
                 return (
