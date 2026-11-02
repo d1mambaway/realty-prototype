@@ -193,7 +193,7 @@ const ro = {
     detailedButton: "Adaugă detalii",
     photosNote: "Fotografiile le face agentul la vizionare — nu trebuie să le încărcați.",
     comment: "Comentariu",
-    commentPh: "De exemplu: casă de 120 m² pe 6 ari, vreau să o vând sau s-o schimb pe un apartament",
+    commentPh: "De exemplu: casă de 120 m² pe 6 ari, vreau să o vând sau să o schimb",
   },
   favorites: {
     kicker: "Salvate",
@@ -438,7 +438,7 @@ const ru: Dict = {
     detailedButton: "Добавить подробности",
     photosNote: "Фотографии делает агент на просмотре — загружать их не нужно.",
     comment: "Комментарий",
-    commentPh: "Например: дом 120 м² на 6 сотках, хочу продать или обменять на квартиру",
+    commentPh: "Например: дом 120 м² на 6 сотках, хочу продать или обменять",
   },
   favorites: {
     kicker: "Сохранённое",
@@ -675,7 +675,7 @@ const en: Dict = {
     detailedButton: "Add details",
     photosNote: "The agent takes the photos at the viewing — no need to upload any.",
     comment: "Comment",
-    commentPh: "For example: 120 m² house on 6 ares, want to sell or swap for a flat",
+    commentPh: "For example: 120 m² house on 6 ares, want to sell or exchange it",
   },
   favorites: {
     kicker: "Saved",
