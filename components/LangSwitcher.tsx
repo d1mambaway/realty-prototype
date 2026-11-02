@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { Check, ChevronDown } from "lucide-react";
 import { LANGS } from "@/lib/dict";
 import { useI18n } from "@/lib/i18n";
-import { MoldovaFlag } from "./MoldovaFlag";
+import { LangFlag } from "./LangFlag";
 
 export function LangSwitcher({ light = false }: { light?: boolean }) {
   const { lang, setLang, d } = useI18n();
@@ -32,7 +32,7 @@ export function LangSwitcher({ light = false }: { light?: boolean }) {
           light ? "hover:bg-white/15" : "hover:bg-sand"
         }`}
       >
-        {lang === "ro" && <MoldovaFlag />}
+        <LangFlag lang={lang} />
         {lang}
         <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${open ? "rotate-180" : ""}`} />
       </button>
@@ -58,7 +58,7 @@ export function LangSwitcher({ light = false }: { light?: boolean }) {
                 >
                   <span className="w-6 text-xs font-bold uppercase text-muted">{l.code}</span>
                   <span className="flex-1">{l.label}</span>
-                  {l.code === "ro" && <MoldovaFlag />}
+                  <LangFlag lang={l.code} />
                   {l.code === lang && <Check className="h-4 w-4 text-accent" />}
                 </button>
               </li>
