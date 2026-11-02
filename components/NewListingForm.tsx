@@ -408,6 +408,7 @@ export function QuickRequest({ onDone, heading = true }: { onDone: () => void; h
   const [phone, setPhone] = useState("");
   const [type, setType] = useState<PropertyType>("land");
   const [place, setPlace] = useState<string>(CITIES[0]);
+  const [comment, setComment] = useState("");
   const [error, setError] = useState("");
   const [sending, setSending] = useState(false);
 
@@ -423,7 +424,7 @@ export function QuickRequest({ onDone, heading = true }: { onDone: () => void; h
         kind: "sell",
         name: name.trim(),
         phone: phone.trim(),
-        message: "Быстрая заявка: агент перезвонит и заполнит объявление",
+        message: comment.trim(),
         data: { Тип: ru.type[type], Город: ru.city[place as keyof typeof ru.city] ?? place },
       });
       onDone();
@@ -478,6 +479,16 @@ export function QuickRequest({ onDone, heading = true }: { onDone: () => void; h
               </option>
             ))}
           </select>
+        </label>
+        <label className="block sm:col-span-2">
+          <span className="mb-2 block text-sm font-semibold">{d.form.comment}</span>
+          <textarea
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+            placeholder={d.form.commentPh}
+            rows={3}
+            className={`${inputCls} resize-none`}
+          />
         </label>
       </div>
       {error && <p className="mt-4 text-sm font-medium text-red-500">{error}</p>}
