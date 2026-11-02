@@ -184,12 +184,6 @@ export function HowItWorks() {
               <QuickRequest heading={false} onDone={() => setSent(true)} />
             )}
           </Reveal>
-          <Reveal delay={0.3}>
-            <Link href="/new/?details=1" className="mt-6 inline-flex items-center gap-2 font-semibold text-accent-soft hover:text-white">
-              {d.form.detailedButton}
-              <ArrowUpRight className="h-4 w-4" />
-            </Link>
-          </Reveal>
         </div>
       </div>
     </section>

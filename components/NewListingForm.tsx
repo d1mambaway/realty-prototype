@@ -180,16 +180,6 @@ export function NewListingForm() {
       {!detailed ? (
         <>
           <QuickRequest heading={false} onDone={() => setDone(true)} />
-          <div className="mt-10 flex flex-col items-center gap-3 text-center">
-            <p className="text-muted">{d.form.detailedTitle}</p>
-            <button
-              type="button"
-              onClick={() => setDetailed(true)}
-              className="rounded-full border border-ink px-7 py-3 font-semibold transition-colors hover:bg-ink hover:text-white"
-            >
-              {d.form.detailedButton}
-            </button>
-          </div>
         </>
       ) : (
       <>
