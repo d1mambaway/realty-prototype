@@ -53,7 +53,7 @@ const ro = {
   hero: {
     kicker: "Vânzare · Cumpărare · Chirie · Schimb",
     lines: [["Imobiliare"], ["cu", "rezultat"]],
-    sub: "Terenuri, case și spații comerciale în toată Moldova. Vă ajutăm să alegeți, organizăm vizionările și convenim condițiile de cumpărare, chirie sau schimb.",
+    sub: ["Tranzacții imobiliare: vânzare / chirie / proiecte", "Proiecte investiționale pe bază de imobiliare", "Afaceri funcționale: vânzare / administrare / dezvoltare", "Creditare / asigurare"],
     scroll: "Derulează în jos",
   },
   search: { city: "Oraș", type: "Tip", maxPrice: "Preț până la, €", any: "Oricare", noLimit: "Fără limită", find: "Caută" },
@@ -298,7 +298,7 @@ const ru: Dict = {
   hero: {
     kicker: "Покупка · Продажа · Аренда · Обмен",
     lines: [["Недвижимость"], ["с", "результатом"]],
-    sub: "Участки, дома и коммерческая недвижимость по всей Молдове. Поможем выбрать объект, организуем просмотры и согласуем условия покупки, аренды или обмена.",
+    sub: ["Операции с недвижимостью: продажа / аренда / проекты", "Инвестиционные проекты на базе недвижимости", "Действующий бизнес: продажа / администрирование / развитие", "Кредитование / страхование"],
     scroll: "Листать вниз",
   },
   search: { city: "Город", type: "Тип", maxPrice: "Цена до, €", any: "Любой", noLimit: "Без ограничений", find: "Найти" },
@@ -535,7 +535,7 @@ const en: Dict = {
   hero: {
     kicker: "Buy · Sell · Rent · Exchange",
     lines: [["Real", "estate"], ["that", "delivers"]],
-    sub: "Land, houses and commercial property across Moldova. We help you choose, arrange viewings and agree the terms of purchase, rent or exchange.",
+    sub: ["Real estate deals: sale / rent / projects", "Real estate–based investment projects", "Operating businesses: sale / management / development", "Lending / insurance"],
     scroll: "Scroll down",
   },
   search: { city: "City", type: "Type", maxPrice: "Max price, €", any: "Any", noLimit: "No limit", find: "Search" },

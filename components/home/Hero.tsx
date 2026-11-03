@@ -77,11 +77,15 @@ export function Hero() {
           ))}
         </h1>
 
-        <p
-          className="mt-6 max-w-xl text-base leading-relaxed text-white/90 [text-shadow:0_1px_12px_rgba(0,0,0,0.5)] sm:text-lg"
-        >
-          {d.hero.sub}
-        </p>
+        {/* Направления работы агентства — по строке на каждое */}
+        <ul className="mt-6 max-w-xl space-y-1.5 text-base leading-snug text-white/90 [text-shadow:0_1px_12px_rgba(0,0,0,0.5)] sm:text-lg">
+          {d.hero.sub.map((item) => (
+            <li key={item} className="flex gap-3">
+              <span className="mt-[0.55em] h-1.5 w-1.5 shrink-0 rounded-full bg-accent-soft" />
+              {item}
+            </li>
+          ))}
+        </ul>
 
         <motion.div
           initial={{ opacity: 0, y: 40 }}
