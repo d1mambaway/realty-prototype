@@ -52,7 +52,7 @@ const ro = {
   listingsCount: (n: number) => (n === 1 ? "1 anunț" : n % 100 >= 20 || n === 0 ? `${n} de anunțuri` : `${n} anunțuri`),
   hero: {
     kicker: "Vânzare · Cumpărare · Chirie · Schimb",
-    lines: [["Imobiliare"], ["cu", "rezultat"]],
+    lines: [["Experiența", "determină"], ["rezultatul"]],
     sub: ["Tranzacții imobiliare: vânzare / chirie / proiecte", "Proiecte investiționale pe bază de imobiliare", "Afaceri funcționale: vânzare / administrare / dezvoltare", "Creditare / asigurare"],
     scroll: "Derulează în jos",
   },
@@ -297,7 +297,7 @@ const ru: Dict = {
   },
   hero: {
     kicker: "Покупка · Продажа · Аренда · Обмен",
-    lines: [["Недвижимость"], ["с", "результатом"]],
+    lines: [["Опыт", "определяет"], ["результат"]],
     sub: ["Операции с недвижимостью: продажа / аренда / проекты", "Инвестиционные проекты на базе недвижимости", "Действующий бизнес: продажа / администрирование / развитие", "Кредитование / страхование"],
     scroll: "Листать вниз",
   },
@@ -534,7 +534,7 @@ const en: Dict = {
   listingsCount: (n) => (n === 1 ? "1 listing" : `${n} listings`),
   hero: {
     kicker: "Buy · Sell · Rent · Exchange",
-    lines: [["Real", "estate"], ["that", "delivers"]],
+    lines: [["Experience", "defines"], ["the", "result"]],
     sub: ["Real estate deals: sale / rent / projects", "Real estate–based investment projects", "Operating businesses: sale / management / development", "Lending / insurance"],
     scroll: "Scroll down",
   },
