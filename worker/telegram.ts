@@ -78,6 +78,7 @@ const HELP = [
   "• /prices — сверить цены на сайте с 999.md: я покажу, где цена изменилась, а обновить её можно кнопкой.",
   "• Сюда же приходят заявки с сайта.",
 ].join("\n");
+export const SITE = "https://rezultat.md";
 const PRICES_BUTTON: Button[][] = [[{ text: "🔄 Сверить цены с 999.md", callback_data: "prices" }]];
 
 const fmtPrice = (n: number) => `${n.toLocaleString("ru-RU")} €`;
@@ -218,37 +219,46 @@ async function handleMessage(env: AppEnv, origin: string, msg: TgMessage) {
 
   for (const id of ids.slice(0, 10)) {
     const status = await send(env, chatId, `⏳ Загружаю объявление ${id}…`);
-    const edit = (body: string, buttons?: Button[][]) =>
-      tg(env, "editMessageText", {
-        chat_id: chatId,
-        message_id: status.message_id,
-        text: body,
-        disable_web_page_preview: true,
-        ...(buttons ? { reply_markup: { inline_keyboard: buttons } } : {}),
-      });
-    try {
-      const result = await import999(env, id);
-      if (result.kind === "skipped") await edit(`⚠️ ${id}: ${result.reason}`);
-      else if (result.kind === "duplicate") {
-        await edit(
-          `ℹ️ ${id}: ${result.byPhotos ? "это тот же объект, что уже есть на сайте (совпадают фото)" : "это объявление уже есть на сайте"}.\n${origin}/listing/?id=${result.listingId}`,
-        );
-      } else {
-        const l = result.listing;
-        const lines = [`✅ Добавлено на сайт: ${ru(l.title)}`, `${fmtPrice(l.price)} · фото: ${l.images.length}`, `${origin}/listing/?id=${l.id}`];
-        if (result.notes.length) lines.push("", ...result.notes.map((n) => `• ${n}`));
-        await edit(lines.join("\n"), [
-          [
-            { text: "🙈 Скрыть", callback_data: `hide:${l.id}` },
-            { text: "🗑 Удалить", callback_data: `del:${l.id}` },
-          ],
-          [{ text: "Открыть в панели", url: `${origin}/admin/` }],
-        ]);
-      }
-    } catch (e) {
-      console.error(e);
-      await edit(`❌ ${id}: не получилось загрузить (${e instanceof Error ? e.message : e}). Попробуйте ещё раз позже.`);
+    await importAndReport(env, origin, chatId, status.message_id, id, false);
+  }
+}
+
+/** Импорт объявления и итог в сообщении messageId. force — публиковать, даже если совпадают фото */
+async function importAndReport(env: AppEnv, origin: string, chatId: number, messageId: number, id: string, force: boolean) {
+  const edit = (body: string, buttons?: Button[][]) =>
+    tg(env, "editMessageText", {
+      chat_id: chatId,
+      message_id: messageId,
+      text: body,
+      disable_web_page_preview: true,
+      ...(buttons ? { reply_markup: { inline_keyboard: buttons } } : {}),
+    });
+  try {
+    const result = await import999(env, id, force);
+    if (result.kind === "skipped") await edit(`⚠️ ${id}: ${result.reason}`);
+    else if (result.kind === "duplicate") {
+      await edit(
+        `ℹ️ ${id}: ${result.byPhotos ? "это тот же объект, что уже есть на сайте (совпадают фото)" : "это объявление уже есть на сайте"}.
+${origin}/listing/?id=${result.listingId}`,
+        // Одинаковые фото бывают и у разных объектов — например, офисы разной площади в одном здании
+        result.byPhotos ? [[{ text: "📤 Всё равно опубликовать", callback_data: `force:${id}` }]] : undefined,
+      );
+    } else {
+      const l = result.listing;
+      const lines = [`✅ Добавлено на сайт: ${ru(l.title)}`, `${fmtPrice(l.price)} · фото: ${l.images.length}`, `${origin}/listing/?id=${l.id}`];
+      if (result.notes.length) lines.push("", ...result.notes.map((n) => `• ${n}`));
+      await edit(lines.join("
+"), [
+        [
+          { text: "🙈 Скрыть", callback_data: `hide:${l.id}` },
+          { text: "🗑 Удалить", callback_data: `del:${l.id}` },
+        ],
+        [{ text: "Открыть в панели", url: `${origin}/admin/` }],
+      ]);
     }
+  } catch (e) {
+    console.error(e);
+    await edit(`❌ ${id}: не получилось загрузить (${e instanceof Error ? e.message : e}). Попробуйте ещё раз позже.`);
   }
 }
 
@@ -263,6 +273,12 @@ async function handleCallback(env: AppEnv, origin: string, cb: NonNullable<TgUpd
     return runPriceCheck(env, chatId, cb.data === "pmore", cb.data === "pmore" ? cb.message.message_id : undefined);
   }
   if (/^(pset|pall|phide)/.test(cb.data)) return handlePriceButton(env, chatId, cb);
+  if (cb.data.startsWith("force:")) {
+    const adId = cb.data.slice("force:".length);
+    await tg(env, "answerCallbackQuery", { callback_query_id: cb.id });
+    await tg(env, "editMessageText", { chat_id: chatId, message_id: cb.message.message_id, text: `⏳ Публикую объявление ${adId}…` });
+    return importAndReport(env, origin, chatId, cb.message.message_id, adId, true);
+  }
 
   const [action, id] = cb.data.split(":");
   const base = (cb.message.text ?? "").split("\n\n")[0].split("\n").filter((l) => !l.startsWith("Статус:")).join("\n");
@@ -309,7 +325,8 @@ export async function telegramWebhook(request: Request, env: AppEnv, ctx: Execut
   if (request.headers.get("X-Telegram-Bot-Api-Secret-Token") !== (await webhookSecret(env))) return new Response("forbidden", { status: 403 });
 
   const update = (await request.json()) as TgUpdate;
-  const origin = new URL(request.url).origin;
+  // Ссылки в сообщениях — на основной адрес сайта, даже если вебхук подключён через workers.dev
+  const origin = SITE;
   // Загрузка объявления дольше лимита фоновых задач, поэтому обрабатываем прямо в запросе.
   // Если Telegram не дождётся ответа и пришлёт то же обновление повторно — пропускаем его.
   const lock = `tg:update:${update.update_id}`;

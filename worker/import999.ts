@@ -207,7 +207,7 @@ const tri = (ro: string, ru: string, en: string) => ({ ro: ro.trim(), ru: ru.tri
 
 // ---------- Импорт ----------
 
-export async function import999(env: AppEnv, id: string): Promise<ImportResult> {
+export async function import999(env: AppEnv, id: string, force = false): Promise<ImportResult> {
   const listingExists = async (listingId: string) =>
     Boolean(await env.DB.prepare("SELECT 1 FROM listings WHERE id = ?").bind(listingId).first());
 
@@ -222,8 +222,8 @@ export async function import999(env: AppEnv, id: string): Promise<ImportResult> 
   if (!type) return { kind: "skipped", reason: `Это не недвижимость (рубрика «${ad.category || "?"}»), пропускаю.` };
   if (!deal) return { kind: "skipped", reason: `Это объявление «${ad.dealText}», а не предложение — пропускаю.` };
 
-  // Тот же объект под другим номером: совпадает хотя бы одно фото
-  if (ad.images.length) {
+  // Тот же объект под другим номером: совпадает хотя бы одно фото (force — публикуем всё равно)
+  if (ad.images.length && !force) {
     const placeholders = ad.images.map(() => "?").join(",");
     const { results } = await env.DB.prepare(`SELECT DISTINCT listing_id FROM source_images WHERE hash IN (${placeholders})`)
       .bind(...ad.images)

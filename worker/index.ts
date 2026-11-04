@@ -1,7 +1,7 @@
 import type { Listing } from "../lib/types";
 import { DEFAULT_SETTINGS, type LeadKind, type ListingStatus, type SiteSettings } from "../lib/settings";
 import { checkPassword, clearCookie, isAuthed, loginRateLimited, sessionCookie } from "./auth";
-import { leadChats, setupBot, telegramWebhook } from "./telegram";
+import { leadChats, setupBot, SITE, telegramWebhook } from "./telegram";
 import { AD_URL, import999 } from "./import999";
 
 type Row = { id: string; data: string; status: ListingStatus; created_at: string };
@@ -72,7 +72,7 @@ async function createLead(request: Request, env: AppEnv, ctx: ExecutionContext):
     .bind(kind, name, phone, message || null, listingId, data)
     .run();
 
-  const origin = new URL(request.url).origin;
+  const origin = SITE;
   const lines = [`🏠 Новая заявка: ${KIND_LABEL[kind]}`, `Имя: ${name}`, `Телефон: ${phone}`];
   if (message) lines.push(`Сообщение: ${message}`);
   if (listingId) lines.push(`Объявление: ${origin}/listing/?id=${listingId}`);
