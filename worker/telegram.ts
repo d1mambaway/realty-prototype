@@ -2,8 +2,14 @@
 // присылает заявки с сайта. Доступ — после команды /start <пароль панели администратора>.
 import { checkPassword } from "./auth";
 import { AD_URL, import999 } from "./import999";
+import { continuePriceCheck, setListingPrice, startPriceCheck, type PriceState } from "./prices999";
 
-type TgMessage = { message_id: number; chat: { id: number; first_name?: string; username?: string }; text?: string };
+type TgMessage = {
+  message_id: number;
+  chat: { id: number; first_name?: string; username?: string };
+  text?: string;
+  reply_markup?: { inline_keyboard: Button[][] };
+};
 type TgUpdate = {
   update_id: number;
   message?: TgMessage;
@@ -49,6 +55,7 @@ export async function setupBot(env: AppEnv, origin: string): Promise<string> {
   await tg(env, "setMyCommands", {
     commands: [
       { command: "start", description: "Подключиться: /start пароль" },
+      { command: "prices", description: "Сверить цены с 999.md" },
       { command: "help", description: "Как пользоваться" },
       { command: "stop", description: "Отключить этот чат" },
     ],
@@ -68,11 +75,116 @@ const HELP = [
   "• Пришлите ссылку на объявление 999.md (можно несколько в одном сообщении) — я заберу текст и фото, переведу на румынский и английский и опубликую на сайте.",
   "• Если такой объект уже есть на сайте, я скажу об этом и не создам дубль.",
   "• Под каждым новым объявлением есть кнопки «Скрыть» и «Удалить».",
+  "• /prices — сверить цены на сайте с 999.md: я покажу, где цена изменилась, а обновить её можно кнопкой.",
   "• Сюда же приходят заявки с сайта.",
 ].join("\n");
+const PRICES_BUTTON: Button[][] = [[{ text: "🔄 Сверить цены с 999.md", callback_data: "prices" }]];
 
 const fmtPrice = (n: number) => `${n.toLocaleString("ru-RU")} €`;
 const ru = (t: unknown) => (typeof t === "string" ? t : ((t as { ru?: string; ro?: string })?.ru ?? (t as { ro?: string })?.ro ?? ""));
+const short = (s: string, n = 28) => (s.length > n ? `${s.slice(0, n - 1)}…` : s);
+
+// ---------- Сверка цен с 999.md ----------
+
+const priceKey = (chatId: number) => `prices:${chatId}`;
+
+/** Запуск или продолжение сверки: одно сообщение, которое обновляется по ходу */
+async function runPriceCheck(env: AppEnv, chatId: number, resume: boolean, messageId?: number) {
+  const saved = resume ? await env.MEDIA.get<PriceState>(priceKey(chatId), "json") : null;
+  const state = saved ?? (await startPriceCheck(env));
+  const edit = (text: string, buttons?: Button[][]) =>
+    tg(env, "editMessageText", {
+      chat_id: chatId,
+      message_id: messageId,
+      text,
+      disable_web_page_preview: true,
+      ...(buttons?.length ? { reply_markup: { inline_keyboard: buttons } } : {}),
+    });
+  const checked = () => state.total - state.queue.length;
+  const progress = `⏳ Сверяю цены с 999.md: проверено ${checked()} из ${state.total}…`;
+  if (messageId) await edit(progress);
+  else messageId = (await send(env, chatId, progress)).message_id;
+
+  const done = await continuePriceCheck(env, state);
+  if (!done) {
+    await env.MEDIA.put(priceKey(chatId), JSON.stringify(state), { expirationTtl: 86_400 });
+    return edit(`Проверено ${checked()} из ${state.total}. За один раз 999.md отдаёт не всё — нажмите, чтобы продолжить.`, [
+      [{ text: "▶️ Продолжить", callback_data: "pmore" }],
+    ]);
+  }
+  await env.MEDIA.delete(priceKey(chatId));
+  const [text, buttons] = priceReport(state);
+  return edit(text, buttons);
+}
+
+function priceReport(state: PriceState): [string, Button[][]] {
+  const changed = state.diffs.filter((d) => !d.suspicious);
+  const suspicious = state.diffs.filter((d) => d.suspicious);
+  const lines = [`💶 Сверка цен с 999.md: проверено ${state.total} объектов.`, `Без изменений: ${state.same}.`];
+  if (changed.length) {
+    lines.push("", `Цена изменилась (${changed.length}):`);
+    for (const d of changed) lines.push(`• ${d.title}: ${fmtPrice(d.old)} → ${fmtPrice(d.price)}${d.converted ? " (пересчёт в евро примерный)" : ""}`);
+  }
+  if (suspicious.length) {
+    lines.push("", "⚠️ Сильно отличаются — похоже, на 999 указана цена за сотку или м². Не трогаю, проверьте в панели:");
+    for (const d of suspicious) lines.push(`• ${d.title}: на сайте ${fmtPrice(d.old)}, на 999 ${fmtPrice(d.price)}`);
+  }
+  if (state.gone.length) {
+    lines.push("", `🚫 Объявления сняты с 999.md (${state.gone.length}) — можно скрыть на сайте:`);
+    for (const g of state.gone) lines.push(`• ${g.title}`);
+  }
+  if (state.failed.length) {
+    lines.push("", `❓ Не удалось открыть на 999.md (${state.failed.length}), попробуйте сверить позже:`);
+    for (const f of state.failed) lines.push(`• ${f.title}`);
+  }
+  if (!changed.length && !suspicious.length && !state.gone.length) lines.push("", "Все цены совпадают ✅");
+
+  const buttons: Button[][] = [
+    ...changed.map((d) => [{ text: `✅ ${short(d.title)}: ${fmtPrice(d.price)}`, callback_data: `pset:${d.id}:${d.price}` }]),
+    ...state.gone.map((g) => [{ text: `🙈 Скрыть: ${short(g.title)}`, callback_data: `phide:${g.id}` }]),
+  ].slice(0, 60);
+  if (changed.length > 1) buttons.unshift([{ text: `Обновить все цены (${changed.length})`, callback_data: "pall" }]);
+  let text = lines.join("\n");
+  if (text.length > 4000) text = `${text.slice(0, 3990)}\n…`;
+  return [text, buttons];
+}
+
+/** Нажатия под отчётом сверки: обновить цену, все цены, скрыть снятый объект */
+async function handlePriceButton(env: AppEnv, chatId: number, cb: NonNullable<TgUpdate["callback_query"]>) {
+  const message = cb.message!;
+  const keyboard = message.reply_markup?.inline_keyboard ?? [];
+  const data = cb.data!;
+  let toast = "";
+  let used: (b: Button) => boolean;
+
+  if (data === "pall") {
+    const updates = keyboard.flat().filter((b) => b.callback_data?.startsWith("pset:"));
+    await env.DB.batch(
+      updates.map((b) => {
+        const [, id, price] = b.callback_data!.split(":");
+        return env.DB.prepare("UPDATE listings SET data = json_set(data, '$.price', ?), updated_at = datetime('now') WHERE id = ?").bind(Number(price), id);
+      }),
+    );
+    toast = `Обновлено цен: ${updates.length}`;
+    used = (b) => b.callback_data === "pall" || Boolean(b.callback_data?.startsWith("pset:"));
+  } else if (data.startsWith("pset:")) {
+    const [, id, price] = data.split(":");
+    await setListingPrice(env, id, Number(price));
+    toast = `Цена обновлена: ${fmtPrice(Number(price))}`;
+    used = (b) => b.callback_data === data;
+  } else {
+    const id = data.slice("phide:".length);
+    await env.DB.prepare("UPDATE listings SET status = 'hidden', updated_at = datetime('now') WHERE id = ?").bind(id).run();
+    toast = "Скрыто на сайте";
+    used = (b) => b.callback_data === data;
+  }
+
+  let rest = keyboard.map((row) => row.filter((b) => !used(b))).filter((row) => row.length);
+  // «Обновить все» не нужна, когда осталась одна цена
+  if (rest.flat().filter((b) => b.callback_data?.startsWith("pset:")).length < 2) rest = rest.filter((row) => row[0]?.callback_data !== "pall");
+  await tg(env, "editMessageReplyMarkup", { chat_id: chatId, message_id: message.message_id, reply_markup: { inline_keyboard: rest } });
+  await tg(env, "answerCallbackQuery", { callback_query_id: cb.id, text: toast });
+}
 
 async function handleMessage(env: AppEnv, origin: string, msg: TgMessage) {
   const chatId = msg.chat.id;
@@ -80,7 +192,7 @@ async function handleMessage(env: AppEnv, origin: string, msg: TgMessage) {
   const allowed = Boolean(await env.DB.prepare("SELECT 1 FROM bot_chats WHERE chat_id = ?").bind(chatId).first());
 
   if (text.startsWith("/start")) {
-    if (allowed) return send(env, chatId, `Этот чат уже подключён.\n\n${HELP}`);
+    if (allowed) return send(env, chatId, `Этот чат уже подключён.\n\n${HELP}`, PRICES_BUTTON);
     const password = text.replace(/^\/start(@\w+)?/, "").trim();
     if (!password) return send(env, chatId, "Здравствуйте! Это бот сайта REZULTAT.\nЧтобы подключиться, отправьте: /start пароль\n(пароль — тот же, что от панели администратора).");
     if (!(await checkPassword(env, password))) return send(env, chatId, "Пароль не подошёл. Попробуйте ещё раз: /start пароль");
@@ -89,7 +201,7 @@ async function handleMessage(env: AppEnv, origin: string, msg: TgMessage) {
       .run();
     // Сообщение с паролем лучше не оставлять в переписке
     await tg(env, "deleteMessage", { chat_id: chatId, message_id: msg.message_id }).catch(() => {});
-    return send(env, chatId, `Готово, чат подключён ✅\n\n${HELP}`);
+    return send(env, chatId, `Готово, чат подключён ✅\n\n${HELP}`, PRICES_BUTTON);
   }
 
   if (!allowed) return send(env, chatId, "Чтобы пользоваться ботом, отправьте: /start пароль");
@@ -98,7 +210,8 @@ async function handleMessage(env: AppEnv, origin: string, msg: TgMessage) {
     await env.DB.prepare("DELETE FROM bot_chats WHERE chat_id = ?").bind(chatId).run();
     return send(env, chatId, "Чат отключён. Чтобы подключить снова: /start пароль");
   }
-  if (text.startsWith("/help")) return send(env, chatId, HELP);
+  if (text.startsWith("/help")) return send(env, chatId, HELP, PRICES_BUTTON);
+  if (text.startsWith("/prices") || /сверить цены/i.test(text)) return runPriceCheck(env, chatId, false);
 
   const ids = [...new Set([...text.matchAll(AD_URL)].map((m) => m[1]))];
   if (!ids.length) return send(env, chatId, "Пришлите ссылку на объявление 999.md, например https://999.md/ru/105634255");
@@ -143,6 +256,13 @@ async function handleCallback(env: AppEnv, origin: string, cb: NonNullable<TgUpd
   const chatId = cb.message?.chat.id;
   const allowed = chatId && (await env.DB.prepare("SELECT 1 FROM bot_chats WHERE chat_id = ?").bind(chatId).first());
   if (!allowed || !cb.data || !cb.message) return tg(env, "answerCallbackQuery", { callback_query_id: cb.id, text: "Нет доступа" });
+
+  if (cb.data === "prices" || cb.data === "pmore") {
+    await tg(env, "answerCallbackQuery", { callback_query_id: cb.id });
+    // Новая сверка — отдельным сообщением, продолжение — в том же
+    return runPriceCheck(env, chatId, cb.data === "pmore", cb.data === "pmore" ? cb.message.message_id : undefined);
+  }
+  if (/^(pset|pall|phide)/.test(cb.data)) return handlePriceButton(env, chatId, cb);
 
   const [action, id] = cb.data.split(":");
   const base = (cb.message.text ?? "").split("\n\n")[0].split("\n").filter((l) => !l.startsWith("Статус:")).join("\n");

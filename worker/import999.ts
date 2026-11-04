@@ -7,7 +7,7 @@ export const AD_URL = /https?:\/\/(?:www\.)?999\.md\/(?:ru\/|ro\/)?(\d{6,})/g;
 
 const AI_MODEL = "@cf/meta/llama-3.3-70b-instruct-fp8-fast";
 // Примерные курсы, если на 999.md цена не в евро
-const TO_EUR: Record<string, number> = { EUR: 1, USD: 0.92, MDL: 1 / 19.5 };
+export const TO_EUR: Record<string, number> = { EUR: 1, USD: 0.92, MDL: 1 / 19.5 };
 
 export interface Parsed999 {
   id: string;
