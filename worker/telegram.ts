@@ -238,8 +238,7 @@ async function importAndReport(env: AppEnv, origin: string, chatId: number, mess
     if (result.kind === "skipped") await edit(`⚠️ ${id}: ${result.reason}`);
     else if (result.kind === "duplicate") {
       await edit(
-        `ℹ️ ${id}: ${result.byPhotos ? "это тот же объект, что уже есть на сайте (совпадают фото)" : "это объявление уже есть на сайте"}.
-${origin}/listing/?id=${result.listingId}`,
+        `ℹ️ ${id}: ${result.byPhotos ? "это тот же объект, что уже есть на сайте (совпадают фото)" : "это объявление уже есть на сайте"}.\n${origin}/listing/?id=${result.listingId}`,
         // Одинаковые фото бывают и у разных объектов — например, офисы разной площади в одном здании
         result.byPhotos ? [[{ text: "📤 Всё равно опубликовать", callback_data: `force:${id}` }]] : undefined,
       );
@@ -247,8 +246,7 @@ ${origin}/listing/?id=${result.listingId}`,
       const l = result.listing;
       const lines = [`✅ Добавлено на сайт: ${ru(l.title)}`, `${fmtPrice(l.price)} · фото: ${l.images.length}`, `${origin}/listing/?id=${l.id}`];
       if (result.notes.length) lines.push("", ...result.notes.map((n) => `• ${n}`));
-      await edit(lines.join("
-"), [
+      await edit(lines.join("\n"), [
         [
           { text: "🙈 Скрыть", callback_data: `hide:${l.id}` },
           { text: "🗑 Удалить", callback_data: `del:${l.id}` },
