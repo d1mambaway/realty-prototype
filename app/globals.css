@@ -1,14 +1,15 @@
 @import "tailwindcss";
 
 @theme {
-  --color-ivory: #e8e6e2;
-  --color-sand: #dcd8d1;
-  --color-ink: #2b2a28;
-  --color-muted: #5e5a54;
-  --color-line: #cfcac2;
-  --color-accent: #8b5e2b;
-  --color-accent-soft: #e3c48e;
-  --color-deep: #1f1e1c;
+  /* Цвета визитки агентства: светлая бумага, чёрный текст, графитовая плашка, чёрная кожа */
+  --color-ivory: #ececea;
+  --color-sand: #dfdfdc;
+  --color-ink: #161616;
+  --color-muted: #5c5c5c;
+  --color-line: #cfcfcc;
+  --color-accent: #2f2f2f;
+  --color-accent-soft: #bdbdbd;
+  --color-deep: #111111;
 
   --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
   --font-serif: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
