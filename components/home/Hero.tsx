@@ -87,6 +87,18 @@ export function Hero() {
           ))}
         </ul>
 
+        {/* Оплата в USDT — отдельной плашкой в фирменном цвете Tether, чтобы выделялась */}
+        <p className="mt-5 inline-flex items-center gap-2.5 rounded-full border border-[#26A17B]/60 bg-[#26A17B]/20 py-1.5 pl-1.5 pr-4 text-sm font-semibold text-white backdrop-blur-md sm:text-base">
+          <svg viewBox="0 0 32 32" className="h-7 w-7 shrink-0" aria-hidden="true">
+            <circle cx="16" cy="16" r="16" fill="#26A17B" />
+            <path
+              fill="#fff"
+              d="M17.92 17.38v-.01c-.11.01-.68.04-1.95.04-1.01 0-1.73-.03-1.98-.04-3.9-.17-6.81-.85-6.81-1.66s2.91-1.49 6.81-1.66v2.65c.26.02.99.06 2 .06 1.21 0 1.82-.05 1.93-.06v-2.65c3.89.17 6.8.85 6.8 1.66s-2.91 1.49-6.8 1.67m0-3.6V11.4h5.43V7.78H8.56v3.62h5.43v2.37c-4.42.2-7.74 1.08-7.74 2.13s3.32 1.93 7.74 2.13v7.6h3.93v-7.6c4.41-.2 7.72-1.08 7.72-2.13s-3.31-1.93-7.72-2.13"
+            />
+          </svg>
+          {d.hero.usdt}
+        </p>
+
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
