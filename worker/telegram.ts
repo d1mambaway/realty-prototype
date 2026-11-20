@@ -56,6 +56,7 @@ export async function setupBot(env: AppEnv, origin: string): Promise<string> {
     commands: [
       { command: "start", description: "Подключиться: /start пароль" },
       { command: "prices", description: "Сверить цены с 999.md" },
+      { command: "dates", description: "Обновить дату публикации у всех объявлений" },
       { command: "help", description: "Как пользоваться" },
       { command: "stop", description: "Отключить этот чат" },
     ],
@@ -76,10 +77,23 @@ const HELP = [
   "• Если такой объект уже есть на сайте, я скажу об этом и не создам дубль.",
   "• Под каждым новым объявлением есть кнопки «Скрыть» и «Удалить».",
   "• /prices — сверить цены на сайте с 999.md: я покажу, где цена изменилась, а обновить её можно кнопкой.",
+  "• /dates — поставить сегодняшнюю дату публикации всем объявлениям на сайте.",
   "• Сюда же приходят заявки с сайта.",
 ].join("\n");
 export const SITE = "https://rezultat.md";
-const PRICES_BUTTON: Button[][] = [[{ text: "🔄 Сверить цены с 999.md", callback_data: "prices" }]];
+const PRICES_BUTTON: Button[][] = [
+  [{ text: "🔄 Сверить цены с 999.md", callback_data: "prices" }],
+  [{ text: "📅 Обновить даты публикации", callback_data: "dates" }],
+];
+
+/** Сегодняшняя дата по Кишинёву — её видят посетители как «Опубликовано» у всех объявлений */
+async function refreshDates(env: AppEnv): Promise<number> {
+  const today = new Date().toLocaleDateString("sv-SE", { timeZone: "Europe/Chisinau" });
+  // Колонку created_at не трогаем: по ней сохраняется порядок объявлений в каталоге
+  const res = await env.DB.prepare("UPDATE listings SET data = json_set(data, '$.createdAt', ?), updated_at = datetime('now')").bind(today).run();
+  return res.meta.changes ?? 0;
+}
+const datesDone = (n: number) => `📅 Готово: у ${n} объявлений дата публикации теперь сегодняшняя.`;
 
 const fmtPrice = (n: number) => `${n.toLocaleString("ru-RU")} €`;
 const ru = (t: unknown) => (typeof t === "string" ? t : ((t as { ru?: string; ro?: string })?.ru ?? (t as { ro?: string })?.ro ?? ""));
@@ -213,6 +227,7 @@ async function handleMessage(env: AppEnv, origin: string, msg: TgMessage) {
   }
   if (text.startsWith("/help")) return send(env, chatId, HELP, PRICES_BUTTON);
   if (text.startsWith("/prices") || /сверить цены/i.test(text)) return runPriceCheck(env, chatId, false);
+  if (text.startsWith("/dates") || /обновить даты/i.test(text)) return send(env, chatId, datesDone(await refreshDates(env)));
 
   const ids = [...new Set([...text.matchAll(AD_URL)].map((m) => m[1]))];
   if (!ids.length) return send(env, chatId, "Пришлите ссылку на объявление 999.md, например https://999.md/ru/105634255");
@@ -269,6 +284,11 @@ async function handleCallback(env: AppEnv, origin: string, cb: NonNullable<TgUpd
     await tg(env, "answerCallbackQuery", { callback_query_id: cb.id });
     // Новая сверка — отдельным сообщением, продолжение — в том же
     return runPriceCheck(env, chatId, cb.data === "pmore", cb.data === "pmore" ? cb.message.message_id : undefined);
+  }
+  if (cb.data === "dates") {
+    const n = await refreshDates(env);
+    await tg(env, "answerCallbackQuery", { callback_query_id: cb.id, text: "Даты обновлены" });
+    return send(env, chatId, datesDone(n));
   }
   if (/^(pset|pall|phide)/.test(cb.data)) return handlePriceButton(env, chatId, cb);
   if (cb.data.startsWith("force:")) {
