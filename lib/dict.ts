@@ -53,7 +53,7 @@ const ro = {
   hero: {
     kicker: "Vânzare · Cumpărare · Chirie · Schimb",
     lines: [["Experiența", "determină"], ["rezultatul"]],
-    sub: ["Tranzacții imobiliare: vânzare / chirie / proiecte", "Proiecte investiționale pe bază de imobiliare", "Afaceri funcționale: vânzare / administrare / dezvoltare", "Creditare / asigurare"],
+    sub: ["Tranzacții imobiliare: vânzare / chirie / proiecte", "Proiecte investiționale pe bază de imobiliare", "Afaceri funcționale: vânzare / administrare / dezvoltare", "Creditare / asigurare", "Proiectare / design / construcție / finanțare"],
     usdt: "Plata în USDT disponibilă",
     scroll: "Derulează în jos",
   },
@@ -299,7 +299,7 @@ const ru: Dict = {
   hero: {
     kicker: "Покупка · Продажа · Аренда · Обмен",
     lines: [["Опыт", "определяет"], ["результат"]],
-    sub: ["Операции с недвижимостью: продажа / аренда / проекты", "Инвестиционные проекты на базе недвижимости", "Действующий бизнес: продажа / администрирование / развитие", "Кредитование / страхование"],
+    sub: ["Операции с недвижимостью: продажа / аренда / проекты", "Инвестиционные проекты на базе недвижимости", "Действующий бизнес: продажа / администрирование / развитие", "Кредитование / страхование", "Проектирование / дизайн / строительство / финансирование"],
     usdt: "Доступна оплата в USDT",
     scroll: "Листать вниз",
   },
@@ -537,7 +537,7 @@ const en: Dict = {
   hero: {
     kicker: "Buy · Sell · Rent · Exchange",
     lines: [["Experience", "defines"], ["the", "result"]],
-    sub: ["Real estate deals: sale / rent / projects", "Real estate–based investment projects", "Operating businesses: sale / management / development", "Lending / insurance"],
+    sub: ["Real estate deals: sale / rent / projects", "Real estate–based investment projects", "Operating businesses: sale / management / development", "Lending / insurance", "Architecture / design / construction / financing"],
     usdt: "USDT payments accepted",
     scroll: "Scroll down",
   },
